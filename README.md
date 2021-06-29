@@ -1,2 +1,7 @@
 # sof
-SMART on FHIR application. This is a project for the summer interns 2021. 
+SMART on FHIR application. A project by the summer interns 2021. 
+
+Summer interns:
+- Ann
+- Karoline
+- Royce
