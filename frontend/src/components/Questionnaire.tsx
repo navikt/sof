@@ -8,7 +8,24 @@ import { ItemAnswer } from "./ItemAnswer";
 import { QuestionnaireResponse } from "./QuestionnaireResponse";
 
 export const Questionnaire = () => {
-	const [answers, setAnswers] = useState<Map<string, string>>(new Map());
+	const [answers, setAnswers] = useState([
+		{
+			linkId: "1",
+			answer: [
+				{
+					valueString: "",
+				},
+			],
+		},
+		{
+			linkId: "2",
+			answer: [
+				{
+					valueString: "",
+				},
+			],
+		},
+	]);
 
 	const questionnaire: IQuestionnaire = {
 		resourceType: "Questionnaire",
@@ -36,7 +53,11 @@ export const Questionnaire = () => {
 					return (
 						<div key={value.linkId}>
 							<p>{value.text}</p>
-							<ItemAnswer linkId={value.linkId} setAnswers={setAnswers} />
+							<ItemAnswer
+								linkId={value.linkId}
+								answers={answers}
+								setAnswers={setAnswers}
+							/>
 						</div>
 					);
 				} else {
@@ -44,6 +65,7 @@ export const Questionnaire = () => {
 				}
 			})}
 			<button onClick={saveAnswers}>Save</button>
+			{console.log(answers)}
 		</>
 	);
 };
