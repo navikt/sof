@@ -1,29 +1,24 @@
-import React, { FC, useState } from "react";
-import { QuestionnaireResponse } from "./QuestionnaireResponse";
+import React, { FC } from "react";
 
 interface IProps {
 	linkId: string;
-	answers: { linkId: string; answer: { valueString: string }[] }[];
-	setAnswers: React.Dispatch<
-		React.SetStateAction<
-			{ linkId: string; answer: { valueString: string }[] }[]
-		>
-	>;
+	answers: Map<string, string>;
+	setAnswers: React.Dispatch<React.SetStateAction<Map<string, string>>>;
 }
 
+/**
+ * Renders an input field and handles changes in the field.
+ * @param linkId: string, the linkId to the question
+ * @param answers: a map containing the current answers in the input fields
+ * @param setAnswers: the function to update answers
+ * @returns an input field
+ */
 export const ItemAnswer: FC<IProps> = ({ linkId, answers, setAnswers }) => {
 	const handleOnChange = (e: any) => {
-		// Legger til nytt svar.. Hvordan legge til bare et svar per linkId?
-		setAnswers([
-			...answers,
-			{ linkId: linkId, answer: [{ valueString: e.target.value }] },
-		]);
+		const copiedAnswers = new Map(answers);
+		copiedAnswers.set(linkId, e.target.value);
+		setAnswers(copiedAnswers);
 	};
 
-	return (
-		<>
-			<input type="text" onChange={handleOnChange} />
-			<p>{linkId}</p>
-		</>
-	);
+	return <input type="text" onChange={handleOnChange} />;
 };

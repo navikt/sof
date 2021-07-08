@@ -5,27 +5,15 @@ import {
 	QuestionnaireStatusKind,
 } from "@ahryman40k/ts-fhir-types/lib/R4";
 import { ItemAnswer } from "./ItemAnswer";
-import { QuestionnaireResponse } from "./QuestionnaireResponse";
+import questionnaireResponse from "../questionnaireResponse.json";
 
+/**
+ * Questionnaire is a component that renders a querstionnaire.
+ * @returns The questionnaire containing all questions with input fields.
+ */
 export const Questionnaire = () => {
-	const [answers, setAnswers] = useState([
-		{
-			linkId: "1",
-			answer: [
-				{
-					valueString: "",
-				},
-			],
-		},
-		{
-			linkId: "2",
-			answer: [
-				{
-					valueString: "",
-				},
-			],
-		},
-	]);
+	const [answers, setAnswers] = useState<Map<string, string>>(new Map());
+	const response = questionnaireResponse;
 
 	const questionnaire: IQuestionnaire = {
 		resourceType: "Questionnaire",
@@ -44,7 +32,20 @@ export const Questionnaire = () => {
 		],
 	};
 
-	const saveAnswers = () => {};
+	/**
+	 * Function to save answers in the json file.
+	 */
+	const saveAnswers = () => {
+		answers.forEach((value, key) => {
+			const item = response.item.find((e) => e.linkId === key)
+				? response.item.find((e) => e.linkId === key)
+				: null;
+			if (item) {
+				item.answer[0].valueString = value;
+			}
+		});
+		console.log(response); // Logs the json file
+	};
 
 	return (
 		<>
@@ -65,7 +66,6 @@ export const Questionnaire = () => {
 				}
 			})}
 			<button onClick={saveAnswers}>Save</button>
-			{console.log(answers)}
 		</>
 	);
 };
