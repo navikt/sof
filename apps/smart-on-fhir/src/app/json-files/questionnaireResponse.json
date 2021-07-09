@@ -1,0 +1,46 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "status": "inProgress",
+  "item": [
+    {
+      "linkId": "1",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "2",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "3",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "4",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "5",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    }
+  ]
+}
