@@ -7,6 +7,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+/*DARK BAND-HEADER ON TOP OF PAGE + ITS CONTENTS*/
 
 .nav-header {
   position: absolute;
@@ -16,7 +17,6 @@ body {
   top: 0px;
 
   background: rgba(38, 38, 38, 0.9);
-  border-radius: 6px 6px 0px 0px;
 }
 
 .bandline {
@@ -31,9 +31,23 @@ body {
   border-radius: 500px;
 }
 
-.main-body {
-  border-style: groove none none none;
+#close-container {
+  display: grid;
+  float: right;
+  margin: 20px 30px 0 0;
 }
+
+#close-knapp {
+  color: white;
+  font-size: 2rem;
+}
+
+#lukk {
+  color: white;
+  margin: 1px;
+}
+
+/*TITLE AREA, UNDER THE DARK BAND HEADER*/
 
 .titleContainer {
   display: flex;
@@ -41,4 +55,16 @@ body {
 
 .tittel {
   flex: 1;
+}
+
+/*MAIN BODY WITH THE QUESTIONAORES*/
+
+.main-body {
+  border-style: groove none none none;
+}
+
+/*FOOTER SECTION WITH BUTTONS*/
+
+.button-general {
+  margin: 5px;
 }

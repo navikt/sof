@@ -22,3 +22,14 @@ export const ItemAnswer: FC<IProps> = ({ linkId, answers, setAnswers }) => {
 
   return <input type="text" onChange={handleOnChange} />;
 };
+
+//Få frem ulike input-typer:
+//Itererer gjennom spørsmålene
+//Finne "type"-defininsjon på hvert spm
+//If type == kalender
+//--> kalenderinuput
+//if else type == checkbox
+// --> chekcbox
+//...
+
+//OBSOBS! legge til "ype" som attributt i Questionnaire

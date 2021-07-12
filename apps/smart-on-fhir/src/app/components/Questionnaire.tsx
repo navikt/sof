@@ -75,7 +75,9 @@ export const Questionnaire = () => {
       ) : (
         <p>No questionnaire responses found</p>
       )}
-      <Hovedknapp onClick={saveAnswers}>Lagre</Hovedknapp>
+      <Hovedknapp button-general onClick={saveAnswers}>
+        Lagre
+      </Hovedknapp>
       {console.log('A:', answers)}
     </>
   );

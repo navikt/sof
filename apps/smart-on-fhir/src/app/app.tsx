@@ -1,20 +1,24 @@
-import styles from './app.module.css';
 import { Questionnaire } from './components/Questionnaire';
 import Stegindikator from 'nav-frontend-stegindikator';
-import { ReactComponent as Logo } from './logo.svg';
-import star from './star.svg';
+import { Knapp } from 'nav-frontend-knapper';
+import { Close } from '@navikt/ds-icons';
 
 export function App() {
   return (
     <>
-      <header className="nav-header"></header>
+      <header className="nav-header">
+        <div id="close-container">
+          <Close id="close-knapp"></Close>
+          <p id="lukk">Lukk</p>
+        </div>
+      </header>
       <div className="titleContainer">
         <h1 className="tittel">Legeerklæring: pleiepenger for sykt barn</h1>
         <div className="stegindikator">
           <Stegindikator
             steg={[
-              { label: 'Tilstandsvurdering', index: 1 },
-              { label: 'Definer pleiebehov', index: 2, aktiv: true },
+              { label: 'Tilstandsvurdering', index: 1, aktiv: true },
+              { label: 'Definer pleiebehov', index: 2, aktiv: false },
             ]}
             visLabel
           />
@@ -32,6 +36,7 @@ export function App() {
           oppfylt.{' '}
         </p>
         <Questionnaire />
+        <Knapp className="button-general"> Neste </Knapp>
       </div>
     </>
   );
