@@ -1,1 +1,44 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  margin: 140px 40px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.nav-header {
+  position: absolute;
+  height: 82px;
+  left: 0%;
+  right: 0%;
+  top: 0px;
+
+  background: rgba(38, 38, 38, 0.9);
+  border-radius: 6px 6px 0px 0px;
+}
+
+.bandline {
+  position: absolute;
+  height: 8px;
+  left: 0%;
+  right: 0%;
+  top: 82px;
+  margin-top: 300px;
+
+  background: #66a5f4;
+  border-radius: 500px;
+}
+
+.main-body {
+  border-style: groove none none none;
+}
+
+.titleContainer {
+  display: flex;
+}
+
+.tittel {
+  flex: 1;
+}

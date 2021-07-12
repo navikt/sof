@@ -7,6 +7,7 @@ import {
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
+import { Hovedknapp } from 'nav-frontend-knapper';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -74,7 +75,7 @@ export const Questionnaire = () => {
       ) : (
         <p>No questionnaire responses found</p>
       )}
-      <button onClick={saveAnswers}>Save</button>
+      <Hovedknapp onClick={saveAnswers}>Lagre</Hovedknapp>
       {console.log('A:', answers)}
     </>
   );
