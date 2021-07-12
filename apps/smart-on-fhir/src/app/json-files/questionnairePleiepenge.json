@@ -1,0 +1,63 @@
+{
+    "resourceType": "Questionnaire",
+    "identifier": [
+        {
+            "value": "123456789"
+        }
+    ],
+    "version": "1.0.0",
+    "name": "pleiepengeskjema",
+    "title": "Legeerklæring: pleiepenger for sykt barn",
+    "status": "draft",
+    "subjectType": [
+        "Patient",
+        "Practitioner"
+    ],
+    "date": "YYYY-MM-DD",
+    "description": "Beskrivelse av pleiepengeskjemaet",
+    "item": [
+        {
+            "linkId": "1",
+            "text": "Barnet har følgende diagnoser",
+            "type": "string"
+        },
+        {
+            "linkId": "2",
+            "text": "Perioder for relevante innleggelser",
+            "type": "date"
+        },
+        {
+            "linkId": "3",
+            "text": "Beskrivelse av barnets nåværende og forventede tlstand/funksjonsnivå",
+            "type": "text",
+            "required": "true"
+        },
+        {
+            "linkId": "4",
+            "text": "Vurdering av barnets tilsyn- og pleiebehov",
+            "type": "text",
+            "required": "true"
+        },
+        {
+            "linkId": "5",
+            "text": "Varighet på barnets tilsyns- og pleiebehov",
+            "type": "date",
+            "required": "true"
+        },
+        {
+            "linkId": "6",
+            "text": "Barnet har større tilsyns- og pleiebehov enn barn på samme alder",
+            "type": "boolean"
+        },
+        {
+            "linkId": "7",
+            "text": "Barnets behov skyldes sykdom eller skade",
+            "type": "boolean"
+        },
+        {
+            "linkId": "8",
+            "text": "Barnet er under oppfølging av BUP",
+            "type": "boolean"
+        }
+    ]
+}
