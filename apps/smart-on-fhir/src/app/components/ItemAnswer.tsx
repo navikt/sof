@@ -37,16 +37,16 @@ export const ItemAnswer: FC<IProps> = ({
     <>
       {answerType === 'boolean' ? (
         <input type="checkbox" onChange={handleOnChecked} />
+      ) : answerType === 'choice' ? (
+        <input type="radio" onChange={handleOnChecked} />
       ) : answerType === 'date' ? (
         <input type="date" onChange={handleOnChange} />
+      ) : answerType === 'integer' ? (
+        <input type="number" onChange={handleOnChange} />
       ) : answerType === 'string' ? (
         <input type="text" onChange={handleOnChange} />
       ) : answerType === 'text' ? (
         <textarea onChange={handleOnChange}></textarea>
-      ) : answerType === 'integer' ? (
-        <input type="number" onChange={handleOnChange} />
-      ) : answerType === 'choice' ? (
-        <input type="radio" onChange={handleOnChecked} />
       ) : (
         <></>
       )}

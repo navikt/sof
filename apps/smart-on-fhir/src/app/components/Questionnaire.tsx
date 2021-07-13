@@ -31,14 +31,6 @@ export const Questionnaire = () => {
     //console.log('R: ', response); // Logs the json file
   };
 
-  const checkItemChildren = (data: any) => {
-    const temp = { ...questionnaire };
-    if (data.length === 0) {
-      return;
-    }
-    return checkItemChildren(temp);
-  };
-
   return (
     <>
       {questionnaire.item.map((value) => (
