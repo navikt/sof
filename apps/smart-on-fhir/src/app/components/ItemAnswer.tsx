@@ -1,7 +1,9 @@
+import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { FC } from 'react';
 
 interface IProps {
   linkId: string;
+  answerType: Questionnaire_ItemTypeKind;
   answers: Map<string, string>;
   setAnswers: React.Dispatch<React.SetStateAction<Map<string, string>>>;
 }
@@ -13,12 +15,45 @@ interface IProps {
  * @param setAnswers: the function to update answers
  * @returns an input field
  */
-export const ItemAnswer: FC<IProps> = ({ linkId, answers, setAnswers }) => {
+export const ItemAnswer: FC<IProps> = ({ linkId, answerType, answers, setAnswers }) => {
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(linkId, e.target.value);
     setAnswers(copiedAnswers);
+    //console.log(copiedAnswers)
   };
+  
+  const handleOnChecked = (e: any) => {
+    const copiedAnswers = new Map(answers);
+    copiedAnswers.set(linkId, e.target.checked)
+    setAnswers(copiedAnswers)
+  }
 
-  return <input type="text" onChange={handleOnChange} />;
+  return (
+    <>
+      {
+        (answerType === "boolean") ? <input type="checkbox" onChange={handleOnChecked}/> :
+        (answerType === "date") ? <input type="date" onChange={handleOnChange}/> :
+        (answerType === "string") ? <input type="text" onChange={handleOnChange}/> :
+        (answerType === "text") ? <textarea onChange={handleOnChange}></textarea> :
+        <></>
+      }
+      {/*
+      <input type="checkbox" onChange={handleOnChecked}/>
+      <input type="date" onChange={handleOnChange}/>
+      <input type="text" onChange={handleOnChange}/>
+      <textarea onChange={handleOnChange}></textarea>
+      */}
+    </>);
 };
+
+//Få frem ulike input-typer:
+//Itererer gjennom spørsmålene
+//Finne "type"-defininsjon på hvert spm
+//If type == kalender
+//--> kalenderinuput
+//if else type == checkbox
+// --> chekcbox
+//...
+
+//OBSOBS! legge til "ype" som attributt i Questionnaire
