@@ -1,41 +1,15 @@
 import { Questionnaire } from './components/Questionnaire';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { Knapp } from 'nav-frontend-knapper';
-import { Close } from '@navikt/ds-icons';
 import { Child } from '@navikt/ds-icons';
 import Hvit from './logos/Hvit.svg';
 import { Sidetittel } from 'nav-frontend-typografi';
 import { Element } from 'nav-frontend-typografi';
-import { oauth2 as SMART } from 'fhirclient';
-import { useEffect, useState } from 'react';
 import { getPatientName } from './utils/getPatientName';
+import { useFhirContext } from './context/fhirContext';
 
 export function App() {
-  const [patientName, setPatientName] = useState<string>('');
-  useEffect(() => {
-    // Launch Page
-    SMART.init({
-      redirectUri: 'test.html',
-      clientId: 'whatever',
-      scope: 'launch/patient offline_access openid fhirUser',
-      // WARNING: completeInTarget=true is needed to make this work in the codesandbox
-      // frame. It is otherwise not needed if the target is not another frame or window
-      // but since the entire example works in a frame here, it gets confused without
-      // setting this!
-      completeInTarget: true,
-    }).then((client) => {
-      console.log(
-        'patient: ',
-        client.patient
-          .read()
-          .then((patient) => setPatientName(getPatientName(patient)))
-      );
-      console.log(patientName);
-      console.log(client.getState().serverUrl);
-      console.log('patient id: ', client.getPatientId());
-      console.log(client.getAuthorizationHeader());
-    });
-  });
+  const { patient } = useFhirContext();
 
   return (
     <>
@@ -48,7 +22,7 @@ export function App() {
                 <Child id="child-logo" />
               </th>
               <th>
-                <Element id="child-name">{patientName}</Element>
+                <Element id="child-name">{getPatientName(patient)}</Element>
               </th>
             </tr>
           </table>
