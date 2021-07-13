@@ -4,6 +4,8 @@ import { Knapp } from 'nav-frontend-knapper';
 import { Close } from '@navikt/ds-icons';
 import { Child } from '@navikt/ds-icons';
 import Hvit from './logos/Hvit.svg';
+import { Sidetittel } from 'nav-frontend-typografi';
+import { Element } from 'nav-frontend-typografi';
 
 export function App() {
   return (
@@ -11,8 +13,16 @@ export function App() {
       <div className="nav-header-container">
         <img className="logo" src={Hvit} alt="" />
         <div className="name-container">
-          <Child id="child-logo" />
-          <p className="child-name">Gry Telokk</p>
+          <table>
+            <tr>
+              <th>
+                <Child id="child-logo" />
+              </th>
+              <th>
+                <Element id="child-name">Gry Telokk</Element>
+              </th>
+            </tr>
+          </table>
         </div>
         <div id="close-container">
           <Close id="close-knapp"></Close>
@@ -20,8 +30,11 @@ export function App() {
         </div>
         <div className="bandline"></div>
       </div>
+
       <div className="titleContainer">
-        <h1 className="tittel">Legeerklæring: pleiepenger for sykt barn</h1>
+        <Sidetittel className="tittel">
+          Legeerklæring: pleiepenger for sykt barn
+        </Sidetittel>
         <div className="stegindikator">
           <Stegindikator
             steg={[
