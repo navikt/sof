@@ -53,10 +53,6 @@ export function App() {
             </tr>
           </table>
         </div>
-        <div id="close-container">
-          <Close id="close-knapp"></Close>
-          <p id="lukk">Lukk</p>
-        </div>
         <div className="bandline"></div>
       </div>
 

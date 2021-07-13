@@ -44,17 +44,6 @@ body {
   font-size: 1.5rem;
 }
 
-#close-container {
-  display: grid;
-  float: right;
-  margin: 20px 30px;
-}
-
-#close-knapp {
-  color: white;
-  font-size: 2rem;
-}
-
 #lukk {
   color: white;
   margin: 1px;
