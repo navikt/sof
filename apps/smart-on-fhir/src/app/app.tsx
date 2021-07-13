@@ -6,8 +6,37 @@ import { Child } from '@navikt/ds-icons';
 import Hvit from './logos/Hvit.svg';
 import { Sidetittel } from 'nav-frontend-typografi';
 import { Element } from 'nav-frontend-typografi';
+import { oauth2 as SMART } from 'fhirclient';
+import { useEffect, useState } from 'react';
+import { getPatientName } from './utils/getPatientName';
 
 export function App() {
+  const [patientName, setPatientName] = useState<string>('');
+  useEffect(() => {
+    // Launch Page
+    SMART.init({
+      redirectUri: 'test.html',
+      clientId: 'whatever',
+      scope: 'launch/patient offline_access openid fhirUser',
+      // WARNING: completeInTarget=true is needed to make this work in the codesandbox
+      // frame. It is otherwise not needed if the target is not another frame or window
+      // but since the entire example works in a frame here, it gets confused without
+      // setting this!
+      completeInTarget: true,
+    }).then((client) => {
+      console.log(
+        'patient: ',
+        client.patient
+          .read()
+          .then((patient) => setPatientName(getPatientName(patient)))
+      );
+      console.log(patientName);
+      console.log(client.getState().serverUrl);
+      console.log('patient id: ', client.getPatientId());
+      console.log(client.getAuthorizationHeader());
+    });
+  });
+
   return (
     <>
       <div className="nav-header-container">
@@ -19,7 +48,7 @@ export function App() {
                 <Child id="child-logo" />
               </th>
               <th>
-                <Element id="child-name">Gry Telokk</Element>
+                <Element id="child-name">{patientName}</Element>
               </th>
             </tr>
           </table>
