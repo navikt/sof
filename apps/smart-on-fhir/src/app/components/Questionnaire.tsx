@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   IQuestionnaire,
-  Questionnaire_ItemTypeKind,
-  QuestionnaireStatusKind,
   IBundle,
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { ItemAnswer } from './ItemAnswer';
@@ -26,7 +24,7 @@ export const Questionnaire = () => {
         bundle.entry?.forEach((entry: any) => {
           questionnaires.push(entry.resource as IQuestionnaire);
         });
-        console.log(bundle);
+        console.log("B: ", bundle);
         setQuestionnaireResult(questionnaires);
       });
   }, []);
@@ -43,7 +41,7 @@ export const Questionnaire = () => {
         item.answer[0].valueString = value;
       }
     });
-    console.log(response); // Logs the json file
+    console.log("R: ",response); // Logs the json file
   };
 
   return (
@@ -60,6 +58,7 @@ export const Questionnaire = () => {
                     <p>{JSON.stringify(entry.text)}</p>
                     <ItemAnswer
                       linkId={entry.linkId}
+                      answerType={entry.type}
                       answers={answers}
                       setAnswers={setAnswers}
                     />
