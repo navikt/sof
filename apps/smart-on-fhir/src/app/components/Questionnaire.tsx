@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-  IQuestionnaire,
-  IBundle,
-} from '@ahryman40k/ts-fhir-types/lib/R4';
+import React, { useState } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
+import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
 
 /**
@@ -12,26 +9,15 @@ import { Hovedknapp } from 'nav-frontend-knapper';
  * @returns The questionnaire containing all questions with input fields.
  */
 export const Questionnaire = () => {
+  const questionnaire = questionnairePleiepenger;
+
+  // TODO: flytte variablene til et annet komponent (QuestionnaireResponse)?
   const [answers, setAnswers] = useState<Map<string, string>>(new Map());
   const response = questionnaireResponse;
-  const [questionnaireResult, setQuestionnaireResult] =
-    useState<IQuestionnaire[]>();
-
-  useEffect(() => {
-    fetch('/api/Questionnaire')
-      .then((response) => response.json())
-      .then((bundle: IBundle) => {
-        const questionnaires: IQuestionnaire[] = [];
-        bundle.entry?.forEach((entry: any) => {
-          questionnaires.push(entry.resource as IQuestionnaire);
-        });
-        console.log("B: ", bundle);
-        setQuestionnaireResult(questionnaires);
-      });
-  }, []);
 
   /**
    * Function to save answers in the json file.
+   * TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
    */
   const saveAnswers = () => {
     answers.forEach((value, key) => {
@@ -42,41 +28,37 @@ export const Questionnaire = () => {
         item.answer[0].valueString = value;
       }
     });
-    console.log("R: ",response); // Logs the json file
+    //console.log('R: ', response); // Logs the json file
+  };
+
+  const checkItemChildren = (data: any) => {
+    const temp = { ...questionnaire };
+    if (data.length === 0) {
+      return;
+    }
+    return checkItemChildren(temp);
   };
 
   return (
     <>
-      {questionnaireResult ? (
-        <>
-          <p>Found the following questionnaires:</p>
-          <ol>
-            {console.log('Q', questionnaireResult)}
-            {questionnaireResult[0].item?.map((entry) => {
-              if (entry.linkId) {
-                return (
-                  <div key={entry.linkId}>
-                    <p>{JSON.stringify(entry.text)}</p>
-                    <ItemAnswer
-                      linkId={entry.linkId}
-                      answerType={entry.type}
-                      answers={answers}
-                      setAnswers={setAnswers}
-                    />
-                  </div>
-                );
-              } else {
-                return <></>;
-              }
-            })}
-          </ol>
-        </>
-      ) : (
-        <p>No questionnaire responses found</p>
-      )}
-      <Hovedknapp button-general onClick={saveAnswers}>
-        Lagre
-      </Hovedknapp>
+      {questionnaire.item.map((value) => (
+        <div key={value.linkId}>
+          <p>{value.text}</p>
+          {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
+          <ItemAnswer
+            linkId={value.linkId}
+            answerType={value.type}
+            answers={answers}
+            setAnswers={setAnswers}
+          />
+        </div>
+      ))}
+      {
+        // TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
+        <Hovedknapp button-general onClick={saveAnswers}>
+          Lagre
+        </Hovedknapp>
+      }
       {console.log('A:', answers)}
     </>
   );

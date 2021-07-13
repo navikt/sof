@@ -1,0 +1,128 @@
+{
+    "resourceType": "Questionnaire",
+    "id": "123456789",
+    "version": "1.0.0",
+    "name": "pleiepengeskjema",
+    "title": "Legeerklæring: pleiepenger for sykt barn",
+    "status": "draft",
+    "subjectType": [
+        "Patient",
+        "Practitioner"
+    ],
+    "date": "2021-07-13",
+    "description": "Legeerklæringen skal fylles blabla.... \\n NAV trenger tidsnære opplysninger for å blablabla",
+    "item": [
+        {
+            "linkId": "1",
+            "text": "Barnet har følgende diagnoser",
+            "type": "string",
+            "required": "false"
+        },
+        {
+            "linkId": "2",
+            "text": "Perioder for relevante innleggelser",
+            "type": "date",
+            "required": "false"
+        },
+        {
+            "linkId": "3",
+            "text": "Beskriv barnets nåværende og forventede tlstand/funksjonsnivå",
+            "type": "text",
+            "required": "true"
+        },
+        {
+            "linkId": "4",
+            "text": "Vurder barnets tilsyn- og pleiebehov",
+            "type": "text",
+            "required": "true"
+        },
+        {
+            "linkId": "5",
+            "text": "Varighet på barnets tilsyns- og pleiebehov",
+            "type": "date",
+            "required": "true"
+        },
+        {
+            "linkId": "6",
+            "text": "Kryss av for det som gjelder barnet",
+            "type": "group",
+            "item": [
+                {
+                    "linkId": "6.1",
+                    "text": "Barnet har større tilsyns- og pleiebehov enn barn på samme alder",
+                    "type": "boolean",
+                    "initial": [
+                        {
+                            "valueBoolean": false
+                        }
+                    ],
+                    "required": "false"
+                },
+                {
+                    "linkId": "6.2",
+                    "text": "Barnets behov skyldes sykdom eller skade",
+                    "type": "boolean",
+                    "initial": [
+                        {
+                            "valueBoolean": false
+                        }
+                    ],
+                    "required": "false"
+                },
+                {
+                    "linkId": "6.3",
+                    "text": "Barnet er under oppfølging av BUP",
+                    "type": "boolean",
+                    "initial": [
+                        {
+                            "valueBoolean": false
+                        }
+                    ],
+                    "required": "false"
+                }
+            ]
+        },
+        {
+            "linkId": "7",
+            "text": "Når har barnet behov for tilsyn?",
+            "type": "choice",
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "display": "Hele tiden"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Enkelte situasjoner / deler av dagen"
+                    }
+                }
+            ],
+            "required": "false"
+        },
+        {
+            "linkId": "8",
+            "text": "Skal det være to omsorgspersoner?",
+            "type": "choice",
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "display": "Ja"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "display": "Nei"
+                    }
+                }
+            ],
+            "required": "false"
+        },
+        {
+            "linkId": "9",
+            "text": "Fødselsnummer til omsorgspersonen",
+            "type": "integer",
+            "required": "false"
+        }
+    ]
+}
