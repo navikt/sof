@@ -2,11 +2,13 @@ import { Questionnaire } from './components/Questionnaire';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { Knapp } from 'nav-frontend-knapper';
 import { Close } from '@navikt/ds-icons';
+import Hvit from './logos/Hvit.svg';
 
 export function App() {
   return (
     <>
       <header className="nav-header">
+        <img className="logo" src={Hvit} alt="" />
         <div id="close-container">
           <Close id="close-knapp"></Close>
           <p id="lukk">Lukk</p>
