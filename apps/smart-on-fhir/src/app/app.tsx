@@ -2,18 +2,24 @@ import { Questionnaire } from './components/Questionnaire';
 import Stegindikator from 'nav-frontend-stegindikator';
 import { Knapp } from 'nav-frontend-knapper';
 import { Close } from '@navikt/ds-icons';
+import { Child } from '@navikt/ds-icons';
 import Hvit from './logos/Hvit.svg';
 
 export function App() {
   return (
     <>
-      <header className="nav-header">
+      <div className="nav-header-container">
         <img className="logo" src={Hvit} alt="" />
+        <div className="name-container">
+          <Child id="child-logo" />
+          <p className="child-name">Gry Telokk</p>
+        </div>
         <div id="close-container">
           <Close id="close-knapp"></Close>
           <p id="lukk">Lukk</p>
         </div>
-      </header>
+        <div className="bandline"></div>
+      </div>
       <div className="titleContainer">
         <h1 className="tittel">Legeerklæring: pleiepenger for sykt barn</h1>
         <div className="stegindikator">

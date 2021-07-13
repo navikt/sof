@@ -9,13 +9,13 @@ body {
 }
 /*DARK BAND-HEADER ON TOP OF PAGE + ITS CONTENTS*/
 
-.nav-header {
+.nav-header-container {
   position: absolute;
+  display: flex;
   height: 82px;
   left: 0%;
   right: 0%;
   top: 0px;
-
   background: rgba(38, 38, 38, 0.9);
 }
 
@@ -25,10 +25,23 @@ body {
   left: 0%;
   right: 0%;
   top: 82px;
-  margin-top: 300px;
-
+  margin-top: 82;
   background: #66a5f4;
-  border-radius: 500px;
+}
+
+.name-container {
+  display: flex;
+  position: relative;
+}
+
+#child-logo {
+  color: red;
+  font-size: 2.5rem;
+}
+
+#child-name {
+  color: white;
+  font-size: ;
 }
 
 #close-container {
@@ -43,7 +56,7 @@ body {
 }
 
 #lukk {
-  color: white;
+  color: red;
   margin: 1px;
 }
 
