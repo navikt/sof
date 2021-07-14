@@ -1,0 +1,257 @@
+{
+    "resourceType": "Questionnaire",
+    "id": "123456789",
+    "version": "1.0.0",
+    "name": "pleiepengeskjema",
+    "title": "Legeerklæring: pleiepenger for sykt barn",
+    "status": "draft",
+    "date": "2021-07-13",
+    "description": "Legeerklæringen skal fylles blabla.... \\n NAV trenger tidsnære opplysninger for å blablabla",
+    "item": [
+        {
+            "linkId": "1",
+            "text": "Barnet har følgende diagnoser",
+            "type": "string",
+            "item": [
+                {
+                    "linkId": "1-help",
+                    "text": "Hvis barnet er under utredning og det ikke er fastsatt noen diagnose trengs det ikke",
+                    "type": "display"
+                }
+            ],
+            "required": "false"
+        },
+        {
+            "linkId": "2",
+            "text": "Perioder for relevante innleggelser",
+            "type": "date",
+            "required": "false"
+        },
+        {
+            "linkId": "3",
+            "text": "Beskriv barnets nåværende og forventede tlstand/funksjonsnivå",
+            "type": "text",
+            "item": [
+                {
+                    "linkId": "3-help",
+                    "text": "Merk: Hvis pasienten er over 18 må du gi en vurdering av om pasienten er utviklingshemmet og svært alvorlig eller livstruende syk.",
+                    "type": "display"
+                }
+            ],
+            "required": "true"
+        },
+        {
+            "linkId": "4",
+            "text": "Vurder barnets tilsyn- og pleiebehov",
+            "type": "text",
+            "item": [
+                {
+                    "linkId": "4-help",
+                    "text": "Dette kan for eksempel være en beskrivelse av hva barnet trenger hjelp til og omsorgspersonens rolle i pleien.",
+                    "type": "display"
+                }
+            ],
+            "required": "true"
+        },
+        {
+            "linkId": "5",
+            "text": "Varighet på barnets tilsyns- og pleiebehov",
+            "type": "date",
+            "item": [
+                {
+                    "linkId": "5-help",
+                    "text": "Her skal du sette en dato på hvor langt fram i tid du forventer at barnet har behov for kontinuerlig tilsyn og pleie. Hvis du er usikker på varigheten setter du en dato så langt frem i tid som du er sikker på per nå.",
+                    "type": "display"
+                }
+            ],
+            "required": "true"
+        },
+        {
+            "linkId": "6",
+            "text": "Kryss av for det som gjelder barnet",
+            "type": "group",
+            "item": [
+                {
+                    "linkId": "6.1",
+                    "text": "Barnet har større tilsyns- og pleiebehov enn barn på samme alder",
+                    "type": "boolean",
+                    "initial": [
+                        {
+                            "valueBoolean": false
+                        }
+                    ],
+                    "required": "false"
+                },
+                {
+                    "linkId": "6.2",
+                    "text": "Barnets behov skyldes sykdom eller skade",
+                    "type": "boolean",
+                    "initial": [
+                        {
+                            "valueBoolean": false
+                        }
+                    ],
+                    "required": "false"
+                },
+                {
+                    "linkId": "6.3",
+                    "text": "Barnet er under oppfølging av BUP",
+                    "type": "boolean",
+                    "initial": [
+                        {
+                            "valueBoolean": false
+                        }
+                    ],
+                    "required": "false"
+                }
+            ]
+        },
+        {
+            "linkId": "7",
+            "text": "Når har barnet behov for tilsyn?",
+            "type": "choice",
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "code": "HELE",
+                        "display": "Hele tiden"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "code": "DELER",
+                        "display": "Enkelte situasjoner / deler av dagen"
+                    }
+                }
+            ],
+            "required": "true",
+            "item": [
+                {
+                    "linkId": "7.1",
+                    "text": "Beskriv hvilke situasjoner / deler av dagen det gjelder for",
+                    "type": "text",
+                    "enableWhen": [
+                        {
+                            "question": "7",
+                            "operator": "=",
+                            "answerCoding": {
+                                "code": "DELER"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "linkId": "8",
+            "text": "Skal det være to omsorgspersoner?",
+            "type": "choice",
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "code": "Y",
+                        "display": "Ja"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "code": "N",
+                        "display": "Nei"
+                    }
+                }
+            ],
+            "required": "true",
+            "item": [
+                {
+                    "linkId": "8.1",
+                    "text": "Fødselsnummer til første omsorgsperson",
+                    "type": "integer",
+                    "enableWhen": [
+                        {
+                            "question": "8",
+                            "operator": "=",
+                            "answerCoding": {
+                                "code": "Y"
+                            }
+                        }
+                    ],
+                    "required": "true"
+                },
+                {
+                    "linkId": "8.2",
+                    "text": "Fødselsnummer til andre omsorgsperson",
+                    "type": "integer",
+                    "enableWhen": [
+                        {
+                            "question": "8",
+                            "operator": "=",
+                            "answerCoding": {
+                                "code": "Y"
+                            }
+                        }
+                    ],
+                    "required": "true"
+                },
+                {
+                    "linkId": "8.3",
+                    "text": "Fødselsnummer til omsorgspersonen",
+                    "type": "integer",
+                    "enableWhen": [
+                        {
+                            "question": "8",
+                            "operator": "=",
+                            "answerCoding": {
+                                "code": "N"
+                            }
+                        }
+                    ],
+                    "required": "true"
+                }
+            ]
+        },
+        {
+            "linkId": "9",
+            "text": "Skal begge omsorgspersonene hjelpe barnet samtidig?",
+            "type": "choice",
+            "answerOption": [
+                {
+                    "valueCoding": {
+                        "code": "Y",
+                        "display": "Ja"
+                    }
+                },
+                {
+                    "valueCoding": {
+                        "code": "N",
+                        "display": "Nei"
+                    }
+                }
+            ],
+            "enableWhen": [
+                {
+                    "question": "8",
+                    "operator": "=",
+                    "answerCoding": {
+                        "code": "Y"
+                    }
+                }
+            ],
+            "required": "true"
+        },
+        {
+            "linkId": "10",
+            "text": "Beskriv hvorfor det er nødvendig med to omsorgspersoner samtidig",
+            "type": "text",
+            "enableWhen": [
+                {
+                    "question": "9",
+                    "operator": "=",
+                    "answerCoding": {
+                        "code": "Y"
+                    }
+                }
+            ],
+            "required": "true"
+        }
+    ]
+}

@@ -8,6 +8,10 @@ import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 type ContextProps = {
   client: Client;
   patient: IPatient;
+  user:
+    | fhirclient.FHIR.Patient
+    | fhirclient.FHIR.Practitioner
+    | fhirclient.FHIR.RelatedPerson;
   error: Error;
 };
 export const FhirContext = React.createContext<Partial<ContextProps>>({});
@@ -24,6 +28,11 @@ export const FhirContextProvider = (props: any) => {
   const location = useLocation();
   const [client, setClient] = useState<Client>();
   const [patient, setPatient] = useState<IPatient>();
+  const [user, setUser] = useState<
+    | fhirclient.FHIR.Patient
+    | fhirclient.FHIR.Practitioner
+    | fhirclient.FHIR.RelatedPerson
+  >();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
@@ -39,6 +48,8 @@ export const FhirContextProvider = (props: any) => {
       if (oauth2Client) {
         const rawPatient = await oauth2Client.patient.read();
         setPatient(rawPatient);
+        const rawUser = await oauth2Client.user.read();
+        setUser(rawUser);
       }
     }
 
@@ -52,6 +63,7 @@ export const FhirContextProvider = (props: any) => {
     client,
     error,
     patient,
+    user,
   };
   return (
     <FhirContext.Provider value={context}>
