@@ -1,6 +1,8 @@
 {
   "resourceType": "QuestionnaireResponse",
+  "identifier": "",
   "status": "inProgress",
+  "questionnaire": "./questionnairePleiepenger.json",
   "item": [
     {
       "linkId": "1",
@@ -14,7 +16,7 @@
       "linkId": "2",
       "answer": [
         {
-          "valueString": ""
+          "valueDate": ""
         }
       ]
     },
@@ -36,6 +38,94 @@
     },
     {
       "linkId": "5",
+      "answer": [
+        {
+          "valueDate": ""
+        }
+      ]
+    },
+    {
+      "linkId": "6.1",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "6.2",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "6.3",
+      "answer": [
+        {
+          "valueBooelan": false
+        }
+      ]
+    },
+    {
+      "linkId": "7",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "7.1",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "8",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "8.1",
+      "answer": [
+        {
+          "valueInteger": 0
+        }
+      ]
+    },
+    {
+      "linkId": "8.2",
+      "answer": [
+        {
+          "valueInteger": 0
+        }
+      ]
+    },
+    {
+      "linkId": "8.3",
+      "answer": [
+        {
+          "valueInteger": 0
+        }
+      ]
+    },
+    {
+      "linkId": "9",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "10",
       "answer": [
         {
           "valueString": ""
