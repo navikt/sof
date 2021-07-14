@@ -31,48 +31,44 @@ export const Questionnaire = () => {
     //console.log('R: ', response); // Logs the json file
   };
 
-  // TODO: Rekursiv metode som itererer seg gjennom item-barna. FUNKER IKKE! :((
-  const checkItemChildren = (result: any) => {
-    if (!('item' in result)) {
-      console.log('if', result.text, result.type);
-      return;
+  const checkChildrenItems = (data: any) => {
+    while ('item' in data) {
+      console.log('Item: ', data.item);
     }
-    console.log('CIC: ', result.item);
-    return checkItemChildren(result.item);
+    console.log('Item end');
   };
 
-  checkItemChildren(questionnaire);
+  // Displaying helptext if exists
+  const helptext = (item: any) => {
+    let text = '';
+    console.log('H', item);
+    if ('item' in item) {
+      console.log('H', true);
+      item.item?.map((itemChild: any) => {
+        console.log('H', itemChild.text);
+        text = itemChild.text;
+      });
+    }
+    console.log('H: end');
+    return <h1>{text}</h1>;
+  };
 
   return (
     <>
-      {questionnaire.item.map((value) => (
-        <div key={value.linkId}>
-          <p>{value.text}</p>
+      {questionnaire.item.map((item) => (
+        <div key={item.linkId}>
+          <p>{item.text}</p>
+          {helptext(item)}
           {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
-          {value.item ? (
-            <>
-              {console.log('Children: ', value.item)}
-              {value.item.map((data: any) => (
-                <>
-                  <p>{data.text}</p>
-                  <ItemAnswer
-                    linkId={data.linkId}
-                    answerType={data.type}
-                    answers={answers}
-                    setAnswers={setAnswers}
-                  />
-                </>
-              ))}
-            </>
-          ) : null}
           <ItemAnswer
-            linkId={value.linkId}
-            answerType={value.type}
+            linkId={item.linkId}
+            answerType={item.type}
             answers={answers}
             setAnswers={setAnswers}
           />
         </div>
       ))}
+      {/*console.log(checkChildrenItems(questionnaire))*/}
       {
         // TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
         <Hovedknapp button-general onClick={saveAnswers}>
