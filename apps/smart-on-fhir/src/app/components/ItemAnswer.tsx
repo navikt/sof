@@ -1,5 +1,6 @@
 import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { FC } from 'react';
+import { TextareaControlled } from 'nav-frontend-skjema';
 
 interface IProps {
   linkId: string;
@@ -46,21 +47,10 @@ export const ItemAnswer: FC<IProps> = ({
       ) : answerType === 'string' ? (
         <input type="text" onChange={handleOnChange} />
       ) : answerType === 'text' ? (
-        <textarea onChange={handleOnChange}></textarea>
+        <TextareaControlled onChange={handleOnChange} maxlength={0} />
       ) : (
         <></>
       )}
     </>
   );
 };
-
-//Få frem ulike input-typer:
-//Itererer gjennom spørsmålene
-//Finne "type"-defininsjon på hvert spm
-//If type == kalender
-//--> kalenderinuput
-//if else type == checkbox
-// --> chekcbox
-//...
-
-//OBSOBS! legge til "ype" som attributt i Questionnaire

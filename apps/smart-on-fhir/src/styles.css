@@ -70,8 +70,16 @@ body {
   border-style: groove none none none;
 }
 
+.ingress {
+  margin: 25px 0 40px;
+}
+
+.typo-element {
+  margin-top: 100px;
+}
+
 /*FOOTER SECTION WITH BUTTONS*/
 
 .button-general {
-  margin: 5px;
+  margin: 10px;
 }
