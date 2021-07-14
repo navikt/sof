@@ -31,12 +31,40 @@ export const Questionnaire = () => {
     //console.log('R: ', response); // Logs the json file
   };
 
+  // TODO: Rekursiv metode som itererer seg gjennom item-barna. FUNKER IKKE! :((
+  const checkItemChildren = (result: any) => {
+    if (!('item' in result)) {
+      console.log('if', result.text, result.type);
+      return;
+    }
+    console.log('CIC: ', result.item);
+    return checkItemChildren(result.item);
+  };
+
+  checkItemChildren(questionnaire);
+
   return (
     <>
       {questionnaire.item.map((value) => (
         <div key={value.linkId}>
           <p>{value.text}</p>
           {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
+          {value.item ? (
+            <>
+              {console.log('Children: ', value.item)}
+              {value.item.map((data: any) => (
+                <>
+                  <p>{data.text}</p>
+                  <ItemAnswer
+                    linkId={data.linkId}
+                    answerType={data.type}
+                    answers={answers}
+                    setAnswers={setAnswers}
+                  />
+                </>
+              ))}
+            </>
+          ) : null}
           <ItemAnswer
             linkId={value.linkId}
             answerType={value.type}
