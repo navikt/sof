@@ -11,7 +11,6 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 export const Questionnaire = () => {
   const questionnaire = questionnairePleiepenger;
 
-  // TODO: flytte variablene til et annet komponent (QuestionnaireResponse)?
   const [answers, setAnswers] = useState<Map<string, string>>(new Map());
   const response = questionnaireResponse;
 
@@ -31,26 +30,31 @@ export const Questionnaire = () => {
     //console.log('R: ', response); // Logs the json file
   };
 
-  const checkChildrenItems = (data: any) => {
-    while ('item' in data) {
-      console.log('Item: ', data.item);
-    }
-    console.log('Item end');
-  };
-
-  // Displaying helptext if exists
-  const helptext = (item: any) => {
-    let text = '';
-    console.log('H', item);
+  // Checking if item has more items. FUNKER IKKE å skrive ut på nettsiden :((
+  const isItemChild = (item: any) => {
+    console.log('C: ', item);
     if ('item' in item) {
-      console.log('H', true);
       item.item?.map((itemChild: any) => {
-        console.log('H', itemChild.text);
-        text = itemChild.text;
+        isItemChild(itemChild);
       });
     }
-    console.log('H: end');
-    return <h1>{text}</h1>;
+    console.log('C: end');
+    return false;
+  };
+
+  // Displaying helptext if exists. Antar at hjelpetekst er i nivå 2 i Questionnaire
+  const helptext = (item: any) => {
+    let text: string = '';
+    if ('item' in item) {
+      item.item?.map((itemChild: any) => {
+        // Sjekker at ønsket tekst er en hjelpetekst ved å sjekke linkId
+        if (itemChild.linkId.includes('help')) {
+          text = itemChild.text;
+        }
+      });
+      return <h1>{text}</h1>;
+    }
+    return <></>;
   };
 
   return (
@@ -58,17 +62,16 @@ export const Questionnaire = () => {
       {questionnaire.item.map((item) => (
         <div key={item.linkId}>
           <p>{item.text}</p>
-          {helptext(item)}
-          {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
+          {/*helptext(item)*/}
           <ItemAnswer
             linkId={item.linkId}
             answerType={item.type}
             answers={answers}
             setAnswers={setAnswers}
           />
+          {isItemChild(item)}
         </div>
       ))}
-      {/*console.log(checkChildrenItems(questionnaire))*/}
       {
         // TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
         <Hovedknapp button-general onClick={saveAnswers}>
