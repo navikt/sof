@@ -20,5 +20,5 @@ test('it should get a patient name', async () => {
     ],
   };
   const patientName = getPatientName(patient);
-  expect(patientName).toBe("Danae Kshlerin");
+  expect(patientName).toBe('Danae Kshlerin');
 });
