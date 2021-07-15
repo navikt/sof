@@ -3,7 +3,7 @@ import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
-
+import './questionnaireStylesheet.css';
 /**
  * Questionnaire is a component that renders a querstionnaire.
  * @returns The questionnaire containing all questions with input fields.
@@ -47,14 +47,17 @@ export const Questionnaire = () => {
     <>
       {questionnaire.item.map((value) => (
         <div key={value.linkId}>
-          <p>{value.text}</p>
+          {' '}
+          {/*Hovedspørsmål*/}
+          <p className="typo-element">{value.text}</p>
           {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
           {value.item ? (
             <>
               {console.log('Children: ', value.item)}
               {value.item.map((data: any) => (
                 <>
-                  <p>{data.text}</p>
+                  <p className="typo-normal">{data.text}</p>{' '}
+                  {/*Beskrivende/hjelpetekst*/}
                   <ItemAnswer
                     linkId={data.linkId}
                     answerType={data.type}
@@ -65,6 +68,7 @@ export const Questionnaire = () => {
               ))}
             </>
           ) : null}
+          {/*Svartyper*/}
           <ItemAnswer
             linkId={value.linkId}
             answerType={value.type}
