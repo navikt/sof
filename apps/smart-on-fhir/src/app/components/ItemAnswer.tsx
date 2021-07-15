@@ -76,7 +76,7 @@ export const ItemAnswer: FC<IProps> = ({
         <div>
           <FnrInput
             label="Fødselsnummer (11 siffer)"
-            bredde="S"
+            bredde="M"
             onValidate={(val) => setValid(val)}
           />
         </div>
