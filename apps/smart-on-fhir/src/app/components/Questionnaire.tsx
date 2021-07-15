@@ -32,20 +32,7 @@ export const Questionnaire = () => {
     //console.log('R: ', response); // Logs the json file
   };
 
-  // Displaying helptext if exists. Antar at hjelpetekst er i nivå 2 i Questionnaire
-  const helptext = (item: any) => {
-    let text: string = '';
-    if ('item' in item) {
-      item.item?.map((itemChild: any) => {
-        // Sjekker at ønsket tekst er en hjelpetekst ved å sjekke linkId
-        if (itemChild.linkId.includes('help')) {
-          text = itemChild.text;
-        }
-      });
-      return <h1>{text}</h1>;
-    }
-    return <></>;
-  };
+  // Utkast til logikken for å hente hjelpetekst
   const getHelptext = (item: any) => {
     if (item.type === 'display') {
       if (item.linkId.includes('help')) {
@@ -79,14 +66,19 @@ export const Questionnaire = () => {
       {questions.map((item: any) => {
         return (
           <div key={item.linkId}>
-            <p>{item.text}</p>
-            {/*helptext(item)*/}
-            <ItemAnswer
-              linkId={item.linkId}
-              answerType={item.type}
-              answers={answers}
-              setAnswers={setAnswers}
-            />
+            {item.linkId.includes('help') ? (
+              <h1>{item.text}</h1>
+            ) : (
+              <>
+                <p>{item.text}</p>
+                <ItemAnswer
+                  linkId={item.linkId}
+                  answerType={item.type}
+                  answers={answers}
+                  setAnswers={setAnswers}
+                />
+              </>
+            )}
           </div>
         );
       })}
