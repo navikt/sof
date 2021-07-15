@@ -4,8 +4,6 @@ import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import './questionnaireStylesheet.css';
-import { Data } from '@navikt/ds-icons';
-
 /**
  * Questionnaire is a component that renders a querstionnaire.
  * @returns The questionnaire containing all questions with input fields.
