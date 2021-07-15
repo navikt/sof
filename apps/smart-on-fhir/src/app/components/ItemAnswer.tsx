@@ -47,7 +47,11 @@ export const ItemAnswer: FC<IProps> = ({
       ) : answerType === 'string' ? (
         <input type="text" onChange={handleOnChange} />
       ) : answerType === 'text' ? (
-        <TextareaControlled onChange={handleOnChange} />
+        <TextareaControlled
+          defaultValue=""
+          maxLength={0}
+          style={{ maxWidth: '690px' }}
+        ></TextareaControlled>
       ) : (
         <></>
       )}

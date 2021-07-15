@@ -18,16 +18,6 @@ export function App() {
     { label: 'Definer pleiebehov', index: 2, aktiv: false },
   ]);
 
-  //function of "neste"-button. This section will be moved to another file later - annvp
-  /*const nextPage = (index) => {
-    const current = steps.find((element) => element.index === index)?.aktiv;
-    const nyListe = [...steps];
-    if (nyListe.find((element) => element.index === index)?.aktiv) {
-     nyListe.find((element) => element.index === index).aktiv? = !(nyListe.find((element) => element.index === index)?.aktiv)
-    } 
-    
-    */
-
   const nextPage = () => {
     let fromIndex: number | undefined;
     //const fromIndex =  steps.find((element) => element.aktiv === true).index;
