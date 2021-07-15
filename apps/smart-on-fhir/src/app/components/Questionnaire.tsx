@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
@@ -10,6 +10,8 @@ import { Hovedknapp } from 'nav-frontend-knapper';
  */
 export const Questionnaire = () => {
   const questionnaire = questionnairePleiepenger;
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const [answers, setAnswers] = useState<Map<string, string>>(new Map());
   const response = questionnaireResponse;
@@ -30,18 +32,6 @@ export const Questionnaire = () => {
     //console.log('R: ', response); // Logs the json file
   };
 
-  // Checking if item has more items. FUNKER IKKE å skrive ut på nettsiden :((
-  const isItemChild = (item: any) => {
-    console.log('C: ', item);
-    if ('item' in item) {
-      item.item?.map((itemChild: any) => {
-        isItemChild(itemChild);
-      });
-    }
-    console.log('C: end');
-    return false;
-  };
-
   // Displaying helptext if exists. Antar at hjelpetekst er i nivå 2 i Questionnaire
   const helptext = (item: any) => {
     let text: string = '';
@@ -56,28 +46,55 @@ export const Questionnaire = () => {
     }
     return <></>;
   };
+  const getHelptext = (item: any) => {
+    if (item.type === 'display') {
+      if (item.linkId.includes('help')) {
+        return <h1>{item.text}</h1>;
+      }
+    }
+    return <></>;
+  };
+
+  // Get the items from the Questionnaire
+  const getItemChildren = (q: any) => {
+    console.log('C: ', loading);
+    q.item?.map((itemChild: any) => {
+      console.log('C: ', itemChild);
+      if (loading) {
+        setQuestions((prevState) => [...prevState, itemChild]);
+      }
+      if (itemChild && typeof itemChild === 'object') {
+        getItemChildren(itemChild);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getItemChildren(questionnaire);
+    setLoading(false);
+  }, [loading]);
 
   return (
     <>
-      {questionnaire.item.map((item) => (
-        <div key={item.linkId}>
-          <p>{item.text}</p>
-          {/*helptext(item)*/}
-          <ItemAnswer
-            linkId={item.linkId}
-            answerType={item.type}
-            answers={answers}
-            setAnswers={setAnswers}
-          />
-          {isItemChild(item)}
-        </div>
-      ))}
-      {
-        // TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
-        <Hovedknapp button-general onClick={saveAnswers}>
-          Lagre
-        </Hovedknapp>
-      }
+      {questions.map((item: any) => {
+        return (
+          <div key={item.linkId}>
+            <p>{item.text}</p>
+            {/*helptext(item)*/}
+            <ItemAnswer
+              linkId={item.linkId}
+              answerType={item.type}
+              answers={answers}
+              setAnswers={setAnswers}
+            />
+          </div>
+        );
+      })}
+
+      <Hovedknapp button-general onClick={saveAnswers}>
+        Lagre
+      </Hovedknapp>
+
       {console.log('A:', answers)}
     </>
   );

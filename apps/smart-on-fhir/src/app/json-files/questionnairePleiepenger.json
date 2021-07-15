@@ -16,7 +16,21 @@
                 {
                     "linkId": "1-help",
                     "text": "Hvis barnet er under utredning og det ikke er fastsatt noen diagnose trengs det ikke",
-                    "type": "display"
+                    "type": "display",
+                    "item": [
+                        {
+                            "linkId": "1-help-testtest",
+                            "text": "Heihei",
+                            "type": "display",
+                            "item": [
+                                {
+                                    "linkId": "1-help-test",
+                                    "text": "Hadepåbadet",
+                                    "type": "display"
+                                }
+                            ]
+                        }
+                    ]
                 }
             ],
             "required": "false"
