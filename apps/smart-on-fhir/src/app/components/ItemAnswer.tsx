@@ -1,8 +1,16 @@
 import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { FC } from 'react';
 import { TextareaControlled } from 'nav-frontend-skjema';
+import { Input } from 'nav-frontend-skjema';
+import { Knapp } from 'nav-frontend-knapper';
+import { Checkbox } from 'nav-frontend-skjema';
+import { Radio } from 'nav-frontend-skjema';
+import { FhirContext } from '../context/fhirContext';
+import './questionnaireStylesheet.css';
 
 interface IProps {
+  question: string;
+  answerOptions: Array<string>;
   linkId: string;
   answerType: string | undefined;
   answers: Map<string, string>;
@@ -11,12 +19,15 @@ interface IProps {
 
 /**
  * Renders an input field and handles changes in the field.
+ * @param question: string, renders the question text
  * @param linkId: string, the linkId to the question
  * @param answers: a map containing the current answers in the input fields
  * @param setAnswers: the function to update answers
  * @returns an input field
  */
 export const ItemAnswer: FC<IProps> = ({
+  question,
+  answerOptions,
   linkId,
   answerType,
   answers,
@@ -34,20 +45,42 @@ export const ItemAnswer: FC<IProps> = ({
     setAnswers(copiedAnswers);
   };
 
+  const testArray: Array<string> = ['Ja', 'Nei'];
+
   return (
     <>
       {answerType === 'boolean' ? (
-        <input type="checkbox" onChange={handleOnChecked} />
+        <div style={{ margin: '10px' }}>
+          <Checkbox label={question}></Checkbox>
+        </div>
       ) : answerType === 'choice' ? (
-        <input type="radio" onChange={handleOnChecked} />
+        <div>
+          <Radio
+            className="radio-button"
+            label={testArray[0]}
+            name="alternativ1"
+          />
+          <Radio
+            className="radio-button"
+            label={testArray[1]}
+            name="alternativ2"
+          />
+        </div>
       ) : answerType === 'date' ? (
         <input type="date" onChange={handleOnChange} />
       ) : answerType === 'integer' ? (
         <input type="number" onChange={handleOnChange} />
       ) : answerType === 'string' ? (
-        <input type="text" onChange={handleOnChange} />
+        <div style={{ display: 'flex' }}>
+          <Input style={{ maxWidth: '690px' }} />
+          <Knapp mini style={{ marginLeft: '10px' }}>
+            Legg til
+          </Knapp>
+        </div>
       ) : answerType === 'text' ? (
         <TextareaControlled
+          label=""
+          description={question}
           defaultValue=""
           maxLength={0}
           style={{ maxWidth: '690px' }}
