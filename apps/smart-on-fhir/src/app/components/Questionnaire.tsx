@@ -18,7 +18,6 @@ export const Questionnaire = () => {
 
   /**
    * Function to save answers in the json file.
-   * TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
    */
   const saveAnswers = () => {
     answers.forEach((value, key) => {
@@ -44,7 +43,6 @@ export const Questionnaire = () => {
 
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
-    console.log('C: ', loading);
     q.item?.map((itemChild: any) => {
       console.log('C: ', itemChild);
       if (loading) {
@@ -56,6 +54,7 @@ export const Questionnaire = () => {
     });
   };
 
+  // Laster spørsmålene fra Questionnaire til questions-listen
   useEffect(() => {
     getItemChildren(questionnaire);
     setLoading(false);
@@ -66,11 +65,14 @@ export const Questionnaire = () => {
       {questions.map((item: any) => {
         return (
           <div key={item.linkId}>
+            {/* Foreløpig håndtering av hjelpetekst*/}
             {item.linkId.includes('help') ? (
               <h1>{item.text}</h1>
             ) : (
               <>
-                <p>{item.text}</p>
+                <p>
+                  {item.linkId} {item.text}
+                </p>
                 <ItemAnswer
                   linkId={item.linkId}
                   answerType={item.type}
