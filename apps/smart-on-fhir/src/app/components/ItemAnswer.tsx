@@ -7,16 +7,20 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { Radio } from 'nav-frontend-skjema';
 import { FhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
+import { FnrInput } from 'nav-frontend-skjema';
 
 interface IProps {
   question: string;
-  answerOptions: Array<string>;
+  //answerOptions: Array<string>;
   linkId: string;
   answerType: string | undefined;
   answers: Map<string, string>;
   setAnswers: React.Dispatch<React.SetStateAction<Map<string, string>>>;
 }
 
+const validator = require('@navikt/fnrvalidator');
+const fnr = validator.fnr('12345678910');
+const dnr = validator.dnr('52345678910');
 /**
  * Renders an input field and handles changes in the field.
  * @param question: string, renders the question text
@@ -27,7 +31,7 @@ interface IProps {
  */
 export const ItemAnswer: FC<IProps> = ({
   question,
-  answerOptions,
+  //answerOptions,
   linkId,
   answerType,
   answers,
@@ -69,7 +73,13 @@ export const ItemAnswer: FC<IProps> = ({
       ) : answerType === 'date' ? (
         <input type="date" onChange={handleOnChange} />
       ) : answerType === 'integer' ? (
-        <input type="number" onChange={handleOnChange} />
+        <div>
+          <FnrInput
+            label="Fødselsnummer (11 siffer)"
+            bredde="S"
+            onValidate={(val) => setValid(val)}
+          />
+        </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
           <Input style={{ maxWidth: '690px' }} />
@@ -91,3 +101,6 @@ export const ItemAnswer: FC<IProps> = ({
     </>
   );
 };
+function setValid(val: boolean): void {
+  throw new Error('Function not implemented.');
+}
