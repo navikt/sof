@@ -3,6 +3,9 @@ import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { saveAnswers } from '../utils/answersToJson';
+import { useFhirContext } from '../context/fhirContext';
+import './questionnaireStylesheet.css';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -12,24 +15,11 @@ export const Questionnaire = () => {
   const questionnaire = questionnairePleiepenger;
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
-  const [answers, setAnswers] = useState<Map<string, string>>(new Map());
+  const { patient, user } = useFhirContext();
+  const [answers, setAnswers] = useState<Map<string, string | boolean>>(
+    new Map()
+  );
   const response = questionnaireResponse;
-
-  /**
-   * Function to save answers in the json file.
-   */
-  const saveAnswers = () => {
-    answers.forEach((value, key) => {
-      const item = response.item.find((e) => e.linkId === key)
-        ? response.item.find((e) => e.linkId === key)
-        : null;
-      if (item) {
-        item.answer[0].valueString = value;
-      }
-    });
-    //console.log('R: ', response); // Logs the json file
-  };
 
   // Utkast til logikken for å hente hjelpetekst
   const getHelptext = (item: any) => {
@@ -63,7 +53,7 @@ export const Questionnaire = () => {
   return (
     <>
       {questions.map((item: any) => {
-        return (
+        return item.linkId.includes('automatic') ? null : (
           <div key={item.linkId}>
             {item.linkId.includes('help') ? (
               <p>
@@ -83,6 +73,7 @@ export const Questionnaire = () => {
             )}
             {/* Svartyper */}
             <ItemAnswer
+              question={item.text}
               linkId={item.linkId}
               answerType={item.type}
               answers={answers}
@@ -91,10 +82,12 @@ export const Questionnaire = () => {
           </div>
         );
       })}
-
-      <Hovedknapp button-general onClick={saveAnswers}>
-        Lagre
-      </Hovedknapp>
+      <Hovedknapp
+          button-general
+          onClick={() => saveAnswers(answers, response, patient, user)}
+        >
+          Lagre
+        </Hovedknapp>
 
       {console.log('A:', answers)}
     </>

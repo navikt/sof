@@ -8,7 +8,7 @@ import { fhirclient } from 'fhirclient/lib/types';
  * @param user The user whos name we would like to know.
  * @returns A string with the users full name.
  */
-export const getUsersName = (
+export const getUserName = (
   user:
     | fhirclient.FHIR.Patient
     | fhirclient.FHIR.Practitioner
