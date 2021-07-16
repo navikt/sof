@@ -74,7 +74,7 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'date' ? (
         <div>
-          <DayPicker />
+          <DayPickerInput />
         </div>
       ) : answerType === 'integer' ? (
         <div>
