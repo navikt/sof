@@ -65,22 +65,29 @@ export const Questionnaire = () => {
       {questions.map((item: any) => {
         return (
           <div key={item.linkId}>
-            {/* Foreløpig håndtering av hjelpetekst*/}
             {item.linkId.includes('help') ? (
-              <h1>{item.text}</h1>
+              <p>
+                {/* Foreløpig håndtering av hjelpetekst*/}
+                {item.linkId} {item.text}
+              </p>
+            ) : item.linkId.includes('.') ? (
+              <p>
+                {/*Foreløpig håndtering av underspørsmål*/}
+                {item.linkId} {item.text}
+              </p>
             ) : (
-              <>
-                <p>
-                  {item.linkId} {item.text}
-                </p>
-                <ItemAnswer
-                  linkId={item.linkId}
-                  answerType={item.type}
-                  answers={answers}
-                  setAnswers={setAnswers}
-                />
-              </>
+              <h1 className="typo-undertittel">
+                {/* Foreløpig håndtering av hovedspørsmål*/}
+                {item.linkId} {item.text}
+              </h1>
             )}
+            {/* Svartyper */}
+            <ItemAnswer
+              linkId={item.linkId}
+              answerType={item.type}
+              answers={answers}
+              setAnswers={setAnswers}
+            />
           </div>
         );
       })}
