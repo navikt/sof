@@ -5,10 +5,11 @@ import { Input } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Radio } from 'nav-frontend-skjema';
-import { FhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
 import { FnrInput } from 'nav-frontend-skjema';
-
+import DayPicker from 'react-day-picker';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
 
 interface IProps {
   question: string;
@@ -72,7 +73,9 @@ export const ItemAnswer: FC<IProps> = ({
           />
         </div>
       ) : answerType === 'date' ? (
-        <input type="date" onChange={handleOnChange} />
+        <div>
+          <DayPicker />
+        </div>
       ) : answerType === 'integer' ? (
         <div>
           <FnrInput
