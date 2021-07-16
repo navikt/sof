@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import { element } from 'prop-types';
 import { TextareaControlled } from 'nav-frontend-skjema';
 
-
 export function App() {
   const { patient } = useFhirContext();
   const [steps, setSteps] = useState([
@@ -23,19 +22,19 @@ export function App() {
     let fromIndex: number | undefined;
     //const fromIndex =  steps.find((element) => element.aktiv === true).index;
     if (steps.find((element) => element.aktiv === true)) {
-      console.log('funnet en aktiv', element);
+      //console.log('funnet en aktiv', element);
       fromIndex = steps.find((element) => element.aktiv === true)?.index;
-      console.log('Her er indeksen til den aktive: ', fromIndex);
+      //console.log('Her er indeksen til den aktive: ', fromIndex);
       if (fromIndex != undefined) {
         toggleReminder(fromIndex);
       }
     } else {
-      console.log('Kunne ikke finne aktiv');
+      //console.log('Kunne ikke finne aktiv');
     }
   };
 
   const toggleReminder = (index: number) => {
-    console.log('AAAAAAAAAAAAAAAAA', steps, 'Innsendt indeks: ', index);
+    //console.log('AAAAAAAAAAAAAAAAA', steps, 'Innsendt indeks: ', index);
     setSteps(
       steps.map((step) =>
         step.index === index || step.index === index + 1
@@ -45,13 +44,13 @@ export function App() {
     );
   };
   useEffect(() => {
-    console.log(
+    /*console.log(
       'Step 1 sin aktiv: ',
       steps[0].aktiv,
       'Step 2 sin aktiv: ',
       steps[1].aktiv
-    );
-    console.log('BBBBBBBBBBBBBBBBBBBB', steps);
+    );*/
+    //console.log('BBBBBBBBBBBBBBBBBBBB', steps);
   });
 
   //setSteps(nyListe => );
