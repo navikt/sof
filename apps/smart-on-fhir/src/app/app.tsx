@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import { element } from 'prop-types';
 import { TextareaControlled } from 'nav-frontend-skjema';
 
+
 export function App() {
   const { patient } = useFhirContext();
   const [steps, setSteps] = useState([

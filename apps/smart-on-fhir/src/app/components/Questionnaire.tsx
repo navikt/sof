@@ -49,6 +49,7 @@ export const Questionnaire = () => {
         <div key={value.linkId}>
           {' '}
           {/*Hovedspørsmål*/}
+          <p className="typo-undertittel">{value.text}</p>
           <p className="typo-element">{value.text}</p>
           {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
           {value.item ? (
@@ -56,9 +57,12 @@ export const Questionnaire = () => {
               {console.log('Children: ', value.item)}
               {value.item.map((data: any) => (
                 <>
+                  <p className="typo-normal">{}</p>{' '}
+                  {/*Beskrivende/hjelpetekst/undergrupperte spm*/}
                   <p className="typo-normal">{data.text}</p>{' '}
                   {/*Beskrivende/hjelpetekst*/}
                   <ItemAnswer
+                    question={data.text}
                     linkId={data.linkId}
                     answerType={data.type}
                     answers={answers}
@@ -70,6 +74,7 @@ export const Questionnaire = () => {
           ) : null}
           {/*Svartyper*/}
           <ItemAnswer
+            question={value.text}
             linkId={value.linkId}
             answerType={value.type}
             answers={answers}
