@@ -34,7 +34,7 @@ export const Questionnaire = () => {
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
     q.item?.map((itemChild: any) => {
-      console.log('C: ', itemChild);
+      //console.log('C: ', itemChild);
       if (loading) {
         setQuestions((prevState) => [...prevState, itemChild]);
       }
@@ -83,11 +83,11 @@ export const Questionnaire = () => {
         );
       })}
       <Hovedknapp
-          button-general
-          onClick={() => saveAnswers(answers, response, patient, user)}
-        >
-          Lagre
-        </Hovedknapp>
+        button-general
+        onClick={() => saveAnswers(answers, response, patient, user)}
+      >
+        Lagre
+      </Hovedknapp>
 
       {console.log('A:', answers)}
     </>

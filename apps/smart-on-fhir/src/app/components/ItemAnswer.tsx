@@ -1,18 +1,18 @@
-import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
-import React, { FC } from 'react';
-import { TextareaControlled } from 'nav-frontend-skjema';
-import { Input } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
-import { Checkbox } from 'nav-frontend-skjema';
-import { Radio } from 'nav-frontend-skjema';
-import { FhirContext } from '../context/fhirContext';
+import React, { FC, useState } from 'react';
 import './questionnaireStylesheet.css';
-import { FnrInput } from 'nav-frontend-skjema';
-
+import {
+  Checkbox,
+  FnrInput,
+  Input,
+  Radio,
+  Textarea,
+} from 'nav-frontend-skjema';
+import { Knapp } from 'nav-frontend-knapper';
+import validator from '@navikt/fnrvalidator';
+import { useEffect } from 'react';
 
 interface IProps {
   question: string;
-  //answerOptions: Array<string>;
   linkId: string;
   answerType: string | undefined;
   answers: Map<string, string | boolean>;
@@ -21,7 +21,6 @@ interface IProps {
   >;
 }
 
-const validator = require('@navikt/fnrvalidator');
 const fnr = validator.fnr('12345678910');
 const dnr = validator.dnr('52345678910');
 /**
@@ -34,16 +33,19 @@ const dnr = validator.dnr('52345678910');
  */
 export const ItemAnswer: FC<IProps> = ({
   question,
-  //answerOptions,
   linkId,
   answerType,
   answers,
   setAnswers,
 }) => {
+  const [inputValue, setInputValue] = useState('');
+  const [answerOptions, setAnswerOptions] = useState([]);
+
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(linkId, e.target.value);
     setAnswers(copiedAnswers);
+    setInputValue(e.target.value);
   };
 
   const handleOnChecked = (e: any) => {
@@ -51,7 +53,6 @@ export const ItemAnswer: FC<IProps> = ({
     copiedAnswers.set(linkId, e.target.checked);
     setAnswers(copiedAnswers);
   };
-
 
   // TODO: make a method that updates answers when a radio button is clicked
 
@@ -88,19 +89,19 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
-          <Input style={{ maxWidth: '690px' }} />
+          <Input style={{ maxWidth: '690px' }} onChange={handleOnChange} />
           <Knapp mini style={{ marginLeft: '10px' }}>
             Legg til
           </Knapp>
         </div>
       ) : answerType === 'text' ? (
-        <TextareaControlled
+        <Textarea
           label=""
           description={question}
-          defaultValue=""
-          maxLength={0}
+          value={inputValue}
           style={{ maxWidth: '690px' }}
-        ></TextareaControlled>
+          onChange={handleOnChange}
+        ></Textarea>
       ) : (
         <></>
       )}
