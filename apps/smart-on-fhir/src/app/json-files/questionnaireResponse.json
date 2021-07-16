@@ -3,9 +3,11 @@
   "identifier": "",
   "status": "inProgress",
   "questionnaire": "./questionnairePleiepenger.json",
+  "authored": "0000-00-00",
   "item": [
     {
       "linkId": "1",
+      "text": "Barnet har følgende diagnoser",
       "answer": [
         {
           "valueString": ""
@@ -13,7 +15,17 @@
       ]
     },
     {
-      "linkId": "2",
+      "linkId": "2.1",
+      "text": "Perioder for relevante innleggelser: start",
+      "answer": [
+        {
+          "valueDate": ""
+        }
+      ]
+    },
+    {
+      "linkId": "2.2",
+      "text": "Perioder for relevante innleggelser: slutt",
       "answer": [
         {
           "valueDate": ""
@@ -22,6 +34,7 @@
     },
     {
       "linkId": "3",
+      "text": "Beskriv barnets nåværende og forventede tlstand/funksjonsnivå",
       "answer": [
         {
           "valueString": ""
@@ -30,6 +43,7 @@
     },
     {
       "linkId": "4",
+      "text": "Vurder barnets tilsyn- og pleiebehov",
       "answer": [
         {
           "valueString": ""
@@ -37,15 +51,26 @@
       ]
     },
     {
-      "linkId": "5",
+      "linkId": "5.1",
+      "text": "Varighet på barnets tilsyns- og pleiebehov: Start",
       "answer": [
         {
-          "valueDate": ""
+          "valueDate": "0000-01-01"
+        }
+      ]
+    },
+    {
+      "linkId": "5.2",
+      "text": "Varighet på barnets tilsyns- og pleiebehov: Slutt",
+      "answer": [
+        {
+          "valueDate": "0000-01-01"
         }
       ]
     },
     {
       "linkId": "6.1",
+      "text": "Barnet har større tilsyns- og pleiebehov enn barn på samme alder",
       "answer": [
         {
           "valueBoolean": false
@@ -54,6 +79,7 @@
     },
     {
       "linkId": "6.2",
+      "text": "Barnets behov skyldes sykdom eller skade",
       "answer": [
         {
           "valueBoolean": false
@@ -62,14 +88,16 @@
     },
     {
       "linkId": "6.3",
+      "text": "Barnet er under oppfølging av BUP",
       "answer": [
         {
-          "valueBooelan": false
+          "valueBoolean": false
         }
       ]
     },
     {
       "linkId": "7",
+      "text": "Når har barnet behov for tilsyn?",
       "answer": [
         {
           "valueString": ""
@@ -78,6 +106,7 @@
     },
     {
       "linkId": "7.1",
+      "text": "Beskriv hvilke situasjoner / deler av dagen det gjelder for",
       "answer": [
         {
           "valueString": ""
@@ -86,6 +115,7 @@
     },
     {
       "linkId": "8",
+      "text": "Skal det være to omsorgspersoner?",
       "answer": [
         {
           "valueString": ""
@@ -94,6 +124,7 @@
     },
     {
       "linkId": "8.1",
+      "text": "Fødselsnummer til første omsorgsperson",
       "answer": [
         {
           "valueInteger": 0
@@ -102,6 +133,7 @@
     },
     {
       "linkId": "8.2",
+      "text": "Fødselsnummer til andre omsorgsperson",
       "answer": [
         {
           "valueInteger": 0
@@ -110,6 +142,7 @@
     },
     {
       "linkId": "8.3",
+      "text": "Fødselsnummer til omsorgspersonen",
       "answer": [
         {
           "valueInteger": 0
@@ -118,6 +151,7 @@
     },
     {
       "linkId": "9",
+      "text": "Skal begge omsorgspersonene hjelpe barnet samtidig?",
       "answer": [
         {
           "valueString": ""
@@ -126,6 +160,70 @@
     },
     {
       "linkId": "10",
+      "text": "Beskriv hvorfor det er nødvendig med to omsorgspersoner samtidig",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "11-automatic",
+      "text": "Pasientens fødselsnummer",
+      "answer": [
+        {
+          "valueInteger": 0
+        }
+      ]
+    },
+    {
+      "linkId": "12-automatic",
+      "text": "Pasientens navn",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "13-automatic",
+      "text": "Legens HPR-nummer",
+      "answer": [
+        {
+          "valueInteger": 0
+        }
+      ]
+    },
+    {
+      "linkId": "14-automatic",
+      "text": "Legens navn",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "15-automatic",
+      "text": "Legens telefonnummer",
+      "answer": [
+        {
+          "valueInteger": 0
+        }
+      ]
+    },
+    {
+      "linkId": "16-automatic",
+      "text": "Sykehusets navn",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "17-automatic",
+      "text": "Sykehusets adresse",
       "answer": [
         {
           "valueString": ""

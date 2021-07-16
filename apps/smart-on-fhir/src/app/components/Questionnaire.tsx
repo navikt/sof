@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { saveAnswers } from '../utils/answersToJson';
+import { useFhirContext } from '../context/fhirContext';
+import './questionnaireStylesheet.css';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -10,75 +13,82 @@ import { Hovedknapp } from 'nav-frontend-knapper';
  */
 export const Questionnaire = () => {
   const questionnaire = questionnairePleiepenger;
-
-  // TODO: flytte variablene til et annet komponent (QuestionnaireResponse)?
-  const [answers, setAnswers] = useState<Map<string, string>>(new Map());
+  const [questions, setQuestions] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { patient, user } = useFhirContext();
+  const [answers, setAnswers] = useState<Map<string, string | boolean>>(
+    new Map()
+  );
   const response = questionnaireResponse;
 
-  /**
-   * Function to save answers in the json file.
-   * TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
-   */
-  const saveAnswers = () => {
-    answers.forEach((value, key) => {
-      const item = response.item.find((e) => e.linkId === key)
-        ? response.item.find((e) => e.linkId === key)
-        : null;
-      if (item) {
-        item.answer[0].valueString = value;
+  // Utkast til logikken for å hente hjelpetekst
+  const getHelptext = (item: any) => {
+    if (item.type === 'display') {
+      if (item.linkId.includes('help')) {
+        return <h1>{item.text}</h1>;
+      }
+    }
+    return <></>;
+  };
+
+  // Get the items from the Questionnaire
+  const getItemChildren = (q: any) => {
+    q.item?.map((itemChild: any) => {
+      console.log('C: ', itemChild);
+      if (loading) {
+        setQuestions((prevState) => [...prevState, itemChild]);
+      }
+      if (itemChild && typeof itemChild === 'object') {
+        getItemChildren(itemChild);
       }
     });
-    //console.log('R: ', response); // Logs the json file
   };
 
-  // TODO: Rekursiv metode som itererer seg gjennom item-barna. FUNKER IKKE! :((
-  const checkItemChildren = (result: any) => {
-    if (!('item' in result)) {
-      console.log('if', result.text, result.type);
-      return;
-    }
-    console.log('CIC: ', result.item);
-    return checkItemChildren(result.item);
-  };
-
-  checkItemChildren(questionnaire);
+  // Laster spørsmålene fra Questionnaire til questions-listen
+  useEffect(() => {
+    getItemChildren(questionnaire);
+    setLoading(false);
+  }, [loading]);
 
   return (
     <>
-      {questionnaire.item.map((value) => (
-        <div key={value.linkId}>
-          <p>{value.text}</p>
-          {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
-          {value.item ? (
-            <>
-              {console.log('Children: ', value.item)}
-              {value.item.map((data: any) => (
-                <>
-                  <p>{data.text}</p>
-                  <ItemAnswer
-                    linkId={data.linkId}
-                    answerType={data.type}
-                    answers={answers}
-                    setAnswers={setAnswers}
-                  />
-                </>
-              ))}
-            </>
-          ) : null}
-          <ItemAnswer
-            linkId={value.linkId}
-            answerType={value.type}
-            answers={answers}
-            setAnswers={setAnswers}
-          />
-        </div>
-      ))}
-      {
-        // TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
-        <Hovedknapp button-general onClick={saveAnswers}>
+      {questions.map((item: any) => {
+        return item.linkId.includes('automatic') ? null : (
+          <div key={item.linkId}>
+            {item.linkId.includes('help') ? (
+              <p>
+                {/* Foreløpig håndtering av hjelpetekst*/}
+                {item.linkId} {item.text}
+              </p>
+            ) : item.linkId.includes('.') ? (
+              <p>
+                {/*Foreløpig håndtering av underspørsmål*/}
+                {item.linkId} {item.text}
+              </p>
+            ) : (
+              <h1 className="typo-undertittel">
+                {/* Foreløpig håndtering av hovedspørsmål*/}
+                {item.linkId} {item.text}
+              </h1>
+            )}
+            {/* Svartyper */}
+            <ItemAnswer
+              question={item.text}
+              linkId={item.linkId}
+              answerType={item.type}
+              answers={answers}
+              setAnswers={setAnswers}
+            />
+          </div>
+        );
+      })}
+      <Hovedknapp
+          button-general
+          onClick={() => saveAnswers(answers, response, patient, user)}
+        >
           Lagre
         </Hovedknapp>
-      }
+
       {console.log('A:', answers)}
     </>
   );

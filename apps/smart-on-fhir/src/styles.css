@@ -42,6 +42,7 @@ body {
 #child-name {
   color: white;
   font-size: 1.5rem;
+  margin: 0;
 }
 
 #lukk {
@@ -70,8 +71,12 @@ body {
   border-style: groove none none none;
 }
 
+.ingress {
+  margin: 25px 0 40px;
+}
+
 /*FOOTER SECTION WITH BUTTONS*/
 
 .button-general {
-  margin: 5px;
+  margin: 10px;
 }
