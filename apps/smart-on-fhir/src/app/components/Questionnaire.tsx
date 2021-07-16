@@ -3,6 +3,8 @@ import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
+import { saveAnswers } from '../utils/answersToJson';
+import { useFhirContext } from '../context/fhirContext';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -11,25 +13,13 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 export const Questionnaire = () => {
   const questionnaire = questionnairePleiepenger;
 
-  // TODO: flytte variablene til et annet komponent (QuestionnaireResponse)?
-  const [answers, setAnswers] = useState<Map<string, string>>(new Map());
-  const response = questionnaireResponse;
+  const { patient, user } = useFhirContext();
 
-  /**
-   * Function to save answers in the json file.
-   * TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
-   */
-  const saveAnswers = () => {
-    answers.forEach((value, key) => {
-      const item = response.item.find((e) => e.linkId === key)
-        ? response.item.find((e) => e.linkId === key)
-        : null;
-      if (item) {
-        item.answer[0].valueString = value;
-      }
-    });
-    //console.log('R: ', response); // Logs the json file
-  };
+  // TODO: flytte variablene til et annet komponent (QuestionnaireResponse)?
+  const [answers, setAnswers] = useState<Map<string, string | boolean>>(
+    new Map()
+  );
+  const response = questionnaireResponse;
 
   // TODO: Rekursiv metode som itererer seg gjennom item-barna. FUNKER IKKE! :((
   const checkItemChildren = (result: any) => {
@@ -41,45 +31,52 @@ export const Questionnaire = () => {
     return checkItemChildren(result.item);
   };
 
-  checkItemChildren(questionnaire);
+  //console.log('answers: ', answers);
+
+  //checkItemChildren(questionnaire);
 
   return (
     <>
-      {questionnaire.item.map((value) => (
-        <div key={value.linkId}>
-          <p>{value.text}</p>
-          {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
-          {value.item ? (
-            <>
-              {console.log('Children: ', value.item)}
-              {value.item.map((data: any) => (
-                <>
-                  <p>{data.text}</p>
-                  <ItemAnswer
-                    linkId={data.linkId}
-                    answerType={data.type}
-                    answers={answers}
-                    setAnswers={setAnswers}
-                  />
-                </>
-              ))}
-            </>
-          ) : null}
-          <ItemAnswer
-            linkId={value.linkId}
-            answerType={value.type}
-            answers={answers}
-            setAnswers={setAnswers}
-          />
-        </div>
-      ))}
+      {questionnaire.item.map((value) =>
+        value.linkId.includes('automatic') ? null : (
+          <div key={value.linkId}>
+            <p>{value.text}</p>
+            {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
+            {value.item ? (
+              <>
+                {/*console.log('Children: ', value.item)*/}
+                {value.item.map((data: any) => (
+                  <>
+                    <p>{data.text}</p>
+                    <ItemAnswer
+                      linkId={data.linkId}
+                      answerType={data.type}
+                      answers={answers}
+                      setAnswers={setAnswers}
+                    />
+                  </>
+                ))}
+              </>
+            ) : null}
+            <ItemAnswer
+              linkId={value.linkId}
+              answerType={value.type}
+              answers={answers}
+              setAnswers={setAnswers}
+            />
+          </div>
+        )
+      )}
       {
         // TODO: Flytte metoden til et annet komponent (QuestionnaireResponse)?
-        <Hovedknapp button-general onClick={saveAnswers}>
+        <Hovedknapp
+          button-general
+          onClick={() => saveAnswers(answers, response, patient, user)}
+        >
           Lagre
         </Hovedknapp>
       }
-      {console.log('A:', answers)}
+      {/*console.log('A:', answers)*/}
     </>
   );
 };

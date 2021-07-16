@@ -4,8 +4,10 @@ import React, { FC } from 'react';
 interface IProps {
   linkId: string;
   answerType: string | undefined;
-  answers: Map<string, string>;
-  setAnswers: React.Dispatch<React.SetStateAction<Map<string, string>>>;
+  answers: Map<string, string | boolean>;
+  setAnswers: React.Dispatch<
+    React.SetStateAction<Map<string, string | boolean>>
+  >;
 }
 
 /**
@@ -32,6 +34,8 @@ export const ItemAnswer: FC<IProps> = ({
     copiedAnswers.set(linkId, e.target.checked);
     setAnswers(copiedAnswers);
   };
+
+  // TODO: make a method that updates answers when a radio button is clicked
 
   return (
     <>
