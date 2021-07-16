@@ -5,6 +5,7 @@ import questionnairePleiepenger from '../json-files/questionnairePleiepenger.jso
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
+import './questionnaireStylesheet.css';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -40,31 +41,40 @@ export const Questionnaire = () => {
       {questionnaire.item.map((value) =>
         value.linkId.includes('automatic') ? null : (
           <div key={value.linkId}>
-            <p>{value.text}</p>
-            {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
-            {value.item ? (
-              <>
-                {/*console.log('Children: ', value.item)*/}
-                {value.item.map((data: any) => (
-                  <>
-                    <p>{data.text}</p>
-                    <ItemAnswer
-                      linkId={data.linkId}
-                      answerType={data.type}
-                      answers={answers}
-                      setAnswers={setAnswers}
-                    />
-                  </>
-                ))}
-              </>
-            ) : null}
-            <ItemAnswer
-              linkId={value.linkId}
-              answerType={value.type}
-              answers={answers}
-              setAnswers={setAnswers}
-            />
-          </div>
+          {' '}
+          {/*Hovedspørsmål*/}
+          <p className="typo-undertittel">{value.text}</p>
+          <p className="typo-element">{value.text}</p>
+          {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
+          {value.item ? (
+            <>
+              {console.log('Children: ', value.item)}
+              {value.item.map((data: any) => (
+                <>
+                  <p className="typo-normal">{}</p>{' '}
+                  {/*Beskrivende/hjelpetekst/undergrupperte spm*/}
+                  <p className="typo-normal">{data.text}</p>{' '}
+                  {/*Beskrivende/hjelpetekst*/}
+                  <ItemAnswer
+                    question={data.text}
+                    linkId={data.linkId}
+                    answerType={data.type}
+                    answers={answers}
+                    setAnswers={setAnswers}
+                  />
+                </>
+              ))}
+            </>
+          ) : null}
+          {/*Svartyper*/}
+          <ItemAnswer
+            question={value.text}
+            linkId={value.linkId}
+            answerType={value.type}
+            answers={answers}
+            setAnswers={setAnswers}
+          />
+        </div>
         )
       )}
       {

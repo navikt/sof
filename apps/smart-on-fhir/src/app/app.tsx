@@ -3,13 +3,60 @@ import Stegindikator from 'nav-frontend-stegindikator';
 import { Knapp } from 'nav-frontend-knapper';
 import { Child } from '@navikt/ds-icons';
 import Hvit from './logos/Hvit.svg';
-import { Sidetittel } from 'nav-frontend-typografi';
+import { Ingress, Sidetittel } from 'nav-frontend-typografi';
 import { Element } from 'nav-frontend-typografi';
 import { getPatientName } from './utils/getPatientName';
 import { useFhirContext } from './context/fhirContext';
+import { useEffect, useState } from 'react';
+import { element } from 'prop-types';
+import { TextareaControlled } from 'nav-frontend-skjema';
+
 
 export function App() {
   const { patient } = useFhirContext();
+  const [steps, setSteps] = useState([
+    { label: 'Tilstandsvurdering', index: 1, aktiv: true },
+    { label: 'Definer pleiebehov', index: 2, aktiv: false },
+  ]);
+
+  const nextPage = () => {
+    let fromIndex: number | undefined;
+    //const fromIndex =  steps.find((element) => element.aktiv === true).index;
+    if (steps.find((element) => element.aktiv === true)) {
+      console.log('funnet en aktiv', element);
+      fromIndex = steps.find((element) => element.aktiv === true)?.index;
+      console.log('Her er indeksen til den aktive: ', fromIndex);
+      if (fromIndex != undefined) {
+        toggleReminder(fromIndex);
+      }
+    } else {
+      console.log('Kunne ikke finne aktiv');
+    }
+  };
+
+  const toggleReminder = (index: number) => {
+    console.log('AAAAAAAAAAAAAAAAA', steps, 'Innsendt indeks: ', index);
+    setSteps(
+      steps.map((step) =>
+        step.index === index || step.index === index + 1
+          ? { ...step, aktiv: !step.aktiv }
+          : step
+      )
+    );
+  };
+  useEffect(() => {
+    console.log(
+      'Step 1 sin aktiv: ',
+      steps[0].aktiv,
+      'Step 2 sin aktiv: ',
+      steps[1].aktiv
+    );
+    console.log('BBBBBBBBBBBBBBBBBBBB', steps);
+  });
+
+  //setSteps(nyListe => );
+
+  //steps.forEach(step => step.index === index ? {...steps, aktiv: !step.aktiv })
 
   return (
     <>
@@ -35,28 +82,27 @@ export function App() {
           Legeerklæring: pleiepenger for sykt barn
         </Sidetittel>
         <div className="stegindikator">
-          <Stegindikator
-            steg={[
-              { label: 'Tilstandsvurdering', index: 1, aktiv: true },
-              { label: 'Definer pleiebehov', index: 2, aktiv: false },
-            ]}
-            visLabel
-          />
+          <Stegindikator steg={steps} visLabel />
         </div>
       </div>
       <div className="main-body">
-        <p>
-          Legeerklæringen skal fylles ut av behandlende lege. Det er kun
-          sykehusleger og leger i spesialisthelsetjenesten som kan skrive
-          legeerklæring for pleiepenger for sykt barn.
-          <br />
-          <br /> NAV trenger tidsnære opplysninger for å behandle søknad om
-          pleiepenger. Det innebærer at NAV trenger oppdaterte medisinske
-          opplysninger for å vurdere om vilkårene for rett til pleiepenger er
-          oppfylt.{' '}
-        </p>
+        <div className="ingress">
+          <Ingress>
+            Legeerklæringen skal fylles ut av behandlende lege. Det er kun
+            sykehusleger og leger i spesialisthelsetjenesten som kan skrive
+            legeerklæring for pleiepenger for sykt barn.
+            <br />
+            <br /> NAV trenger tidsnære opplysninger for å behandle søknad om
+            pleiepenger. Det innebærer at NAV trenger oppdaterte medisinske
+            opplysninger for å vurdere om vilkårene for rett til pleiepenger er
+            oppfylt.{' '}
+          </Ingress>
+        </div>
         <Questionnaire />
-        <Knapp className="button-general"> Neste </Knapp>
+        <Knapp onClick={nextPage} className="button-general">
+          {' '}
+          Neste{' '}
+        </Knapp>
       </div>
     </>
   );

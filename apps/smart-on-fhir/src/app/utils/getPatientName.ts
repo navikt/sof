@@ -10,5 +10,5 @@ export const getPatientName = (patient?: IPatient) => {
     fullName += nameObject?.family;
     return fullName;
   }
-  return '';
+  return 'Ola Nordmann';  //Returns a standard name when testing without SMART launcher
 };
