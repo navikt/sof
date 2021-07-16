@@ -9,6 +9,7 @@ import { FhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
 import { FnrInput } from 'nav-frontend-skjema';
 
+
 interface IProps {
   question: string;
   //answerOptions: Array<string>;
@@ -101,6 +102,7 @@ export const ItemAnswer: FC<IProps> = ({
     </>
   );
 };
+
 function setValid(val: boolean): void {
   throw new Error('Function not implemented.');
 }

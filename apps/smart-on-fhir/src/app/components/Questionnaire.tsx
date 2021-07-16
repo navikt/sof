@@ -50,6 +50,7 @@ export const Questionnaire = () => {
           {' '}
           {/*Hovedspørsmål*/}
           <p className="typo-undertittel">{value.text}</p>
+          <p className="typo-element">{value.text}</p>
           {/* TODO: Trekke ut <ItemAnswer/> til flere komponenter basert på ønsket inputtype */}
           {value.item ? (
             <>
@@ -58,6 +59,8 @@ export const Questionnaire = () => {
                 <>
                   <p className="typo-normal">{}</p>{' '}
                   {/*Beskrivende/hjelpetekst/undergrupperte spm*/}
+                  <p className="typo-normal">{data.text}</p>{' '}
+                  {/*Beskrivende/hjelpetekst*/}
                   <ItemAnswer
                     question={data.text}
                     linkId={data.linkId}
