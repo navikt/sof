@@ -40,5 +40,5 @@ test('it should get a patient id', async () => {
     ],
   };
   const patientId = getPatientId('Social Security Number', patient);
-  expect(patientId).toBe('999-16-8513');
+  expect(patientId).toBe(999168513);
 });
