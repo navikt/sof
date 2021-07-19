@@ -35,7 +35,7 @@ test('it should get a patient id', async () => {
           text: 'Social Security Number',
         },
         system: 'http://hl7.org/fhir/sid/us-ssn',
-        value: '999-168-513',
+        value: '999-16-8513',
       },
     ],
   };
