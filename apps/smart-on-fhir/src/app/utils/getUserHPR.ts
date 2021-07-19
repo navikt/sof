@@ -14,5 +14,15 @@ export const getUserHPR = (
     | fhirclient.FHIR.RelatedPerson
     | undefined
 ) => {
-  return user && user.identifier ? user.identifier[0].value : '';
+  if (user && user.identifier) {
+    const HPR = user.identifier[0].value;
+    const intHPR =
+      typeof HPR === 'string'
+        ? parseInt(HPR)
+        : typeof HPR === 'number'
+        ? HPR
+        : null;
+    return intHPR;
+  }
+  return 0;
 };
