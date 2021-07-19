@@ -1,15 +1,11 @@
-import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { FC, useState } from 'react';
-import { Textarea, TextareaControlled } from 'nav-frontend-skjema';
+import { Textarea } from 'nav-frontend-skjema';
 import { Input } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Radio } from 'nav-frontend-skjema';
 import './questionnaireStylesheet.css';
-import { FnrInput } from 'nav-frontend-skjema';
-import DayPicker from 'react-day-picker';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import 'react-day-picker/lib/style.css';
+import { Datepicker, isISODateString } from 'nav-datovelger';
 
 interface IProps {
   question: string;
@@ -52,7 +48,7 @@ export const ItemAnswer: FC<IProps> = ({
     setAnswers(copiedAnswers);
   };
 
-  // TODO: make a method that updates answers when a radio button is clicked
+  // TODO: create a method that updates answers when a radio button is clicked
 
   const testArray: Array<string> = ['Ja', 'Nei'];
 
@@ -77,15 +73,7 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'date' ? (
         <div>
-          <DayPickerInput />
-        </div>
-      ) : answerType === 'integer' ? (
-        <div>
-          <FnrInput
-            label="Fødselsnummer (11 siffer)"
-            bredde="M"
-            onValidate={(val) => setValid(val)}
-          />
+          <Datepicker onChange={() => console.log('hallo')} />
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
@@ -101,6 +89,7 @@ export const ItemAnswer: FC<IProps> = ({
           value={inputValue}
           style={{ maxWidth: '690px' }}
           onChange={handleOnChange}
+          maxLength={0}
         ></Textarea>
       ) : (
         <></>
@@ -108,7 +97,3 @@ export const ItemAnswer: FC<IProps> = ({
     </>
   );
 };
-
-function setValid(val: boolean): void {
-  throw new Error('Function not implemented.');
-}

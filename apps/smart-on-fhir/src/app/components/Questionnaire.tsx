@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
@@ -11,7 +11,12 @@ import './questionnaireStylesheet.css';
  * Questionnaire is a component that renders a querstionnaire.
  * @returns The questionnaire containing all questions with input fields.
  */
-export const Questionnaire = () => {
+
+type callFromApp = {
+  createHeader: (title: string, description: string) => void;
+};
+
+export const Questionnaire: FC<callFromApp> = (props) => {
   const questionnaire = questionnairePleiepenger;
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -50,6 +55,12 @@ export const Questionnaire = () => {
     setLoading(false);
   }, [loading]);
 
+  useEffect(() => {
+    props.createHeader(questionnaire.title, questionnaire.description);
+    console.log(questionnaire.title);
+    console.log(questionnaire.description);
+  }, [questionnaire]);
+
   return (
     <>
       {questions.map((item: any) => {
@@ -82,11 +93,17 @@ export const Questionnaire = () => {
           </div>
         );
       })}
-      <Hovedknapp
-        button-general
+      <Knapp
+        className="buttons"
         onClick={() => saveAnswers(answers, response, patient, user)}
       >
-        Lagre
+        Lagre skjema
+      </Knapp>
+      <Hovedknapp
+        className="buttons"
+        onClick={() => console.log('Trykket på send')}
+      >
+        Send skjema
       </Hovedknapp>
 
       {console.log('A:', answers)}
