@@ -6,6 +6,7 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { Radio } from 'nav-frontend-skjema';
 import './questionnaireStylesheet.css';
 import { Datepicker, isISODateString } from 'nav-datovelger';
+import Panel from 'nav-frontend-paneler';
 
 interface IProps {
   question: string;
@@ -34,6 +35,8 @@ export const ItemAnswer: FC<IProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [answerOptions, setAnswerOptions] = useState([]);
+  const [inputStartDates, setStartDate] = useState<string[]>([]);
+  const [inputEndDates, setEndDate] = useState<string[]>([]);
 
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
@@ -46,6 +49,15 @@ export const ItemAnswer: FC<IProps> = ({
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(linkId, e.target.checked);
     setAnswers(copiedAnswers);
+  };
+
+  //Method: fetch and save input dates to array
+  const handleDateInput = (e: any) => {
+    if (question === 'Start') {
+      setStartDate([...inputStartDates, e]);
+    } else if (question === 'Slutt') {
+      setEndDate([...inputEndDates, e]);
+    }
   };
 
   // TODO: create a method that updates answers when a radio button is clicked
@@ -73,7 +85,12 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'date' ? (
         <div>
-          <Datepicker onChange={() => console.log('hallo')} />
+          <Datepicker value={'19.07.2021'} onChange={handleDateInput} />
+          <Panel border>Her kommer liste over datoer</Panel>
+        </div>
+      ) : answerType === 'date' && question === 'Slutt' ? (
+        <div>
+          <Panel border>Hallo</Panel>
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
