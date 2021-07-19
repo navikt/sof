@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { FnrInput, Input, Textarea } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
+import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import { Checkbox, Radio } from 'nav-frontend-skjema';
 import Popover from 'nav-frontend-popover';
 import './questionnaireStylesheet.css';
@@ -47,20 +47,6 @@ export const ItemAnswer: FC<IProps> = ({
   ]);
   const [answerOptions, setAnswerOptions] = useState([]);
 
-  const handleOnClick = (e: any) => {
-    //setInputValueList((prevState) => [...prevState, inputValue]);
-    setInputValue(e.target.value);
-    const copiedAnswers = new Map(answers);
-    console.log('Handle: ', inputValueList);
-    console.log('&&: ', inputValueList.includes(inputValue), inputValue);
-    if (inputValueList.length > 1 && !inputValueList.includes(inputValue)) {
-      copiedAnswers.set(linkId, '[' + inputValueList.toString() + ']');
-    } else {
-      copiedAnswers.set(linkId, inputValueList.toString());
-    }
-    setAnswers(copiedAnswers);
-  };
-
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(linkId, e.target.value);
@@ -74,9 +60,8 @@ export const ItemAnswer: FC<IProps> = ({
     setAnswers(copiedAnswers);
   };
 
-  const handlePopoverInputChange = (e: any) => {
+  const handleInputPopoverChange = (e: any) => {
     setInputValue(e.target.value);
-    console.log('W: ', e.target.value);
     if (e.target.value && !anker) {
       setAnker(e.currentTarget);
     } else if (!e.target.value) {
@@ -84,7 +69,16 @@ export const ItemAnswer: FC<IProps> = ({
     }
   };
 
-  // TODO: make a method that updates answers when a radio button is clicked
+  const handleAddClick = (e: any) => {
+    const copiedAnswers = new Map(answers);
+    if (inputValueList.length > 1) {
+      copiedAnswers.set(linkId, '[' + inputValueList.toString() + ']');
+    } else {
+      copiedAnswers.set(linkId, inputValueList.toString());
+    }
+    setAnswers(copiedAnswers);
+    setInputValue(''); // Tømmer inputfeltet for tekst
+  };
 
   const testArray: Array<string> = ['Ja', 'Nei'];
 
@@ -123,7 +117,7 @@ export const ItemAnswer: FC<IProps> = ({
         <div style={{ display: 'flex' }}>
           <Input
             style={{ maxWidth: '690px' }}
-            onChange={handlePopoverInputChange}
+            onChange={handleInputPopoverChange}
             value={inputValue}
           />
           <Popover
@@ -136,26 +130,27 @@ export const ItemAnswer: FC<IProps> = ({
             {dataElements.map((dataElem: string) => {
               if (dataElem.toLowerCase().includes(inputValue.toLowerCase())) {
                 return (
-                  <button
+                  <Flatknapp
+                    style={{ display: 'block' }}
                     onClick={() => {
-                      setInputValue(dataElem);
                       if (!inputValueList.includes(dataElem)) {
                         setInputValueList((prevState) => [
                           ...prevState,
                           dataElem,
                         ]);
                       }
+                      setInputValue(dataElem);
                       setAnker(undefined);
                     }}
                   >
                     {dataElem}
-                  </button>
+                  </Flatknapp>
                 );
               }
-              return;
+              return <></>;
             })}
           </Popover>
-          <Knapp mini style={{ marginLeft: '10px' }} onClick={handleOnClick}>
+          <Knapp mini style={{ marginLeft: '10px' }} onClick={handleAddClick}>
             Legg til
           </Knapp>
         </div>
