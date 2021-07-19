@@ -34,6 +34,7 @@ export const ItemAnswer: FC<IProps> = ({
   setAnswers,
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const [inputValueList, setInputValueList] = useState<string[]>([]);
   const [anker, setAnker] = useState(undefined);
   const [dataElements] = useState([
     'F41.9: Uspesifisert angstlidelse',
@@ -46,11 +47,25 @@ export const ItemAnswer: FC<IProps> = ({
   ]);
   const [answerOptions, setAnswerOptions] = useState([]);
 
-  const addAnswer = (e: any) => {
+  const handleOnClick = (e: any) => {
+    //setInputValueList((prevState) => [...prevState, inputValue]);
     setInputValue(e.target.value);
     const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, inputValue);
+    console.log('Handle: ', inputValueList);
+    console.log('&&: ', inputValueList.includes(inputValue), inputValue);
+    if (inputValueList.length > 1 && !inputValueList.includes(inputValue)) {
+      copiedAnswers.set(linkId, '[' + inputValueList.toString() + ']');
+    } else {
+      copiedAnswers.set(linkId, inputValueList.toString());
+    }
     setAnswers(copiedAnswers);
+  };
+
+  const handleOnChange = (e: any) => {
+    const copiedAnswers = new Map(answers);
+    copiedAnswers.set(linkId, e.target.value);
+    setAnswers(copiedAnswers);
+    setInputValue(e.target.value);
   };
 
   const handleOnChecked = (e: any) => {
@@ -106,13 +121,11 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
-          {/*'Foreløpig: alle string-tekstfelt har en popover. Funker ikke å trykke på ønsket diagnose i popover-vinduet'*/}
           <Input
             style={{ maxWidth: '690px' }}
             onChange={handlePopoverInputChange}
             value={inputValue}
           />
-          {}
           <Popover
             ankerEl={anker}
             onRequestClose={() => setAnker(undefined)}
@@ -124,9 +137,14 @@ export const ItemAnswer: FC<IProps> = ({
               if (dataElem.toLowerCase().includes(inputValue.toLowerCase())) {
                 return (
                   <button
-                    onClick={(e: any) => {
-                      //console.log('Click: ', dataElem);
+                    onClick={() => {
                       setInputValue(dataElem);
+                      if (!inputValueList.includes(dataElem)) {
+                        setInputValueList((prevState) => [
+                          ...prevState,
+                          dataElem,
+                        ]);
+                      }
                       setAnker(undefined);
                     }}
                   >
@@ -137,7 +155,7 @@ export const ItemAnswer: FC<IProps> = ({
               return;
             })}
           </Popover>
-          <Knapp mini style={{ marginLeft: '10px' }} onClick={addAnswer}>
+          <Knapp mini style={{ marginLeft: '10px' }} onClick={handleOnClick}>
             Legg til
           </Knapp>
         </div>
@@ -147,7 +165,7 @@ export const ItemAnswer: FC<IProps> = ({
           description={question}
           value={inputValue}
           style={{ maxWidth: '690px' }}
-          onChange={addAnswer}
+          onChange={handleOnChange}
         ></Textarea>
       ) : (
         <></>
