@@ -35,21 +35,22 @@ export const ItemAnswer: FC<IProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [anker, setAnker] = useState(undefined);
-  const [diagnoser, setDiagnoser] = useState([
+  const [dataElements] = useState([
     'F41.9: Uspesifisert angstlidelse',
     'F50: Spiseforstyrrelser',
     'F84.0: Barneautisme',
     'F93.1: Fobisk angstlidelse i barndommen',
     'R53: Uvelhet og tretthet',
+    'R63.0: Anoreksi',
     // Et utvalg av diagnoser fra https://finnkode.ehelse.no/#icd10/0/0/0/-1 (koder fra ICD-10)
   ]);
   const [answerOptions, setAnswerOptions] = useState([]);
 
-  const handleOnChange = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, e.target.value);
-    setAnswers(copiedAnswers);
+  const addAnswer = (e: any) => {
     setInputValue(e.target.value);
+    const copiedAnswers = new Map(answers);
+    copiedAnswers.set(linkId, inputValue);
+    setAnswers(copiedAnswers);
   };
 
   const handleOnChecked = (e: any) => {
@@ -59,20 +60,13 @@ export const ItemAnswer: FC<IProps> = ({
   };
 
   const handlePopoverInputChange = (e: any) => {
-    console.log('P: ', e.target.focus);
     setInputValue(e.target.value);
+    console.log('W: ', e.target.value);
     if (e.target.value && !anker) {
       setAnker(e.currentTarget);
     } else if (!e.target.value) {
       setAnker(undefined);
     }
-  };
-
-  const addButton = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, inputValue);
-    setAnswers(copiedAnswers);
-    setInputValue(e.target.value);
   };
 
   // TODO: make a method that updates answers when a radio button is clicked
@@ -116,6 +110,7 @@ export const ItemAnswer: FC<IProps> = ({
           <Input
             style={{ maxWidth: '690px' }}
             onChange={handlePopoverInputChange}
+            value={inputValue}
           />
           {}
           <Popover
@@ -125,16 +120,24 @@ export const ItemAnswer: FC<IProps> = ({
             autoFokus={false}
             utenPil
           >
-            {diagnoser.map((diagnose: string) => {
-              console.log(diagnose);
-              console.log(diagnose.toLowerCase().includes(inputValue));
-              if (diagnose.toLowerCase().includes(inputValue)) {
-                return <p>{diagnose}</p>;
+            {dataElements.map((dataElem: string) => {
+              if (dataElem.toLowerCase().includes(inputValue.toLowerCase())) {
+                return (
+                  <button
+                    onClick={(e: any) => {
+                      //console.log('Click: ', dataElem);
+                      setInputValue(dataElem);
+                      setAnker(undefined);
+                    }}
+                  >
+                    {dataElem}
+                  </button>
+                );
               }
               return;
             })}
           </Popover>
-          <Knapp mini style={{ marginLeft: '10px' }} onClick={addButton}>
+          <Knapp mini style={{ marginLeft: '10px' }} onClick={addAnswer}>
             Legg til
           </Knapp>
         </div>
@@ -144,7 +147,7 @@ export const ItemAnswer: FC<IProps> = ({
           description={question}
           value={inputValue}
           style={{ maxWidth: '690px' }}
-          onChange={handleOnChange}
+          onChange={addAnswer}
         ></Textarea>
       ) : (
         <></>
