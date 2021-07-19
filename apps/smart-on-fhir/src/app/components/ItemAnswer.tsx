@@ -1,12 +1,9 @@
-import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { FC, useState } from 'react';
-import { Textarea, TextareaControlled } from 'nav-frontend-skjema';
-import { Input } from 'nav-frontend-skjema';
+import { FnrInput, Input, Textarea } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
-import { Checkbox } from 'nav-frontend-skjema';
-import { Radio } from 'nav-frontend-skjema';
+import { Checkbox, Radio } from 'nav-frontend-skjema';
+import Popover from 'nav-frontend-popover';
 import './questionnaireStylesheet.css';
-import { FnrInput } from 'nav-frontend-skjema';
 import DayPicker from 'react-day-picker';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
@@ -37,6 +34,15 @@ export const ItemAnswer: FC<IProps> = ({
   setAnswers,
 }) => {
   const [inputValue, setInputValue] = useState('');
+  const [anker, setAnker] = useState(undefined);
+  const [diagnoser, setDiagnoser] = useState([
+    'F41.9: Uspesifisert angstlidelse',
+    'F50: Spiseforstyrrelser',
+    'F84.0: Barneautisme',
+    'F93.1: Fobisk angstlidelse i barndommen',
+    'R53: Uvelhet og tretthet',
+    // Et utvalg av diagnoser fra https://finnkode.ehelse.no/#icd10/0/0/0/-1 (koder fra ICD-10)
+  ]);
   const [answerOptions, setAnswerOptions] = useState([]);
 
   const handleOnChange = (e: any) => {
@@ -50,6 +56,23 @@ export const ItemAnswer: FC<IProps> = ({
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(linkId, e.target.checked);
     setAnswers(copiedAnswers);
+  };
+
+  const handlePopoverInputChange = (e: any) => {
+    console.log('P: ', e.target.focus);
+    setInputValue(e.target.value);
+    if (e.target.value && !anker) {
+      setAnker(e.currentTarget);
+    } else if (!e.target.value) {
+      setAnker(undefined);
+    }
+  };
+
+  const addButton = (e: any) => {
+    const copiedAnswers = new Map(answers);
+    copiedAnswers.set(linkId, inputValue);
+    setAnswers(copiedAnswers);
+    setInputValue(e.target.value);
   };
 
   // TODO: make a method that updates answers when a radio button is clicked
@@ -89,8 +112,29 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
-          <Input style={{ maxWidth: '690px' }} onChange={handleOnChange} />
-          <Knapp mini style={{ marginLeft: '10px' }}>
+          {/*'Foreløpig: alle string-tekstfelt har en popover. Funker ikke å trykke på ønsket diagnose i popover-vinduet'*/}
+          <Input
+            style={{ maxWidth: '690px' }}
+            onChange={handlePopoverInputChange}
+          />
+          {}
+          <Popover
+            ankerEl={anker}
+            onRequestClose={() => setAnker(undefined)}
+            orientering="under-venstre"
+            autoFokus={false}
+            utenPil
+          >
+            {diagnoser.map((diagnose: string) => {
+              console.log(diagnose);
+              console.log(diagnose.toLowerCase().includes(inputValue));
+              if (diagnose.toLowerCase().includes(inputValue)) {
+                return <p>{diagnose}</p>;
+              }
+              return;
+            })}
+          </Popover>
+          <Knapp mini style={{ marginLeft: '10px' }} onClick={addButton}>
             Legg til
           </Knapp>
         </div>
