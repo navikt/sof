@@ -13,49 +13,6 @@ import { TextareaControlled } from 'nav-frontend-skjema';
 
 export function App() {
   const { patient } = useFhirContext();
-  const [steps, setSteps] = useState([
-    { label: 'Tilstandsvurdering', index: 1, aktiv: true },
-    { label: 'Definer pleiebehov', index: 2, aktiv: false },
-  ]);
-
-  const nextPage = () => {
-    let fromIndex: number | undefined;
-    //const fromIndex =  steps.find((element) => element.aktiv === true).index;
-    if (steps.find((element) => element.aktiv === true)) {
-      //console.log('funnet en aktiv', element);
-      fromIndex = steps.find((element) => element.aktiv === true)?.index;
-      //console.log('Her er indeksen til den aktive: ', fromIndex);
-      if (fromIndex != undefined) {
-        toggleReminder(fromIndex);
-      }
-    } else {
-      //console.log('Kunne ikke finne aktiv');
-    }
-  };
-
-  const toggleReminder = (index: number) => {
-    //console.log('AAAAAAAAAAAAAAAAA', steps, 'Innsendt indeks: ', index);
-    setSteps(
-      steps.map((step) =>
-        step.index === index || step.index === index + 1
-          ? { ...step, aktiv: !step.aktiv }
-          : step
-      )
-    );
-  };
-  useEffect(() => {
-    /*console.log(
-      'Step 1 sin aktiv: ',
-      steps[0].aktiv,
-      'Step 2 sin aktiv: ',
-      steps[1].aktiv
-    );*/
-    //console.log('BBBBBBBBBBBBBBBBBBBB', steps);
-  });
-
-  //setSteps(nyListe => );
-
-  //steps.forEach(step => step.index === index ? {...steps, aktiv: !step.aktiv })
 
   return (
     <>
@@ -77,15 +34,14 @@ export function App() {
       </div>
 
       <div className="titleContainer">
+        {/*TODO: generisk henting av tittel fra spørreskjema*/}
         <Sidetittel className="tittel">
           Legeerklæring: pleiepenger for sykt barn
         </Sidetittel>
-        <div className="stegindikator">
-          <Stegindikator steg={steps} visLabel />
-        </div>
       </div>
       <div className="main-body">
         <div className="ingress">
+          {/*TODO: generisk henting av ingress fra spørreskjema*/}
           <Ingress>
             Legeerklæringen skal fylles ut av behandlende lege. Det er kun
             sykehusleger og leger i spesialisthelsetjenesten som kan skrive
@@ -98,10 +54,6 @@ export function App() {
           </Ingress>
         </div>
         <Questionnaire />
-        <Knapp onClick={nextPage} className="button-general">
-          {' '}
-          Neste{' '}
-        </Knapp>
       </div>
     </>
   );

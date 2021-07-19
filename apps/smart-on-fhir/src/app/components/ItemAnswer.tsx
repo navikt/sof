@@ -1,15 +1,15 @@
+import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { FC, useState } from 'react';
-import './questionnaireStylesheet.css';
-import {
-  Checkbox,
-  FnrInput,
-  Input,
-  Radio,
-  Textarea,
-} from 'nav-frontend-skjema';
+import { Textarea, TextareaControlled } from 'nav-frontend-skjema';
+import { Input } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
-import validator from '@navikt/fnrvalidator';
-import { useEffect } from 'react';
+import { Checkbox } from 'nav-frontend-skjema';
+import { Radio } from 'nav-frontend-skjema';
+import './questionnaireStylesheet.css';
+import { FnrInput } from 'nav-frontend-skjema';
+import DayPicker from 'react-day-picker';
+import DayPickerInput from 'react-day-picker/DayPickerInput';
+import 'react-day-picker/lib/style.css';
 
 interface IProps {
   question: string;
@@ -21,8 +21,6 @@ interface IProps {
   >;
 }
 
-const fnr = validator.fnr('12345678910');
-const dnr = validator.dnr('52345678910');
 /**
  * Renders an input field and handles changes in the field.
  * @param question: string, renders the question text
@@ -78,7 +76,9 @@ export const ItemAnswer: FC<IProps> = ({
           />
         </div>
       ) : answerType === 'date' ? (
-        <input type="date" onChange={handleOnChange} />
+        <div>
+          <DayPickerInput />
+        </div>
       ) : answerType === 'integer' ? (
         <div>
           <FnrInput
