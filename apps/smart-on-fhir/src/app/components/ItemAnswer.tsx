@@ -1,12 +1,11 @@
 import React, { FC, useState } from 'react';
-import { FnrInput, Input, Textarea } from 'nav-frontend-skjema';
-import { Flatknapp, Knapp } from 'nav-frontend-knapper';
+import { FnrInput, Textarea } from 'nav-frontend-skjema';
 import { Checkbox, Radio } from 'nav-frontend-skjema';
-import Popover from 'nav-frontend-popover';
 import './questionnaireStylesheet.css';
 import DayPicker from 'react-day-picker';
 import DayPickerInput from 'react-day-picker/DayPickerInput';
 import 'react-day-picker/lib/style.css';
+import { AnswerInputPop } from './AnswerInputPop';
 
 interface IProps {
   question: string;
@@ -34,17 +33,6 @@ export const ItemAnswer: FC<IProps> = ({
   setAnswers,
 }) => {
   const [inputValue, setInputValue] = useState('');
-  const [inputValueList, setInputValueList] = useState<string[]>([]);
-  const [anker, setAnker] = useState(undefined);
-  const [dataElements] = useState([
-    'F41.9: Uspesifisert angstlidelse',
-    'F50: Spiseforstyrrelser',
-    'F84.0: Barneautisme',
-    'F93.1: Fobisk angstlidelse i barndommen',
-    'R53: Uvelhet og tretthet',
-    'R63.0: Anoreksi',
-    // Et utvalg av diagnoser fra https://finnkode.ehelse.no/#icd10/0/0/0/-1 (koder fra ICD-10)
-  ]);
   const [answerOptions, setAnswerOptions] = useState([]);
 
   const handleOnChange = (e: any) => {
@@ -58,26 +46,6 @@ export const ItemAnswer: FC<IProps> = ({
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(linkId, e.target.checked);
     setAnswers(copiedAnswers);
-  };
-
-  const handleInputPopoverChange = (e: any) => {
-    setInputValue(e.target.value);
-    if (e.target.value && !anker) {
-      setAnker(e.currentTarget);
-    } else if (!e.target.value) {
-      setAnker(undefined);
-    }
-  };
-
-  const handleAddClick = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    if (inputValueList.length > 1) {
-      copiedAnswers.set(linkId, '[' + inputValueList.toString() + ']');
-    } else {
-      copiedAnswers.set(linkId, inputValueList.toString());
-    }
-    setAnswers(copiedAnswers);
-    setInputValue(''); // Tømmer inputfeltet for tekst
   };
 
   const testArray: Array<string> = ['Ja', 'Nei'];
@@ -114,46 +82,11 @@ export const ItemAnswer: FC<IProps> = ({
           />
         </div>
       ) : answerType === 'string' ? (
-        <div style={{ display: 'flex' }}>
-          <Input
-            style={{ maxWidth: '690px' }}
-            onChange={handleInputPopoverChange}
-            value={inputValue}
-          />
-          <Popover
-            ankerEl={anker}
-            onRequestClose={() => setAnker(undefined)}
-            orientering="under-venstre"
-            autoFokus={false}
-            utenPil
-          >
-            {dataElements.map((dataElem: string) => {
-              if (dataElem.toLowerCase().includes(inputValue.toLowerCase())) {
-                return (
-                  <Flatknapp
-                    style={{ display: 'block' }}
-                    onClick={() => {
-                      if (!inputValueList.includes(dataElem)) {
-                        setInputValueList((prevState) => [
-                          ...prevState,
-                          dataElem,
-                        ]);
-                      }
-                      setInputValue(dataElem);
-                      setAnker(undefined);
-                    }}
-                  >
-                    {dataElem}
-                  </Flatknapp>
-                );
-              }
-              return <></>;
-            })}
-          </Popover>
-          <Knapp mini style={{ marginLeft: '10px' }} onClick={handleAddClick}>
-            Legg til
-          </Knapp>
-        </div>
+        <AnswerInputPop
+          linkId={linkId}
+          answers={answers}
+          setAnswers={setAnswers}
+        />
       ) : answerType === 'text' ? (
         <Textarea
           label=""
