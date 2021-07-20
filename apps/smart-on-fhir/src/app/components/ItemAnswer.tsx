@@ -55,6 +55,7 @@ export const ItemAnswer: FC<IProps> = ({
   const handleDateInput = (e: any) => {
     if (question === 'Start') {
       setStartDate([...inputStartDates, e]);
+      console.log(inputEndDates);
     } else if (question === 'Slutt') {
       setEndDate([...inputEndDates, e]);
     }
@@ -83,14 +84,16 @@ export const ItemAnswer: FC<IProps> = ({
             name="alternativ2"
           />
         </div>
-      ) : answerType === 'date' ? (
-        <div>
-          <Datepicker value={'19.07.2021'} onChange={handleDateInput} />
-          <Panel border>Her kommer liste over datoer</Panel>
-        </div>
       ) : answerType === 'date' && question === 'Slutt' ? (
         <div>
-          <Panel border>Hallo</Panel>
+          <Datepicker value={'dd.mm.åååå'} onChange={handleDateInput} />
+          <Panel style={{ maxWidth: '690px', marginTop: '20px' }}>
+            Her kommer en liste med innleggelser
+          </Panel>
+        </div>
+      ) : answerType === 'date' ? (
+        <div>
+          <Datepicker value={'dd.mm.åååå'} onChange={handleDateInput} />
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
