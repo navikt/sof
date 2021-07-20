@@ -1,0 +1,85 @@
+name: default
+
+on:
+  push:
+    branches:
+      - '*'
+
+env:
+  APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+  NX_BASE: ''
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test and build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - run: git fetch origin main
+      - run: |
+          if [[ ${{ github.ref == 'refs/heads/main' }} == true ]]; then
+            echo "NX_BASE=~1" >> $GITHUB_ENV
+          fi
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.OS }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-node-
+            ${{ runner.OS }}-
+      - run: npm ci --no-audit --prefer-offline --no-optional --ignore-scripts
+      - run: npm run affected:test
+      - run: npm run affected:build
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist
+          path: dist
+          retention-days: 1
+
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    needs: test
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - id: tag
+        run: |
+          echo '::set-output name=sha::'$(git rev-parse --short HEAD)
+          echo '::set-output name=base::ghcr.io/navikt/sof-skjema'
+      - uses: actions/download-artifact@v2
+        with:
+          name: dist
+          path: dist
+      - name: Login to GitHub Packages Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and tag docker image
+        run: |
+          docker build \
+            --tag ${{ steps.tag.outputs.base }}:${{ steps.tag.outputs.sha }} \
+            --tag ${{ steps.tag.outputs.base }}:latest --build-arg APPNAME=smart-on-fhir .
+      - name: Push docker image
+        #if: ${{ github.ref == 'refs/heads/main' }}
+        run: |
+          docker push --all-tags ${{ steps.tag.outputs.base }}
+      - name: Deploy to Dev
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          IMAGE: ${{ steps.tag.outputs.base }}:${{ steps.tag.outputs.sha }}
+          CLUSTER: dev-gcp
+          #DRY_RUN: ${{ github.ref != 'refs/heads/main' }}
+          RESOURCE: apps/smart-on-fhir/naiserator.yaml
