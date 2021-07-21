@@ -6,6 +6,8 @@ import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
+import { Undertittel } from 'nav-frontend-typografi';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -77,10 +79,23 @@ export const Questionnaire: FC<callFromApp> = (props) => {
                 {item.linkId} {item.text}
               </p>
             ) : (
-              <h1 className="typo-undertittel">
+              <div>
                 {/* Foreløpig håndtering av hovedspørsmål*/}
-                {item.linkId} {item.text}
-              </h1>
+                <span
+                  className="typo-undertittel"
+                  id="mitt-faguttrykk"
+                  aria-describedby="min-hjelpetekst"
+                >
+                  {item.text}
+                </span>
+                <Hjelpetekst
+                  id="min-hjelpetekst"
+                  aria-labelledby="mitt-faguttrykk"
+                  style={{ marginLeft: ' 10px' }}
+                >
+                  Mulighet til å jobbe litt eller delvis
+                </Hjelpetekst>
+              </div>
             )}
             {/* Svartyper */}
             <ItemAnswer

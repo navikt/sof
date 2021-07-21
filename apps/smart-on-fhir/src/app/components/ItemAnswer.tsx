@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Datepicker, isISODateString } from 'nav-datovelger';
 import { Checkbox, Radio, Textarea } from 'nav-frontend-skjema';
+import Panel from 'nav-frontend-paneler';
 import { AnswerInputPop } from './AnswerInputPop';
 import './questionnaireStylesheet.css';
 
@@ -31,6 +32,8 @@ export const ItemAnswer: FC<IProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [answerOptions, setAnswerOptions] = useState([]);
+  const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+  const [inputEndDate, setEndDate] = useState('dd.mm.åååå');
 
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
@@ -45,6 +48,24 @@ export const ItemAnswer: FC<IProps> = ({
     setAnswers(copiedAnswers);
   };
 
+  const BasicDatepicker = () => {
+    //    const [date, setDate] = useState('');
+    const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+
+    return <Datepicker onChange={setStartDate} value={inputStartDate} />;
+  };
+
+  //Method: fetch and save input dates to array
+  const handleDateInput = (e: any) => {
+    if (question === 'Start') {
+      setStartDate(e);
+      console.log(inputStartDate);
+    } else if (question === 'Slutt') {
+      setEndDate(e);
+      console.log(inputEndDate);
+    }
+  };
+    
   const testArray: Array<string> = ['Ja', 'Nei'];
 
   return (
@@ -66,9 +87,13 @@ export const ItemAnswer: FC<IProps> = ({
             name="alternativ2"
           />
         </div>
+      ) : answerType === 'date' && question === 'Slutt' ? (
+        <div>
+          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
+        </div>
       ) : answerType === 'date' ? (
         <div>
-          <Datepicker onChange={() => console.log('hallo')} />
+          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
         </div>
       ) : answerType === 'string' ? (
         <AnswerInputPop
