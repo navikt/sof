@@ -35,8 +35,8 @@ export const ItemAnswer: FC<IProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [answerOptions, setAnswerOptions] = useState([]);
-  const [inputStartDates, setStartDate] = useState<string[]>([]);
-  const [inputEndDates, setEndDate] = useState<string[]>([]);
+  const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+  const [inputEndDate, setEndDate] = useState('dd.mm.åååå');
 
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
@@ -51,13 +51,21 @@ export const ItemAnswer: FC<IProps> = ({
     setAnswers(copiedAnswers);
   };
 
+  const BasicDatepicker = () => {
+    //    const [date, setDate] = useState('');
+    const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+
+    return <Datepicker onChange={setStartDate} value={inputStartDate} />;
+  };
+
   //Method: fetch and save input dates to array
   const handleDateInput = (e: any) => {
     if (question === 'Start') {
-      setStartDate([...inputStartDates, e]);
-      console.log(inputEndDates);
+      setStartDate(e);
+      console.log(inputStartDate);
     } else if (question === 'Slutt') {
-      setEndDate([...inputEndDates, e]);
+      setEndDate(e);
+      console.log(inputEndDate);
     }
   };
 
@@ -86,14 +94,11 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'date' && question === 'Slutt' ? (
         <div>
-          <Datepicker value={'dd.mm.åååå'} onChange={handleDateInput} />
-          <Panel style={{ maxWidth: '690px', marginTop: '20px' }}>
-            Her kommer en liste med innleggelser
-          </Panel>
+          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
         </div>
       ) : answerType === 'date' ? (
         <div>
-          <Datepicker value={'dd.mm.åååå'} onChange={handleDateInput} />
+          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
