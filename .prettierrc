@@ -1,3 +1,4 @@
 {
-  "singleQuote": true
+  "singleQuote": true,
+  "yaml.format.bracketSpacing": false
 }

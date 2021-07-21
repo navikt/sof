@@ -1,24 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponse.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
-import { Hovedknapp } from 'nav-frontend-knapper';
+import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
 import { saveQuestionnaire } from '../utils/saveQuestionnaire';
-import {
-  IPatient,
-  IQuestionnaireResponse,
-} from '@ahryman40k/ts-fhir-types/lib/R4';
+import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
  * @returns The questionnaire containing all questions with input fields.
  */
-export const Questionnaire = () => {
+
+type callFromApp = {
+  createHeader: (title: string, description: string) => void;
+};
+
+export const Questionnaire: FC<callFromApp> = (props) => {
   const questionnaire = questionnairePleiepenger;
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -73,6 +76,11 @@ export const Questionnaire = () => {
       saveAnswers(answers, response, patient, user, client);
     }
   };
+  useEffect(() => {
+    props.createHeader(questionnaire.title, questionnaire.description);
+    console.log(questionnaire.title);
+    console.log(questionnaire.description);
+  }, [questionnaire]);
 
   return (
     <>
@@ -90,10 +98,23 @@ export const Questionnaire = () => {
                 {item.linkId} {item.text}
               </p>
             ) : (
-              <h1 className="typo-undertittel">
+              <div>
                 {/* Foreløpig håndtering av hovedspørsmål*/}
-                {item.linkId} {item.text}
-              </h1>
+                <span
+                  className="typo-undertittel"
+                  id="mitt-faguttrykk"
+                  aria-describedby="min-hjelpetekst"
+                >
+                  {item.text}
+                </span>
+                <Hjelpetekst
+                  id="min-hjelpetekst"
+                  aria-labelledby="mitt-faguttrykk"
+                  style={{ marginLeft: ' 10px' }}
+                >
+                  Mulighet til å jobbe litt eller delvis
+                </Hjelpetekst>
+              </div>
             )}
             {/* Svartyper */}
             <ItemAnswer
@@ -111,6 +132,13 @@ export const Questionnaire = () => {
         onClick={() => clickSave(answers, response, patient, user, client)}
       >
         Lagre
+      </Hovedknapp>
+
+      <Hovedknapp
+        className="buttons"
+        onClick={() => console.log('Trykket på send')}
+      >
+        Send skjema
       </Hovedknapp>
 
       {/*This button is here temporarily to make it easy to save a questionnaire in the EHR launcer*/}

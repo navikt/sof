@@ -1,15 +1,9 @@
-import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 import React, { FC, useState } from 'react';
-import { Textarea, TextareaControlled } from 'nav-frontend-skjema';
-import { Input } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
-import { Checkbox } from 'nav-frontend-skjema';
-import { Radio } from 'nav-frontend-skjema';
+import { Datepicker, isISODateString } from 'nav-datovelger';
+import { Checkbox, Radio, Textarea } from 'nav-frontend-skjema';
+import Panel from 'nav-frontend-paneler';
+import { AnswerInputPop } from './AnswerInputPop';
 import './questionnaireStylesheet.css';
-import { FnrInput } from 'nav-frontend-skjema';
-import DayPicker from 'react-day-picker';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import 'react-day-picker/lib/style.css';
 
 interface IProps {
   question: string;
@@ -38,6 +32,8 @@ export const ItemAnswer: FC<IProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [answerOptions, setAnswerOptions] = useState([]);
+  const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+  const [inputEndDate, setEndDate] = useState('dd.mm.åååå');
 
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
@@ -52,7 +48,23 @@ export const ItemAnswer: FC<IProps> = ({
     setAnswers(copiedAnswers);
   };
 
-  // TODO: make a method that updates answers when a radio button is clicked
+  const BasicDatepicker = () => {
+    //    const [date, setDate] = useState('');
+    const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+
+    return <Datepicker onChange={setStartDate} value={inputStartDate} />;
+  };
+
+  //Method: fetch and save input dates to array
+  const handleDateInput = (e: any) => {
+    if (question === 'Start') {
+      setStartDate(e);
+      console.log(inputStartDate);
+    } else if (question === 'Slutt') {
+      setEndDate(e);
+      console.log(inputEndDate);
+    }
+  };
 
   const testArray: Array<string> = ['Ja', 'Nei'];
 
@@ -75,25 +87,20 @@ export const ItemAnswer: FC<IProps> = ({
             name="alternativ2"
           />
         </div>
+      ) : answerType === 'date' && question === 'Slutt' ? (
+        <div>
+          <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
+        </div>
       ) : answerType === 'date' ? (
         <div>
-          <DayPickerInput />
-        </div>
-      ) : answerType === 'integer' ? (
-        <div>
-          <FnrInput
-            label="Fødselsnummer (11 siffer)"
-            bredde="M"
-            onValidate={(val) => setValid(val)}
-          />
+          <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
         </div>
       ) : answerType === 'string' ? (
-        <div style={{ display: 'flex' }}>
-          <Input style={{ maxWidth: '690px' }} onChange={handleOnChange} />
-          <Knapp mini style={{ marginLeft: '10px' }}>
-            Legg til
-          </Knapp>
-        </div>
+        <AnswerInputPop
+          linkId={linkId}
+          answers={answers}
+          setAnswers={setAnswers}
+        />
       ) : answerType === 'text' ? (
         <Textarea
           label=""
@@ -101,6 +108,7 @@ export const ItemAnswer: FC<IProps> = ({
           value={inputValue}
           style={{ maxWidth: '690px' }}
           onChange={handleOnChange}
+          maxLength={0}
         ></Textarea>
       ) : (
         <></>
@@ -108,7 +116,3 @@ export const ItemAnswer: FC<IProps> = ({
     </>
   );
 };
-
-function setValid(val: boolean): void {
-  throw new Error('Function not implemented.');
-}
