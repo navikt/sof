@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Datepicker, isISODateString } from 'nav-datovelger';
 import { Checkbox, Radio, Textarea } from 'nav-frontend-skjema';
-import { AnswerInputPop } from './AnswerInputPop';
+import { AnswerInputMultiSelect } from './AnswerInputMultiSelect';
 import './questionnaireStylesheet.css';
 
 interface IProps {
@@ -95,7 +95,7 @@ export const ItemAnswer: FC<IProps> = ({
           <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
         </div>
       ) : answerType === 'string' ? (
-        <AnswerInputPop
+        <AnswerInputMultiSelect
           linkId={linkId}
           answers={answers}
           setAnswers={setAnswers}

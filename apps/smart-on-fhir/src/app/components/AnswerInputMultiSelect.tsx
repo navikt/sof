@@ -11,7 +11,7 @@ interface IProps {
   >;
 }
 
-export const AnswerInputPop: React.FC<IProps> = ({
+export const AnswerInputMultiSelect: React.FC<IProps> = ({
   linkId,
   answers,
   setAnswers,
