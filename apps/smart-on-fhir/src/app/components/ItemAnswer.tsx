@@ -6,6 +6,7 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { Radio } from 'nav-frontend-skjema';
 import './questionnaireStylesheet.css';
 import { Datepicker, isISODateString } from 'nav-datovelger';
+import Panel from 'nav-frontend-paneler';
 
 interface IProps {
   question: string;
@@ -34,6 +35,8 @@ export const ItemAnswer: FC<IProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
   const [answerOptions, setAnswerOptions] = useState([]);
+  const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+  const [inputEndDate, setEndDate] = useState('dd.mm.åååå');
 
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
@@ -46,6 +49,24 @@ export const ItemAnswer: FC<IProps> = ({
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(linkId, e.target.checked);
     setAnswers(copiedAnswers);
+  };
+
+  const BasicDatepicker = () => {
+    //    const [date, setDate] = useState('');
+    const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+
+    return <Datepicker onChange={setStartDate} value={inputStartDate} />;
+  };
+
+  //Method: fetch and save input dates to array
+  const handleDateInput = (e: any) => {
+    if (question === 'Start') {
+      setStartDate(e);
+      console.log(inputStartDate);
+    } else if (question === 'Slutt') {
+      setEndDate(e);
+      console.log(inputEndDate);
+    }
   };
 
   // TODO: create a method that updates answers when a radio button is clicked
@@ -71,9 +92,13 @@ export const ItemAnswer: FC<IProps> = ({
             name="alternativ2"
           />
         </div>
+      ) : answerType === 'date' && question === 'Slutt' ? (
+        <div>
+          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
+        </div>
       ) : answerType === 'date' ? (
         <div>
-          <Datepicker onChange={() => console.log('hallo')} />
+          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
         </div>
       ) : answerType === 'string' ? (
         <div style={{ display: 'flex' }}>
