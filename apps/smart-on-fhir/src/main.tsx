@@ -10,10 +10,9 @@ ReactDOM.render(
   <StrictMode>
     <BrowserRouter>
       <FhirContextProvider>
-        {/*<App />*/}
         <Route path="/skjema" component={App} exact />
+        <Route path="/" component={LandingPage} exact />
       </FhirContextProvider>
-      <Route path="/" component={LandingPage} exact />
     </BrowserRouter>
   </StrictMode>,
   document.getElementById('root')
