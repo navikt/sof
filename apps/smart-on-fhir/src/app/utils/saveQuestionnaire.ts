@@ -1,6 +1,6 @@
 import Client from 'fhirclient/lib/Client';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
-import questionnaireResponse from '../json-files/questionnaireResponse.json';
+import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 
 /**
  * Function to save a questionnaire to the server
@@ -12,5 +12,4 @@ export const saveQuestionnaire = async (client: Client | undefined) => {
       questionnaireResponse.questionnaire = `Questionnaire/${questionnaire.id}`;
     });
   }
-  console.log(questionnaireResponse.questionnaire);
 };

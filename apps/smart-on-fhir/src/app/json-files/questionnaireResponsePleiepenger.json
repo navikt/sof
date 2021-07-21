@@ -4,12 +4,18 @@
   "identifier": "",
   "status": "in-progress",
   "questionnaire": "Questionnaire/1339713",
-  "authored": "2021-07-19",
   "subject": {
     "resourceType": "Reference",
     "id": "",
     "reference": "",
-    "type": ""
+    "type": "Patient"
+  },
+  "authored": "2021-07-19",
+  "author": {
+    "resourceType": "Reference",
+    "id": "",
+    "reference": "",
+    "type": "Practitioner"
   },
   "item": [
     {
@@ -168,51 +174,6 @@
     {
       "linkId": "10",
       "text": "Beskriv hvorfor det er nødvendig med to omsorgspersoner samtidig",
-      "answer": [
-        {
-          "valueString": ""
-        }
-      ]
-    },
-    {
-      "linkId": "11-automatic",
-      "text": "Legens HPR-nummer",
-      "answer": [
-        {
-          "valueInteger": 0
-        }
-      ]
-    },
-    {
-      "linkId": "12-automatic",
-      "text": "Legens navn",
-      "answer": [
-        {
-          "valueString": ""
-        }
-      ]
-    },
-    {
-      "linkId": "13-automatic",
-      "text": "Legens telefonnummer",
-      "answer": [
-        {
-          "valueInteger": 0
-        }
-      ]
-    },
-    {
-      "linkId": "14-automatic",
-      "text": "Sykehusets navn",
-      "answer": [
-        {
-          "valueString": ""
-        }
-      ]
-    },
-    {
-      "linkId": "15-automatic",
-      "text": "Sykehusets adresse",
       "answer": [
         {
           "valueString": ""
