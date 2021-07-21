@@ -6,7 +6,7 @@
   "title": "Legeerklæring: pleiepenger for sykt barn",
   "status": "draft",
   "date": "2021-07-13",
-  "description": "Legeerklæringen skal fylles blabla.... \\n NAV trenger tidsnære opplysninger for å blablabla",
+  "description": "Legeerklæringen skal fylles ut av behandlende lege. Det er kun sykehusleger og leger i spesialisthelsetjenesten som kan skrive legeerklæring for pleiepenger for sykt barn. NAV trenger tidsnære opplysninger for å behandle søknad om pleiepenger. Det innebærer at NAV trenger oppdaterte medisinske opplysninger for å vurdere om vilkårene for rett til pleiepenger er oppfylt. ",
   "item": [
     {
       "linkId": "1",
@@ -43,7 +43,7 @@
     },
     {
       "linkId": "3",
-      "text": "Beskriv barnets nåværende og forventede tlstand/funksjonsnivå",
+      "text": "Beskriv barnets nåværende og forventede tilstand/funksjonsnivå",
       "type": "text",
       "item": [
         {
