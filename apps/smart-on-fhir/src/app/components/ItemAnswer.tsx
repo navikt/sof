@@ -6,12 +6,13 @@ import { Checkbox } from 'nav-frontend-skjema';
 import { Radio } from 'nav-frontend-skjema';
 import './questionnaireStylesheet.css';
 import { Datepicker, isISODateString } from 'nav-datovelger';
-import Panel from 'nav-frontend-paneler';
+import { Undertittel } from 'nav-frontend-typografi';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
+import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
 
 interface IProps {
-  question: string;
-  linkId: string;
-  answerType: string | undefined;
+  entity: any;
+  entityItem: any;
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
@@ -27,9 +28,8 @@ interface IProps {
  * @returns an input field
  */
 export const ItemAnswer: FC<IProps> = ({
-  question,
-  linkId,
-  answerType,
+  entity,
+  entityItem,
   answers,
   setAnswers,
 }) => {
@@ -40,14 +40,14 @@ export const ItemAnswer: FC<IProps> = ({
 
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, e.target.value);
+    copiedAnswers.set(entity.linkId, e.target.value);
     setAnswers(copiedAnswers);
     setInputValue(e.target.value);
   };
 
   const handleOnChecked = (e: any) => {
     const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, e.target.checked);
+    copiedAnswers.set(entity.linkId, e.target.checked);
     setAnswers(copiedAnswers);
   };
 
@@ -60,10 +60,10 @@ export const ItemAnswer: FC<IProps> = ({
 
   //Method: fetch and save input dates to array
   const handleDateInput = (e: any) => {
-    if (question === 'Start') {
+    if (entityItem.text === 'Start') {
       setStartDate(e);
       console.log(inputStartDate);
-    } else if (question === 'Slutt') {
+    } else if (entityItem.text === 'Slutt') {
       setEndDate(e);
       console.log(inputEndDate);
     }
@@ -72,50 +72,43 @@ export const ItemAnswer: FC<IProps> = ({
   // TODO: create a method that updates answers when a radio button is clicked
 
   const testArray: Array<string> = ['Ja', 'Nei'];
+  /* 
+if (entity != undefined) {
+  console.log('Kommer fra ItemAnswer. LinkId:', entity.linkId);
+  if (entityItem != undefined) {
+    console.log(
+      'ItemAnswer: Skriver ut entityItem for id:',
+      entityItem.linkId
+    );
+  }
+}
+*/
 
   return (
     <>
-      {answerType === 'boolean' ? (
-        <div style={{ margin: '10px' }}>
-          <Checkbox label={question}></Checkbox>
-        </div>
-      ) : answerType === 'choice' ? (
+      {entityItem != undefined && entityItem.linkId.includes('help') ? (
         <div>
-          <Radio
-            className="radio-button"
-            label={testArray[0]}
-            name="alternativ1"
-          />
-          <Radio
-            className="radio-button"
-            label={testArray[1]}
-            name="alternativ2"
-          />
+          <span
+            className="typo-undertittel"
+            id="mitt-faguttrykk"
+            aria-describedby="min-hjelpetekst"
+          >
+            {entity.text}
+          </span>
+          <Hjelpetekst
+            id="min-hjelpetekst"
+            aria-labelledby="mitt-faguttrykk"
+            style={{ marginLeft: '10px' }}
+          >
+            {entityItem.text}
+          </Hjelpetekst>
         </div>
-      ) : answerType === 'date' && question === 'Slutt' ? (
+      ) : entity ? (
+        <p className="typo-undertittel">{entity.text}</p>
+      ) : entityItem != undefined && entityItem.linkId.includes('.') ? (
         <div>
-          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
+          <p className="typo-undertittel">{entityItem.text}</p>
         </div>
-      ) : answerType === 'date' ? (
-        <div>
-          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
-        </div>
-      ) : answerType === 'string' ? (
-        <div style={{ display: 'flex' }}>
-          <Input style={{ maxWidth: '690px' }} onChange={handleOnChange} />
-          <Knapp mini style={{ marginLeft: '10px' }}>
-            Legg til
-          </Knapp>
-        </div>
-      ) : answerType === 'text' ? (
-        <Textarea
-          label=""
-          description={question}
-          value={inputValue}
-          style={{ maxWidth: '690px' }}
-          onChange={handleOnChange}
-          maxLength={0}
-        ></Textarea>
       ) : (
         <></>
       )}

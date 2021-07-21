@@ -7,7 +7,6 @@ import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
-import { Undertittel } from 'nav-frontend-typografi';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -66,47 +65,43 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   return (
     <>
       {questions.map((item: any) => {
-        return item.linkId.includes('automatic') ? null : (
-          <div key={item.linkId}>
-            {item.linkId.includes('help') ? (
-              <p>
-                {/* Foreløpig håndtering av hjelpetekst*/}
-                {item.linkId} {item.text}
-              </p>
-            ) : item.linkId.includes('.') ? (
-              <p>
-                {/*Foreløpig håndtering av underspørsmål*/}
-                {item.linkId} {item.text}
-              </p>
-            ) : (
-              <div>
-                {/* Foreløpig håndtering av hovedspørsmål*/}
-                <span
-                  className="typo-undertittel"
-                  id="mitt-faguttrykk"
-                  aria-describedby="min-hjelpetekst"
-                >
-                  {item.text}
-                </span>
-                <Hjelpetekst
-                  id="min-hjelpetekst"
-                  aria-labelledby="mitt-faguttrykk"
-                  style={{ marginLeft: ' 10px' }}
-                >
-                  Mulighet til å jobbe litt eller delvis
-                </Hjelpetekst>
-              </div>
-            )}
-            {/* Svartyper */}
+        let mainItem: any;
+        let subItem: any;
+        //console.log(item.linkId, item.item);
+        if (
+          !item.linkId.includes('automatic') &&
+          !item.linkId.includes('help') &&
+          !item.linkId.includes('.')
+        ) {
+          mainItem = item;
+          if (item.item !== undefined) {
+            item.item.map((entityItem: any) => {
+              subItem = entityItem;
+              //console.log('Questionnaire: Item:', item.linkId);
+              //console.log('Questionnaire: entityItem:', entityItem.linkId);
+            });
+          } else if (item.answerOption) {
+            mainItem = item;
+          }
+
+          /*
+          console.log(
+            'Kommet gjennom første if-testen:',
+            item.linkId,
+            item.item,
+            item.answerOption
+          );
+          */
+          return (
             <ItemAnswer
-              question={item.text}
-              linkId={item.linkId}
-              answerType={item.type}
+              entity={mainItem}
+              entityItem={subItem}
               answers={answers}
               setAnswers={setAnswers}
             />
-          </div>
-        );
+          );
+        }
+        return;
       })}
       <Knapp
         className="buttons"

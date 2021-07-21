@@ -186,15 +186,7 @@
           }
         }
       ],
-      "enableWhen": [
-        {
-          "question": "8",
-          "operator": "=",
-          "answerCoding": {
-            "code": "Y"
-          }
-        }
-      ],
+      
       "required": "true"
     },
     {
