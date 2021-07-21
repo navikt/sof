@@ -1,8 +1,7 @@
 import React, { FC, useState } from 'react';
 import { Datepicker, isISODateString } from 'nav-datovelger';
 import { Checkbox, Radio, Textarea } from 'nav-frontend-skjema';
-import Panel from 'nav-frontend-paneler';
-import { AnswerInputPop } from './AnswerInputPop';
+import { AnswerInputMultiSelect } from './AnswerInputMultiSelect';
 import './questionnaireStylesheet.css';
 
 interface IProps {
@@ -49,7 +48,7 @@ export const ItemAnswer: FC<IProps> = ({
   };
 
   const BasicDatepicker = () => {
-    //    const [date, setDate] = useState('');
+    // const [date, setDate] = useState('');
     const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
 
     return <Datepicker onChange={setStartDate} value={inputStartDate} />;
@@ -65,7 +64,7 @@ export const ItemAnswer: FC<IProps> = ({
       console.log(inputEndDate);
     }
   };
-    
+
   const testArray: Array<string> = ['Ja', 'Nei'];
 
   return (
@@ -89,14 +88,14 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'date' && question === 'Slutt' ? (
         <div>
-          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
+          <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
         </div>
       ) : answerType === 'date' ? (
         <div>
-          <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
+          <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
         </div>
       ) : answerType === 'string' ? (
-        <AnswerInputPop
+        <AnswerInputMultiSelect
           linkId={linkId}
           answers={answers}
           setAnswers={setAnswers}
