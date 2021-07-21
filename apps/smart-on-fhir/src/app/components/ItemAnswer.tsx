@@ -1,11 +1,8 @@
 import React, { FC, useState } from 'react';
-import { FnrInput, Textarea } from 'nav-frontend-skjema';
-import { Checkbox, Radio } from 'nav-frontend-skjema';
-import './questionnaireStylesheet.css';
-import DayPicker from 'react-day-picker';
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import 'react-day-picker/lib/style.css';
+import { Datepicker, isISODateString } from 'nav-datovelger';
+import { Checkbox, Radio, Textarea } from 'nav-frontend-skjema';
 import { AnswerInputPop } from './AnswerInputPop';
+import './questionnaireStylesheet.css';
 
 interface IProps {
   question: string;
@@ -71,15 +68,7 @@ export const ItemAnswer: FC<IProps> = ({
         </div>
       ) : answerType === 'date' ? (
         <div>
-          <DayPickerInput />
-        </div>
-      ) : answerType === 'integer' ? (
-        <div>
-          <FnrInput
-            label="Fødselsnummer (11 siffer)"
-            bredde="M"
-            onValidate={(val) => setValid(val)}
-          />
+          <Datepicker onChange={() => console.log('hallo')} />
         </div>
       ) : answerType === 'string' ? (
         <AnswerInputPop
@@ -94,6 +83,7 @@ export const ItemAnswer: FC<IProps> = ({
           value={inputValue}
           style={{ maxWidth: '690px' }}
           onChange={handleOnChange}
+          maxLength={0}
         ></Textarea>
       ) : (
         <></>
@@ -101,7 +91,3 @@ export const ItemAnswer: FC<IProps> = ({
     </>
   );
 };
-
-function setValid(val: boolean): void {
-  throw new Error('Function not implemented.');
-}

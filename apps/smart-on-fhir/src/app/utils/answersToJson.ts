@@ -55,7 +55,8 @@ const setValueBoolean = (item: any, value: boolean) => {
  * @param value the value to add to the items answer
  */
 const setValueInteger = (item: any, value: string) => {
-  item.answer[0].valueInteger = value;
+  const intValue = typeof value === 'string' ? parseInt(value) : value;
+  item.answer[0].valueInteger = intValue;
 };
 
 /**
@@ -94,4 +95,5 @@ export const saveAnswers = (
   });
   setAutomaticAnswers(response, patient, user);
   console.log('Json: ', response); // Logs the json file
+  return response;
 };
