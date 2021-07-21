@@ -1,6 +1,11 @@
-import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import {
+  IPatient,
+  IQuestionnaireResponse,
+} from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import { setAutomaticAnswers } from './setAutomaticAnswers';
+import Client from 'fhirclient/lib/Client';
+import { saveToServer } from './saveToServer';
 
 /**
  * Function to set a an answer in a questionnaire response, if the
@@ -62,26 +67,26 @@ const setValueInteger = (item: any, value: string) => {
 /**
  * Function to save answers in a json file.
  * @param answers a map of answers on the form [linkId: value]
- * @param response is the json file with the template of the response
+ * @param questionnaireResponse is the json file with the template of the response
  */
-export const saveAnswers = (
+export const saveAnswers = async (
   answers: Map<string, string | boolean>,
-  response: any,
-  patient?: IPatient,
-  user?:
+  questionnaireResponse: IQuestionnaireResponse,
+  patient: IPatient,
+  user:
     | fhirclient.FHIR.Patient
     | fhirclient.FHIR.Practitioner
-    | fhirclient.FHIR.RelatedPerson
-    | undefined
+    | fhirclient.FHIR.RelatedPerson,
+  client: Client
 ) => {
   answers.forEach((value, key) => {
     //Get the correct object from response.item:
-    const item = response.item.find((e: any) => e.linkId === key)
-      ? response.item.find((e: any) => e.linkId === key)
+    const item = questionnaireResponse.item?.find((e: any) => e.linkId === key)
+      ? questionnaireResponse.item.find((e: any) => e.linkId === key)
       : null;
 
     // Set the correct answer in the object
-    if (item && typeof value === 'string') {
+    if (item && item.answer && typeof value === 'string') {
       'valueString' in item.answer[0]
         ? setValueString(item, value)
         : 'valueDate' in item.answer[0]
@@ -89,11 +94,13 @@ export const saveAnswers = (
         : 'valueInteger' in item.answer[0]
         ? setValueInteger(item, value)
         : null;
-    } else if (item && typeof value === 'boolean') {
+    } else if (item && item.answer && typeof value === 'boolean') {
       'valueBoolean' in item.answer[0] ? setValueBoolean(item, value) : null;
     }
   });
-  setAutomaticAnswers(response, patient, user);
-  console.log('Json: ', response); // Logs the json file
-  return response;
+  setAutomaticAnswers(questionnaireResponse, patient, user);
+
+  saveToServer(questionnaireResponse, client, patient);
+
+  return questionnaireResponse;
 };

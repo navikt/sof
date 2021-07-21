@@ -1,9 +1,16 @@
 {
   "resourceType": "QuestionnaireResponse",
+  "id": "",
   "identifier": "",
-  "status": "inProgress",
-  "questionnaire": "./questionnairePleiepenger.json",
-  "authored": "0000-00-00",
+  "status": "in-progress",
+  "questionnaire": "Questionnaire/1339713",
+  "authored": "2021-07-19",
+  "subject": {
+    "resourceType": "Reference",
+    "id": "",
+    "reference": "",
+    "type": ""
+  },
   "item": [
     {
       "linkId": "1",
@@ -169,24 +176,6 @@
     },
     {
       "linkId": "11-automatic",
-      "text": "Pasientens fødselsnummer",
-      "answer": [
-        {
-          "valueInteger": 0
-        }
-      ]
-    },
-    {
-      "linkId": "12-automatic",
-      "text": "Pasientens navn",
-      "answer": [
-        {
-          "valueString": ""
-        }
-      ]
-    },
-    {
-      "linkId": "13-automatic",
       "text": "Legens HPR-nummer",
       "answer": [
         {
@@ -195,7 +184,7 @@
       ]
     },
     {
-      "linkId": "14-automatic",
+      "linkId": "12-automatic",
       "text": "Legens navn",
       "answer": [
         {
@@ -204,7 +193,7 @@
       ]
     },
     {
-      "linkId": "15-automatic",
+      "linkId": "13-automatic",
       "text": "Legens telefonnummer",
       "answer": [
         {
@@ -213,7 +202,7 @@
       ]
     },
     {
-      "linkId": "16-automatic",
+      "linkId": "14-automatic",
       "text": "Sykehusets navn",
       "answer": [
         {
@@ -222,7 +211,7 @@
       ]
     },
     {
-      "linkId": "17-automatic",
+      "linkId": "15-automatic",
       "text": "Sykehusets adresse",
       "answer": [
         {
