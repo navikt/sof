@@ -6,6 +6,13 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
+import { saveQuestionnaire } from '../utils/saveQuestionnaire';
+import {
+  IPatient,
+  IQuestionnaireResponse,
+} from '@ahryman40k/ts-fhir-types/lib/R4';
+import { fhirclient } from 'fhirclient/lib/types';
+import Client from 'fhirclient/lib/Client';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -15,7 +22,7 @@ export const Questionnaire = () => {
   const questionnaire = questionnairePleiepenger;
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const { patient, user } = useFhirContext();
+  const { patient, user, client } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -44,11 +51,28 @@ export const Questionnaire = () => {
     });
   };
 
-  // Laster spørsmålene fra Questionnaire til questions-listen
+  // Saves questions from Questionnaire to the questions list
   useEffect(() => {
     getItemChildren(questionnaire);
     setLoading(false);
   }, [loading]);
+
+  // Function to make sure all values sent to saveAnswers are defined.
+  const clickSave = (
+    answers: Map<string, string | boolean>,
+    response: any,
+    patient: IPatient | undefined,
+    user:
+      | fhirclient.FHIR.Patient
+      | fhirclient.FHIR.Practitioner
+      | fhirclient.FHIR.RelatedPerson
+      | undefined,
+    client: Client | undefined
+  ) => {
+    if (answers && response && patient && user && client) {
+      saveAnswers(answers, response, patient, user, client);
+    }
+  };
 
   return (
     <>
@@ -84,10 +108,13 @@ export const Questionnaire = () => {
       })}
       <Hovedknapp
         button-general
-        onClick={() => saveAnswers(answers, response, patient, user)}
+        onClick={() => clickSave(answers, response, patient, user, client)}
       >
         Lagre
       </Hovedknapp>
+
+      {/*This button is here temporarily to make it easy to save a questionnaire in the EHR launcer*/}
+      <button onClick={() => saveQuestionnaire(client)}>Lagre et skjema</button>
 
       {console.log('A:', answers)}
     </>
