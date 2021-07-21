@@ -1,6 +1,6 @@
 import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
-import questionnaireResponse from '../json-files/questionnaireResponse.json';
+import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';

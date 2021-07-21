@@ -1,8 +1,3 @@
-import { getUserName } from './getUserName';
-import { getUserPhoneNumber } from './getUserPhoneNumber';
-import { getHospitalName } from './getHospitalName';
-import { getHospitalAdress } from './getHospitalAdress';
-import { getUserHPR } from './getUserHPR';
 import { fhirclient } from 'fhirclient/lib/types';
 import {
   IPatient,
@@ -25,28 +20,18 @@ export const setAutomaticAnswers = (
     | fhirclient.FHIR.RelatedPerson
 ) => {
   setSubject(response, patient);
-  setPractitionerHPR(
-    findCorrectItemObjectByText(response, 'Legens HPR-nummer'),
-    user
-  );
-  setPractitionerName(
-    findCorrectItemObjectByText(response, 'Legens navn'),
-    user
-  );
+  setAuthor(response, user);
 
-  // The following three function calls use methods that does not currently do anything:
-  setPractitionerPhoneNumber(
-    findCorrectItemObjectByText(response, 'Legens telefonnummer'),
-    user
-  );
-  setHospitalName(
+  // The following three function calls use methods that does not currently do anything
+  // and have therefore been temporerily removed:
+  /*setHospitalName(
     findCorrectItemObjectByText(response, 'Sykehusets navn'),
     user
   );
   setHospitalAdress(
     findCorrectItemObjectByText(response, 'Sykehusets adresse'),
     user
-  );
+  );*/
 };
 
 /**
@@ -76,50 +61,20 @@ const setSubject = (response: IQuestionnaireResponse, patient: IPatient) => {
 };
 
 /**
- * Function to set the correct practitioner HPR number in the json template
+ * Function to set the author (typically Practitioner) in the json template
  * @param item an object from the item array
  * @param user the user of the EHR, typically a doctor
  */
-const setPractitionerHPR = (
-  item: any,
+const setAuthor = (
+  response: IQuestionnaireResponse,
   user:
     | fhirclient.FHIR.Patient
     | fhirclient.FHIR.Practitioner
     | fhirclient.FHIR.RelatedPerson
 ) => {
-  console.log('HPR: ', getUserHPR(user));
-  console.log('user: ', user);
-  user ? (item.answer[0].valueInteger = getUserHPR(user)) : null;
-};
-
-/**
- * Function to set the correct practitioner name in the json template
- * @param item an object from the item array
- * @param user the user of the EHR, typically a doctor
- */
-const setPractitionerName = (
-  item: any,
-  user:
-    | fhirclient.FHIR.Patient
-    | fhirclient.FHIR.Practitioner
-    | fhirclient.FHIR.RelatedPerson
-) => {
-  user ? (item.answer[0].valueString = getUserName(user)) : null;
-};
-
-/**
- * Function to set the correct practitioner phone number in the json template
- * @param item an object from the item array
- * @param user the user of the EHR, typically a doctor
- */
-const setPractitionerPhoneNumber = (
-  item: any,
-  user:
-    | fhirclient.FHIR.Patient
-    | fhirclient.FHIR.Practitioner
-    | fhirclient.FHIR.RelatedPerson
-) => {
-  user ? (item.answer[0].valueInteger = getUserPhoneNumber(user)) : null;
+  response.author
+    ? (response.author.reference = `Practitioner/${user.id}`)
+    : null;
 };
 
 /**
@@ -127,7 +82,7 @@ const setPractitionerPhoneNumber = (
  * @param item an object from the item array
  * @param user the user of the EHR, typically a doctor
  */
-const setHospitalName = (
+/* const setHospitalName = (
   item: any,
   user:
     | fhirclient.FHIR.Patient
@@ -135,14 +90,14 @@ const setHospitalName = (
     | fhirclient.FHIR.RelatedPerson
 ) => {
   user ? (item.answer[0].valueString = getHospitalName(user)) : null;
-};
+};*/
 
 /**
  * Function to set the correct hospital adress in the json template
  * @param item an object from the item array
  * @param user the user of the EHR, typically a doctor
  */
-const setHospitalAdress = (
+/*const setHospitalAdress = (
   item: any,
   user:
     | fhirclient.FHIR.Patient
@@ -150,4 +105,4 @@ const setHospitalAdress = (
     | fhirclient.FHIR.RelatedPerson
 ) => {
   user ? (item.answer[0].valueString = getHospitalAdress(user)) : null;
-};
+};*/
