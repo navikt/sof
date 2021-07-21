@@ -1,12 +1,9 @@
 import React, { FC, useState } from 'react';
-import { Textarea } from 'nav-frontend-skjema';
-import { Input } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
-import { Checkbox } from 'nav-frontend-skjema';
-import { Radio } from 'nav-frontend-skjema';
-import './questionnaireStylesheet.css';
 import { Datepicker, isISODateString } from 'nav-datovelger';
+import { Checkbox, Radio, Textarea } from 'nav-frontend-skjema';
 import Panel from 'nav-frontend-paneler';
+import { AnswerInputPop } from './AnswerInputPop';
+import './questionnaireStylesheet.css';
 
 interface IProps {
   question: string;
@@ -68,9 +65,7 @@ export const ItemAnswer: FC<IProps> = ({
       console.log(inputEndDate);
     }
   };
-
-  // TODO: create a method that updates answers when a radio button is clicked
-
+    
   const testArray: Array<string> = ['Ja', 'Nei'];
 
   return (
@@ -101,12 +96,11 @@ export const ItemAnswer: FC<IProps> = ({
           <BasicDatepicker onChange={handleDateInput}></BasicDatepicker>
         </div>
       ) : answerType === 'string' ? (
-        <div style={{ display: 'flex' }}>
-          <Input style={{ maxWidth: '690px' }} onChange={handleOnChange} />
-          <Knapp mini style={{ marginLeft: '10px' }}>
-            Legg til
-          </Knapp>
-        </div>
+        <AnswerInputPop
+          linkId={linkId}
+          answers={answers}
+          setAnswers={setAnswers}
+        />
       ) : answerType === 'text' ? (
         <Textarea
           label=""
