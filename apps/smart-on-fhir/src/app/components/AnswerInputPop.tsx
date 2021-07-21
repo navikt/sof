@@ -55,10 +55,12 @@ export const AnswerInputPop: React.FC<IProps> = ({
   };
 
   const displayElements = (element: string) => {
-    // Sammenligner elementene med inputfeltteksten && sjekker om elementet allerede er valgt
+    // Sammenligner elementene med inputfeltteksten && sjekker om elementet allerede er valgt og at det er i tekstformat
+    const tempAnswer = answers.get(linkId);
     if (
       element.toLowerCase().includes(inputValue.toLowerCase()) &&
-      !answers.get(linkId)?.includes(element)
+      typeof tempAnswer === 'string' &&
+      !tempAnswer.includes(element)
     ) {
       return (
         <Flatknapp
