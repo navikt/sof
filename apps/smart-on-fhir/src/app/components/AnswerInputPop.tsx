@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Input } from 'nav-frontend-skjema';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
-import Popover from 'nav-frontend-popover';
+import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 
 interface IProps {
   linkId: string;
@@ -16,14 +16,15 @@ export const AnswerInputPop: React.FC<IProps> = ({
   answers,
   setAnswers,
 }) => {
-  const [value, setValue] = useState('');
   const [inputValue, setInputValue] = useState('');
-  const [valueList, setValueList] = useState<string[]>([]);
+  const [tempValueList, setTempValueList] = useState<string[]>([]);
   const [anker, setAnker] = useState(undefined);
 
-  const [dataElements] = useState([
+  const [exampleElements] = useState([
     'F41.9: Uspesifisert angstlidelse',
     'F50: Spiseforstyrrelser',
+    'F50.0: Anorexia nervosa',
+    'F50.2: Bulimia nervosa',
     'F84.0: Barneautisme',
     'F93.1: Fobisk angstlidelse i barndommen',
     'R53: Uvelhet og tretthet',
@@ -32,40 +33,32 @@ export const AnswerInputPop: React.FC<IProps> = ({
   ]);
 
   const handleOnChange = (e: any) => {
-    console.log('Input: ', e.target.value);
     setInputValue(e.target.value);
   };
 
   const handleOnFocus = (e: any) => {
+    // Viser popovervinduet når inputfeltet er fokusert
     setAnker(e.currentTarget);
   };
 
-  const handleAddElement = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    if (valueList.length > 1) {
-      copiedAnswers.set(linkId, '[' + valueList.toString() + ']');
-    } else {
-      copiedAnswers.set(linkId, valueList.toString());
+  const handleAddElement = () => {
+    // Legger til valgt element i listen over valgte elementer
+    if (!tempValueList.includes(inputValue)) {
+      setTempValueList((prevState) => [...prevState, inputValue]);
     }
-    setAnswers(copiedAnswers);
-    setInputValue(''); // Tømmer inputfeltet for tekst
   };
 
-  const handleChooseElement = (e: any, element: string) => {
-    if (!valueList.includes(element)) {
-      setValueList((prevState) => [...prevState, element]);
-    }
-    console.log('Ch: ', e.target.innerHTML);
+  const handleChooseElement = (e: any) => {
+    // Setter valgt element som inputfelttekst
     setInputValue(e.target.innerHTML);
     setAnker(undefined);
   };
 
-  const displayElement = (element: string) => {
-    console.log('Display E: ', element);
-    console.log('Display I: ', inputValue);
+  const displayElements = (element: string) => {
+    // Sammenligner elementene med inputfeltteksten && sjekker om elementet allerede er valgt
     if (
       element.toLowerCase().includes(inputValue.toLowerCase()) &&
-      !valueList.includes(element)
+      !answers.get(linkId)?.includes(element)
     ) {
       return (
         <Flatknapp
@@ -74,8 +67,9 @@ export const AnswerInputPop: React.FC<IProps> = ({
             width: '100%',
             textAlign: 'left',
           }}
+          mini
           onClick={(e: any) => {
-            handleChooseElement(e, element);
+            handleChooseElement(e);
           }}
         >
           {element}
@@ -84,6 +78,18 @@ export const AnswerInputPop: React.FC<IProps> = ({
     }
     return <></>;
   };
+
+  useEffect(() => {
+    // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts
+    const copiedAnswers = new Map(answers);
+    if (tempValueList.length > 1) {
+      copiedAnswers.set(linkId, '[' + tempValueList.toString() + ']');
+    } else {
+      copiedAnswers.set(linkId, tempValueList.toString());
+    }
+    setAnswers(copiedAnswers);
+    setInputValue(''); // Tømmer inputfeltet for tekst
+  }, [tempValueList]);
 
   return (
     <>
@@ -97,18 +103,22 @@ export const AnswerInputPop: React.FC<IProps> = ({
         <Popover
           ankerEl={anker}
           onRequestClose={() => setAnker(undefined)}
-          orientering="under-venstre"
+          orientering={PopoverOrientering.UnderVenstre}
           autoFokus={false}
           utenPil
         >
-          {dataElements.map((dataElem: string) => {
-            return displayElement(dataElem);
+          {exampleElements.map((dataElem: string) => {
+            return displayElements(dataElem);
           })}
         </Popover>
         <Knapp mini style={{ marginLeft: '10px' }} onClick={handleAddElement}>
           Legg til
         </Knapp>
       </div>
+      {/* Midlertidig visning av de valgte elementene */}
+      <p>
+        <b>{answers.get(linkId)}</b>
+      </p>
     </>
   );
 };
