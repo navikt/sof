@@ -1,0 +1,10 @@
+version: '3.1'
+
+services:
+  smart-on-fhir:
+    build:
+      context: '.'
+      args:
+        APPNAME: smart-on-fhir
+    ports:
+      - 8042:2022
