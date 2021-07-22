@@ -107,8 +107,8 @@ export const AnswerInputMultiSelect: React.FC<IProps> = ({
           autoFokus={false}
           utenPil
         >
-          {exampleElements.map((dataElem: string) => {
-            return displayElements(dataElem);
+          {exampleElements.map((dataElem: string, index: number) => {
+            return <div key={linkId + index}>{displayElements(dataElem)}</div>;
           })}
         </Popover>
         <Knapp mini style={{ marginLeft: '10px' }} onClick={handleAddElement}>

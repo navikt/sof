@@ -32,10 +32,11 @@ export const AnswerInputRadiobuttons: FC<IProps> = ({
 
   return (
     <>
-      {answerOptions?.map((option: any) => {
+      {answerOptions?.map((option: any, index: number) => {
         const displayText: string = option.valueCoding.display;
         return (
           <Radio
+            key={linkId + index}
             label={displayText}
             name={'group' + linkId}
             onChange={() => handleOnChange(displayText)}
