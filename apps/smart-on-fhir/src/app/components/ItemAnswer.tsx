@@ -1,14 +1,9 @@
 import React, { FC, useState } from 'react';
-import { Textarea } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
-import { Checkbox } from 'nav-frontend-skjema';
-import { Radio } from 'nav-frontend-skjema';
 import './questionnaireStylesheet.css';
-import { Datepicker, isISODateString } from 'nav-datovelger';
-import { Undertittel } from 'nav-frontend-typografi';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import TextareaItem from '../items/TextareaItem';
 import InputItem from '../items/InputItem';
+import CheckboxItem from '../items/CheckboxItem';
+import DatepickerItem from '../items/DatepickerItem';
 
 interface IProps {
   entity: any;
@@ -34,9 +29,6 @@ export const ItemAnswer: FC<IProps> = ({
   setAnswers,
 }) => {
   const [inputValue, setInputValue] = useState('');
-  const [answerOptions, setAnswerOptions] = useState([]);
-  const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
-  const [inputEndDate, setEndDate] = useState('dd.mm.åååå');
 
   const handleOnChange = (e: any) => {
     const copiedAnswers = new Map(answers);
@@ -51,67 +43,65 @@ export const ItemAnswer: FC<IProps> = ({
     setAnswers(copiedAnswers);
   };
 
-  const BasicDatepicker = () => {
-    //    const [date, setDate] = useState('');
-    const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+  let itemHelptext: string = '';
+  let arrayOfItems: Array<string> = [];
 
-    return <Datepicker onChange={setStartDate} value={inputStartDate} />;
-  };
-
-  //Method: fetch and save input dates to array
-  const handleDateInput = (e: any) => {
-    if (entityItems[0].text === 'Start') {
-      setStartDate(e);
-      console.log(inputStartDate);
-    } else if (entityItems[1].text === 'Slutt') {
-      setEndDate(e);
-      console.log(inputEndDate);
-    }
-  };
-
-  // TODO: create a method that updates answers when a radio button is clicked
-
-  const testArray: Array<string> = ['Ja', 'Nei'];
-
-  if (entity != undefined) {
-    console.log(
-      'Kommer fra ItemAnswer. LinkId:',
-      entity.linkId,
-      'type til hoved:',
-      entity.type
-    );
-    if (entityItems != undefined) {
-      entityItems.forEach((item) =>
-        console.log('Hver item:', item.linkId, 'type: ', item.type)
-      );
-    }
+  if (entityItems != undefined && entity.answerOption == undefined) {
+    entityItems.forEach((element) => {
+      if (element.linkId.includes('help')) {
+        itemHelptext = element.text;
+      } else if (element.linkId.includes('.')) {
+        arrayOfItems.push(element.text);
+        console.log(element.text);
+      }
+    });
   }
 
-  return (
-    <>
-      {entityItems[0] != undefined && entityItems[0].linkId.includes('help') ? (
-        <div>
-          <TextareaItem
-            question={entity.text}
-            helptext={entityItems[0].text}
-          ></TextareaItem>
-        </div>
-      ) : entityItems[0] != undefined && entityItems[0].linkId.includes('.') ? (
-        <>
-          {' '}
-          <div>
-            <Undertittel> {entity.text} </Undertittel>
-            {entityItems.map((item, id) => (
-              <TextareaItem question={item.text}></TextareaItem>
-            ))}
-          </div>
-        </>
-      ) : (
-        <>
-          {' '}
-          <InputItem question={entity.text}></InputItem>{' '}
-        </>
-      )}
-    </>
-  );
+  const renderSwitch = () => {
+    switch (entity.type) {
+      case 'text':
+        return 'text';
+        break;
+      case 'string':
+        return 'string';
+      case 'group':
+        if (entityItems[1].type === 'boolean') {
+          return 'boolean';
+        } else if (entityItems[1].type === 'date') {
+          return 'date';
+        } else {
+          return 'nothing';
+        }
+      default:
+        return 'nothing';
+        break;
+    }
+  };
+
+  return {
+    text: (
+      <TextareaItem
+        question={entity.text}
+        helptext={itemHelptext}
+      ></TextareaItem>
+    ),
+    string: (
+      <InputItem question={entity.text} helptext={itemHelptext}></InputItem>
+    ),
+    boolean: (
+      <CheckboxItem
+        question={entity.text}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+      ></CheckboxItem>
+    ),
+    date: (
+      <DatepickerItem
+        question={entity.text}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+      ></DatepickerItem>
+    ),
+    nothing: <p></p>,
+  }[renderSwitch()];
 };

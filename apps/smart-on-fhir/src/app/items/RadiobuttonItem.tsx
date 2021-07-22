@@ -6,13 +6,17 @@ const handleOnChange = () => {};
 //Expects to receive an array and a text
 const RadiobuttonItem = (props: any) => {
   const optionarray: Array<any> = props.answeroptions;
+  optionarray.forEach((element) => {
+    console.log('Fra radiobutton:', element);
+  });
   return (
     <>
-      {props.helptext != undefined ? (
+      {props.helptext != '' ? (
         <div>
           <RadioGruppe legend={props.question}>
-            {optionarray.map((item, id) => (
+            {optionarray.map((item) => (
               <Radio
+                key={item}
                 label={
                   <div style={{ display: 'flex' }}>
                     {props.question}
@@ -21,7 +25,7 @@ const RadiobuttonItem = (props: any) => {
                     </Hjelpetekst>
                   </div>
                 }
-                name={item.text}
+                name={item}
               />
             ))}
           </RadioGruppe>
@@ -30,8 +34,8 @@ const RadiobuttonItem = (props: any) => {
       ) : (
         <div>
           <RadioGruppe legend={props.question}>
-            {optionarray.map((item, id) => (
-              <Radio label={item.text} name={item.text} />
+            {optionarray.map((item) => (
+              <Radio key={item} label={item} name={item} />
             ))}
           </RadioGruppe>
           ;

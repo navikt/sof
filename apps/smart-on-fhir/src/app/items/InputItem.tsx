@@ -7,7 +7,7 @@ const handleOnChange = () => {};
 const InputItem = (props: any) => {
   return (
     <>
-      {props.helptext !== undefined ? (
+      {props.helptext !== '' ? (
         <div>
           <Input
             bredde="fullbredde"

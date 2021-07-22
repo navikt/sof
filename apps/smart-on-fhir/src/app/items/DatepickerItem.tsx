@@ -1,18 +1,13 @@
 import { Datepicker, isISODateString } from 'nav-datovelger';
 import { useState } from 'react';
-import { Normaltekst } from 'nav-frontend-typografi';
+import { Normaltekst, Undertittel, Element } from 'nav-frontend-typografi';
 
 const handleOnChange = () => {};
-
-const BasicDatepicker = () => {
-  const [date, setDate] = useState('');
-  return <Datepicker onChange={handleOnChange} value={date} />;
-};
 
 //Expects to receive an array with texts for "start" and "end"
 const DatepickerItem = (props: any) => {
   const [date, setDate] = useState();
-  const dateInfo: Array<any> = props.answeroptions;
+  const optionarray: Array<any> = props.answeroptions;
 
   const d = new Date();
   const todayISO = `${d.getFullYear()}-${('0' + (d.getMonth() + 2)).slice(
@@ -21,10 +16,12 @@ const DatepickerItem = (props: any) => {
 
   return (
     <>
-      {dateInfo.map((item, id) => (
+      <Element>{props.question}</Element>
+      {optionarray.map((item) => (
         <div>
-          <Normaltekst>{item.text}</Normaltekst>
+          <Normaltekst key={item}>{item}</Normaltekst>
           <Datepicker
+            key={props.question + item}
             locale={'nb'}
             inputId={''}
             value={date}

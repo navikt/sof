@@ -6,17 +6,21 @@ const handleOnChange = () => {};
 //Expects to receive an array and a text
 const CheckboxItem = (props: any) => {
   const optionarray: Array<any> = props.answeroptions;
+  optionarray.forEach((element) => {
+    console.log('CheckboxItem:', element);
+  });
 
   return (
     <>
-      {props.helptext != undefined ? (
+      {props.helptext != '' ? (
         <div>
           <CheckboxGruppe legend={props.question}>
-            {optionarray.map((item, id) => (
+            {optionarray.map((item) => (
               <Checkbox
+                key={item}
                 label={
                   <div style={{ display: 'flex' }}>
-                    {props.question}
+                    {item}
                     <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                       {props.helptext}
                     </Hjelpetekst>
@@ -31,8 +35,8 @@ const CheckboxItem = (props: any) => {
       ) : (
         <div>
           <CheckboxGruppe legend={props.question}>
-            {optionarray.map((item, id) => (
-              <Checkbox label={item.text} name={item.text} />
+            {optionarray.map((item) => (
+              <Checkbox key={item} label={item} name={item.text} />
             ))}
           </CheckboxGruppe>
         </div>

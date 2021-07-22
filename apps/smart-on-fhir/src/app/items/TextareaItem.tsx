@@ -6,7 +6,7 @@ const handleOnChange = () => {};
 const TextareaItem = (props: any) => {
   return (
     <>
-      {props.helptext != undefined ? (
+      {props.helptext != '' ? (
         <div>
           <Textarea
             label={
