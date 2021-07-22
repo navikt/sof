@@ -126,7 +126,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         );
       })}
       <Hovedknapp
-        button-general
         onClick={() => clickSave(answers, response, patient, user, client)}
       >
         Lagre
