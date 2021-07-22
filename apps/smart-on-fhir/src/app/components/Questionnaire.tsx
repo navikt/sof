@@ -66,7 +66,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     <>
       {questions.map((item: any) => {
         let mainItem: any;
-        let subItem: any;
+        let subItems: any[] = [];
         //console.log(item.linkId, item.item);
         if (
           !item.linkId.includes('automatic') &&
@@ -76,7 +76,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
           mainItem = item;
           if (item.item !== undefined) {
             item.item.map((entityItem: any) => {
-              subItem = entityItem;
+              subItems.push(entityItem);
               //console.log('Questionnaire: Item:', item.linkId);
               //console.log('Questionnaire: entityItem:', entityItem.linkId);
             });
@@ -95,7 +95,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
           return (
             <ItemAnswer
               entity={mainItem}
-              entityItem={subItem}
+              entityItems={subItems}
               answers={answers}
               setAnswers={setAnswers}
             />

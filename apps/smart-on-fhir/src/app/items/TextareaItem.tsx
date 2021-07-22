@@ -1,4 +1,3 @@
-import React from 'react';
 import { Textarea } from 'nav-frontend-skjema';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 
@@ -7,13 +6,13 @@ const handleOnChange = () => {};
 const TextareaItem = (props: any) => {
   return (
     <>
-      {props.helptext !== undefined ? (
+      {props.helptext != undefined ? (
         <div>
           <Textarea
             label={
               <div style={{ display: 'flex' }}>
                 {props.question}
-                <Hjelpetekst style={{ marginLeft: '10px' }}>
+                <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                   {props.helptext}
                 </Hjelpetekst>
               </div>

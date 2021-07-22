@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react';
 import { Textarea } from 'nav-frontend-skjema';
-import { Input } from 'nav-frontend-skjema';
 import { Knapp } from 'nav-frontend-knapper';
 import { Checkbox } from 'nav-frontend-skjema';
 import { Radio } from 'nav-frontend-skjema';
@@ -9,10 +8,11 @@ import { Datepicker, isISODateString } from 'nav-datovelger';
 import { Undertittel } from 'nav-frontend-typografi';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import TextareaItem from '../items/TextareaItem';
+import InputItem from '../items/InputItem';
 
 interface IProps {
   entity: any;
-  entityItem: any;
+  entityItems: any[];
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
@@ -29,7 +29,7 @@ interface IProps {
  */
 export const ItemAnswer: FC<IProps> = ({
   entity,
-  entityItem,
+  entityItems,
   answers,
   setAnswers,
 }) => {
@@ -60,10 +60,10 @@ export const ItemAnswer: FC<IProps> = ({
 
   //Method: fetch and save input dates to array
   const handleDateInput = (e: any) => {
-    if (entityItem.text === 'Start') {
+    if (entityItems[0].text === 'Start') {
       setStartDate(e);
       console.log(inputStartDate);
-    } else if (entityItem.text === 'Slutt') {
+    } else if (entityItems[1].text === 'Slutt') {
       setEndDate(e);
       console.log(inputEndDate);
     }
@@ -72,35 +72,45 @@ export const ItemAnswer: FC<IProps> = ({
   // TODO: create a method that updates answers when a radio button is clicked
 
   const testArray: Array<string> = ['Ja', 'Nei'];
-  /* 
-if (entity != undefined) {
-  console.log('Kommer fra ItemAnswer. LinkId:', entity.linkId);
-  if (entityItem != undefined) {
+
+  if (entity != undefined) {
     console.log(
-      'ItemAnswer: Skriver ut entityItem for id:',
-      entityItem.linkId
+      'Kommer fra ItemAnswer. LinkId:',
+      entity.linkId,
+      'type til hoved:',
+      entity.type
     );
+    if (entityItems != undefined) {
+      entityItems.forEach((item) =>
+        console.log('Hver item:', item.linkId, 'type: ', item.type)
+      );
+    }
   }
-}
-*/
 
   return (
     <>
-      {entityItem != undefined && entityItem.linkId.includes('help') ? (
+      {entityItems[0] != undefined && entityItems[0].linkId.includes('help') ? (
         <div>
           <TextareaItem
             question={entity.text}
-            helptext={entityItem.text}
+            helptext={entityItems[0].text}
           ></TextareaItem>
         </div>
-      ) : entity ? (
-        <p className="typo-undertittel">{entity.text}</p>
-      ) : entityItem != undefined && entityItem.linkId.includes('.') ? (
-        <div>
-          <p className="typo-undertittel">{entityItem.text}</p>
-        </div>
+      ) : entityItems[0] != undefined && entityItems[0].linkId.includes('.') ? (
+        <>
+          {' '}
+          <div>
+            <Undertittel> {entity.text} </Undertittel>
+            {entityItems.map((item, id) => (
+              <TextareaItem question={item.text}></TextareaItem>
+            ))}
+          </div>
+        </>
       ) : (
-        <></>
+        <>
+          {' '}
+          <InputItem question={entity.text}></InputItem>{' '}
+        </>
       )}
     </>
   );
