@@ -54,7 +54,10 @@ const findCorrectItemObjectByText = (
  * the json template.
  * @param patient the patient we are logged in at in the EHR
  */
-const setSubject = (response: IQuestionnaireResponse, patient: IPatient) => {
+export const setSubject = (
+  response: IQuestionnaireResponse,
+  patient: IPatient
+) => {
   response.subject
     ? (response.subject.reference = `Patient/${patient.id}`)
     : null;
@@ -65,7 +68,7 @@ const setSubject = (response: IQuestionnaireResponse, patient: IPatient) => {
  * @param item an object from the item array
  * @param user the user of the EHR, typically a doctor
  */
-const setAuthor = (
+export const setAuthor = (
   response: IQuestionnaireResponse,
   user:
     | fhirclient.FHIR.Patient
