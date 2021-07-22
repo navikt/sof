@@ -13,7 +13,7 @@ import { saveToServer } from './saveToServer';
  * @param item an object in the questionnare response's item array
  * @param value the value to add to the items answer
  */
-const setValueString = (item: any, value: string) => {
+export const setValueString = (item: any, value: string) => {
   item.answer[0].valueString = value;
 };
 
@@ -24,22 +24,37 @@ const setValueString = (item: any, value: string) => {
  * @param value the value to add to the items answer
  */
 export const setValueDate = (item: any, value: string) => {
-  console.log('value: ', value);
+  let listOfDates: string[] = [];
   if (value) {
-    item.answer = []; // Start with an empty array
-  }
-  if (value[0] === '[') {
-    // If item is a string representing a list of dates,
-    // make one answer for each date
+    // if value is not empty, start with an empty list:
+    item.answer = [];
 
-    const listOfDates: string[] = JSON.parse(value);
+    if (value[0] === '[') {
+      // If item is a string representing a list of dates,
+      // the string must be parsed:
+      listOfDates = JSON.parse(value);
+    } else {
+      // if it is just one date, make a list with the date
+      // so that we can iterate trough it later
+      listOfDates = [value];
+    }
 
     for (let i: number = 0; i < listOfDates.length; i++) {
-      item.answer.push({ valueDate: listOfDates[i] });
+      // check that the date is on the form YYYY-MM-DD, and push the date to the answer-list
+      if (
+        /([0-9]([0-9]([0-9][1-9]|[1-9]0)|[1-9]00)|[1-9]000)(-(0[1-9]|1[0-2]))(-(0[1-9]|[1-2][0-9]|3[0-1]))/.test(
+          listOfDates[i]
+        )
+      ) {
+        item.answer.push({ valueDate: listOfDates[i] });
+      } else {
+        throw new Error(
+          'The value is either non existent or it is not on the right format. The format shpould be YYYY-MM-DD'
+        );
+      }
     }
   } else {
-    // If item is just one date
-    item.answer.push({ valueDate: value });
+    item.answer = [{ valueDate: '' }]; // reset dates if no date is given
   }
 };
 
@@ -49,7 +64,7 @@ export const setValueDate = (item: any, value: string) => {
  * @param item an object in the questionnare response's item array
  * @param value the value to add to the items answer
  */
-const setValueBoolean = (item: any, value: boolean) => {
+export const setValueBoolean = (item: any, value: boolean) => {
   item.answer[0].valueBoolean = value;
 };
 
@@ -59,7 +74,7 @@ const setValueBoolean = (item: any, value: boolean) => {
  * @param item an object in the questionnare response's item array
  * @param value the value to add to the items answer
  */
-const setValueInteger = (item: any, value: string) => {
+export const setValueInteger = (item: any, value: string) => {
   const intValue = typeof value === 'string' ? parseInt(value) : value;
   item.answer[0].valueInteger = intValue;
 };
