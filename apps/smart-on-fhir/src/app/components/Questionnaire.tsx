@@ -78,8 +78,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   };
   useEffect(() => {
     props.createHeader(questionnaire.title, questionnaire.description);
-    console.log(questionnaire.title);
-    console.log(questionnaire.description);
   }, [questionnaire]);
 
   return (
@@ -128,7 +126,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         );
       })}
       <Hovedknapp
-        button-general
         onClick={() => clickSave(answers, response, patient, user, client)}
       >
         Lagre

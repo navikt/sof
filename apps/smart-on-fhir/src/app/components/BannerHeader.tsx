@@ -11,18 +11,8 @@ export const BannerHeader = () => {
   return (
     <div className="nav-header-container">
       <img className="logo" src={Hvit} alt="Hvit NAV-logo" />
-      <div className="name-container">
-        <table>
-          <tr>
-            <th>
-              <Child id="child-logo" />
-            </th>
-            <th>
-              <Element id="child-name">{getPatientName(patient)}</Element>
-            </th>
-          </tr>
-        </table>
-      </div>
+      <Child id="child-logo" />
+      <Element id="child-name">{getPatientName(patient)}</Element>
       <div className="bandline"></div>
     </div>
   );
