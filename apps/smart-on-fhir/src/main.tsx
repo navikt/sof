@@ -1,15 +1,17 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import App from './app/app';
 import { FhirContextProvider } from './app/context/fhirContext';
+import { LandingPage } from './app/LandingPage';
 
 ReactDOM.render(
   <StrictMode>
     <BrowserRouter>
       <FhirContextProvider>
-        <App />
+        <Route path="/skjema" component={App} exact />
+        <Route path="/" component={LandingPage} exact />
       </FhirContextProvider>
     </BrowserRouter>
   </StrictMode>,
