@@ -8,7 +8,7 @@ import './questionnaireStylesheet.css';
 import { Datepicker, isISODateString } from 'nav-datovelger';
 import { Undertittel } from 'nav-frontend-typografi';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
-import { Questionnaire_ItemTypeKind } from '@ahryman40k/ts-fhir-types/lib/R4';
+import TextareaItem from '../items/TextareaItem';
 
 interface IProps {
   entity: any;
@@ -88,20 +88,10 @@ if (entity != undefined) {
     <>
       {entityItem != undefined && entityItem.linkId.includes('help') ? (
         <div>
-          <span
-            className="typo-undertittel"
-            id="mitt-faguttrykk"
-            aria-describedby="min-hjelpetekst"
-          >
-            {entity.text}
-          </span>
-          <Hjelpetekst
-            id="min-hjelpetekst"
-            aria-labelledby="mitt-faguttrykk"
-            style={{ marginLeft: '10px' }}
-          >
-            {entityItem.text}
-          </Hjelpetekst>
+          <TextareaItem
+            question={entity.text}
+            helptext={entityItem.text}
+          ></TextareaItem>
         </div>
       ) : entity ? (
         <p className="typo-undertittel">{entity.text}</p>
