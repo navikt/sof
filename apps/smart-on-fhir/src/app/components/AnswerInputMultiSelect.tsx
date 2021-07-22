@@ -55,12 +55,12 @@ export const AnswerInputMultiSelect: React.FC<IProps> = ({
   };
 
   const displayElements = (element: string) => {
-    // Sammenligner elementene med inputfeltteksten && sjekker om elementet allerede er valgt og at det er i tekstformat
+    // Sammenligner elementene med inputfeltteksten && sjekker om elementet allerede er valgt
     const tempAnswer = answers.get(linkId);
     if (
       element.toLowerCase().includes(inputValue.toLowerCase()) &&
-      typeof tempAnswer === 'string' &&
-      !tempAnswer.includes(element)
+      (tempAnswer === undefined ||
+        (typeof tempAnswer === 'string' && !tempAnswer.includes(element)))
     ) {
       return (
         <Flatknapp
@@ -70,9 +70,7 @@ export const AnswerInputMultiSelect: React.FC<IProps> = ({
             textAlign: 'left',
           }}
           mini
-          onClick={(e: any) => {
-            handleChooseElement(e);
-          }}
+          onClick={handleChooseElement}
         >
           {element}
         </Flatknapp>

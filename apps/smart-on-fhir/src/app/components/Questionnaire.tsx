@@ -78,8 +78,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   };
   useEffect(() => {
     props.createHeader(questionnaire.title, questionnaire.description);
-    console.log(questionnaire.title);
-    console.log(questionnaire.description);
   }, [questionnaire]);
 
   return (

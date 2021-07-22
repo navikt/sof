@@ -1,7 +1,8 @@
 import React, { FC, useState } from 'react';
-import { Datepicker, isISODateString } from 'nav-datovelger';
-import { Checkbox, Radio, Textarea } from 'nav-frontend-skjema';
+import { Datepicker } from 'nav-datovelger';
+import { Checkbox, Textarea } from 'nav-frontend-skjema';
 import { AnswerInputMultiSelect } from './AnswerInputMultiSelect';
+import { AnswerInputRadiobuttons } from './AnswerInputRadiobuttons';
 import './questionnaireStylesheet.css';
 
 interface IProps {
@@ -30,7 +31,6 @@ export const ItemAnswer: FC<IProps> = ({
   setAnswers,
 }) => {
   const [inputValue, setInputValue] = useState('');
-  const [answerOptions, setAnswerOptions] = useState([]);
   const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
   const [inputEndDate, setEndDate] = useState('dd.mm.åååå');
 
@@ -39,12 +39,6 @@ export const ItemAnswer: FC<IProps> = ({
     copiedAnswers.set(linkId, e.target.value);
     setAnswers(copiedAnswers);
     setInputValue(e.target.value);
-  };
-
-  const handleOnChecked = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, e.target.checked);
-    setAnswers(copiedAnswers);
   };
 
   const BasicDatepicker = () => {
@@ -65,7 +59,27 @@ export const ItemAnswer: FC<IProps> = ({
     }
   };
 
-  const testArray: Array<string> = ['Ja', 'Nei'];
+  // Example of possible answerOptions from Questionnaire
+  const exampleOptions = [
+    {
+      valueCoding: {
+        code: 'Y',
+        display: 'Ja, det stemmer',
+      },
+    },
+    {
+      valueCoding: {
+        code: 'N',
+        display: 'Nei, det er helt uaktuelt',
+      },
+    },
+    {
+      valueCoding: {
+        code: 'HELE',
+        display: 'Opplever det hele tiden',
+      },
+    },
+  ];
 
   return (
     <>
@@ -74,18 +88,12 @@ export const ItemAnswer: FC<IProps> = ({
           <Checkbox label={question}></Checkbox>
         </div>
       ) : answerType === 'choice' ? (
-        <div>
-          <Radio
-            className="radio-button"
-            label={testArray[0]}
-            name="alternativ1"
-          />
-          <Radio
-            className="radio-button"
-            label={testArray[1]}
-            name="alternativ2"
-          />
-        </div>
+        <AnswerInputRadiobuttons
+          linkId={linkId}
+          answers={answers}
+          setAnswers={setAnswers}
+          answerOptions={exampleOptions}
+        />
       ) : answerType === 'date' && question === 'Slutt' ? (
         <div>
           <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
