@@ -60,7 +60,7 @@
     },
     {
       "linkId": "4",
-      "text": "Er det behov for at to omsorgspersoner samtidig?",
+      "text": "Er det behov for to omsorgspersoner samtidig?",
       "type": "choice",
       "answerOption": [
         {
