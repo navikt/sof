@@ -1,7 +1,5 @@
+import React, { FC, useState, useEffect } from 'react';
 import { Fareknapp } from 'nav-frontend-knapper';
-import React, { FC } from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
 
 interface IProps {
   valueList: string[];
