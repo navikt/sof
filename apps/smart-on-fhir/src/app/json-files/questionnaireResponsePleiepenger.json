@@ -1,7 +1,10 @@
 {
   "resourceType": "QuestionnaireResponse",
   "id": "",
-  "identifier": "",
+  "identifier": {
+    "use": "official",
+    "value": ""
+  },
   "status": "in-progress",
   "questionnaire": "Questionnaire/1339713",
   "subject": {

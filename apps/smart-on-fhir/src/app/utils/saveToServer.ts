@@ -4,6 +4,7 @@ import {
   IQuestionnaireResponse,
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
+import { setUUIDIdentifier } from './setIdentifier';
 
 /**
  * Function to save a questionnaire response to the server.
@@ -16,7 +17,7 @@ export const saveToServer = async (
   client: Client,
   patient: IPatient
 ) => {
-  // Get questionnaireResource which is in progress for the right patient and questionnaire
+  // Get questionnaireResponse which is in progress for the right patient and questionnaire
   const response = (await client.request(
     `QuestionnaireResponse?subject=Patient/${patient.id}&questionnaire=${questionnaireResponse.questionnaire}&status=in-progress`
   )) as IBundle;
@@ -37,7 +38,9 @@ export const saveToServer = async (
       headers,
     });
   } else {
-    // If no QR matching the requirements were found, create a new QR
+    // If no QR matching the requirements were found,
+    // add identifier and create a new QR
+    setUUIDIdentifier(questionnaireResponse);
     await client
       .request({
         url: `QuestionnaireResponse`,
@@ -45,6 +48,9 @@ export const saveToServer = async (
         body: JSON.stringify(questionnaireResponse),
         headers,
       })
-      .then((qr) => (questionnaireResponse.id = qr.id));
+      .then((response) => (questionnaireResponse.id = response.id));
+    // Can this^^ line be removed? The id is set automatically in the
+    // questionnaire response when it is sent to the server, so this might
+    // be unnecessary.
   }
 };
