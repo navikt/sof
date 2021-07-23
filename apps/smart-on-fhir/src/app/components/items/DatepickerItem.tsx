@@ -16,7 +16,7 @@ const DatepickerItem = (props: any) => {
 
   return (
     <div className="componentItems">
-      <Element>{props.question}</Element>
+      <Element>{props.entity.text}</Element>
       <div
         className="outerContainer"
         style={{ display: 'flex', marginBottom: '20px' }}
@@ -25,7 +25,7 @@ const DatepickerItem = (props: any) => {
           <div className="innerContainer" style={{ marginRight: '30px' }}>
             <Normaltekst key={item}>{item}</Normaltekst>
             <Datepicker
-              key={props.question + item}
+              key={props.entity.text + item}
               locale={'nb'}
               inputId={''}
               value={date}

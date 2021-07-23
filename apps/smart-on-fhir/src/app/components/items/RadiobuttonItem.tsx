@@ -1,40 +1,54 @@
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
-
-const handleOnChange = () => {};
+import { useEffect, useState } from 'react';
 
 //Expects to receive an array and a text
 const RadiobuttonItem = (props: any) => {
   const optionarray: Array<any> = props.answeroptions;
-  optionarray.forEach((element) => {
-    console.log('Fra radiobutton:', element);
-  });
+  const [radioValue, setRadioValue] = useState('');
+
+  const handleOnChange = (value: string) => {
+    setRadioValue(value);
+  };
+
+  useEffect(() => {
+    const copiedAnswers = new Map(props.answers);
+    copiedAnswers.set(props.entity.linkId, radioValue);
+    props.setAnswers(copiedAnswers);
+  }, [radioValue]);
+
   return (
     <>
       {props.helptext != '' ? (
         <div className="componentItems">
-          <RadioGruppe legend={props.question}>
+          <RadioGruppe legend={props.entity.text}>
             {optionarray.map((item) => (
               <Radio
+                onChange={() => handleOnChange(item)}
                 key={item}
                 label={
                   <div style={{ display: 'flex' }}>
-                    {props.question}
+                    {props.entity.text}
                     <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                       {props.helptext}
                     </Hjelpetekst>
                   </div>
                 }
-                name={item}
+                name={'group' + props.entity.linkId}
               />
             ))}
           </RadioGruppe>
         </div>
       ) : (
         <div className="componentItems">
-          <RadioGruppe legend={props.question}>
+          <RadioGruppe legend={props.entity.text}>
             {optionarray.map((item) => (
-              <Radio key={item} label={item} name={item} />
+              <Radio
+                onChange={() => handleOnChange(item)}
+                key={item}
+                label={item}
+                name={'group' + props.entity.linkId}
+              />
             ))}
           </RadioGruppe>
         </div>

@@ -1,7 +1,7 @@
 {
   "npmScope": "sof",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
   },
   "implicitDependencies": {
     "package.json": {
@@ -14,7 +14,12 @@
     "default": {
       "runner": "@nrwl/workspace/tasks-runners/default",
       "options": {
-        "cacheableOperations": ["build", "lint", "test", "e2e"]
+        "cacheableOperations": [
+          "build",
+          "lint",
+          "test",
+          "e2e"
+        ]
       }
     }
   },
@@ -35,7 +40,9 @@
     },
     "smart-on-fhir-e2e": {
       "tags": [],
-      "implicitDependencies": ["smart-on-fhir"]
+      "implicitDependencies": [
+        "smart-on-fhir"
+      ]
     }
   }
 }

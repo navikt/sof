@@ -1,9 +1,19 @@
 import { Textarea } from 'nav-frontend-skjema';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
-
-const handleOnChange = () => {};
+import { useEffect, useState } from 'react';
 
 const TextareaItem = (props: any) => {
+  const [textValue, setTextValue] = useState('');
+  const handleOnChange = (e: any) => {
+    setTextValue(e.target.value);
+  };
+
+  useEffect(() => {
+    const copiedAnswers = new Map(props.answers);
+    copiedAnswers.set(props.entity.linkId, textValue);
+    props.setAnswers(copiedAnswers);
+  }, [textValue]);
+
   return (
     <>
       {props.helptext != '' ? (
@@ -11,13 +21,13 @@ const TextareaItem = (props: any) => {
           <Textarea
             label={
               <div style={{ display: 'flex' }}>
-                {props.question}
+                {props.entity.text}
                 <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                   {props.helptext}
                 </Hjelpetekst>
               </div>
             }
-            value={''}
+            value={textValue}
             style={{ maxWidth: '690px', marginBottom: '10px' }}
             onChange={handleOnChange}
             maxLength={0}
@@ -26,8 +36,8 @@ const TextareaItem = (props: any) => {
       ) : (
         <div className="componentItems">
           <Textarea
-            label={props.question}
-            value={''}
+            label={props.entity.text}
+            value={textValue}
             style={{ maxWidth: '690px', marginBottom: '10px' }}
             onChange={handleOnChange}
             maxLength={0}

@@ -1,11 +1,15 @@
 import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
-import questionnaireResponse from '../json-files/questionnaireResponse.json';
+import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
+import { saveQuestionnaire } from '../utils/saveQuestionnaire';
+import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import { fhirclient } from 'fhirclient/lib/types';
+import Client from 'fhirclient/lib/Client';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -20,7 +24,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   const questionnaire = questionnairePleiepenger;
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const { patient, user } = useFhirContext();
+  const { patient, user, client } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -38,17 +42,30 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     });
   };
 
-  // Laster spørsmålene fra Questionnaire til questions-listen
+  // Saves questions from Questionnaire to the questions list
   useEffect(() => {
     getItemChildren(questionnaire);
     setLoading(false);
   }, [loading]);
 
-  //Fetches the questionnaire's title and description
+  // Function to make sure all values sent to saveAnswers are defined.
+  const clickSave = (
+    answers: Map<string, string | boolean>,
+    response: any,
+    patient: IPatient | undefined,
+    user:
+      | fhirclient.FHIR.Patient
+      | fhirclient.FHIR.Practitioner
+      | fhirclient.FHIR.RelatedPerson
+      | undefined,
+    client: Client | undefined
+  ) => {
+    if (answers && response && patient && user && client) {
+      saveAnswers(answers, response, patient, user, client);
+    }
+  };
   useEffect(() => {
     props.createHeader(questionnaire.title, questionnaire.description);
-    console.log(questionnaire.title);
-    console.log(questionnaire.description);
   }, [questionnaire]);
 
   return (
@@ -89,18 +106,21 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         }
         return;
       })}
-      <Knapp
-        className="buttons"
-        onClick={() => saveAnswers(answers, response, patient, user)}
+      <Hovedknapp
+        onClick={() => clickSave(answers, response, patient, user, client)}
       >
-        Lagre skjema
-      </Knapp>
+        Lagre
+      </Hovedknapp>
+
       <Hovedknapp
         className="buttons"
         onClick={() => console.log('Trykket på send')}
       >
         Send skjema
       </Hovedknapp>
+
+      {/*This button is here temporarily to make it easy to save a questionnaire in the EHR launcer*/}
+      <button onClick={() => saveQuestionnaire(client)}>Lagre et skjema</button>
 
       {console.log('A:', answers)}
     </>

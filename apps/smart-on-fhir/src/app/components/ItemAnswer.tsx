@@ -1,10 +1,10 @@
 import React, { FC, useState } from 'react';
 import './questionnaireStylesheet.css';
-import TextareaItem from '../items/TextareaItem';
-import InputItem from '../items/InputItem';
-import CheckboxItem from '../items/CheckboxItem';
-import DatepickerItem from '../items/DatepickerItem';
-import RadiobuttonItem from '../items/RadiobuttonItem';
+import TextareaItem from './items/TextareaItem';
+import InputItem from './items/InputItem';
+import CheckboxItem from './items/CheckboxItem';
+import DatepickerItem from './items/DatepickerItem';
+import RadiobuttonItem from './items/RadiobuttonItem';
 
 interface IProps {
   entity: any;
@@ -32,19 +32,6 @@ export const ItemAnswer: FC<IProps> = ({
   setAnswers,
 }) => {
   const [inputValue, setInputValue] = useState('');
-
-  const handleOnChange = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(entity.linkId, e.target.value);
-    setAnswers(copiedAnswers);
-    setInputValue(e.target.value);
-  };
-
-  const handleOnChecked = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(entity.linkId, e.target.checked);
-    setAnswers(copiedAnswers);
-  };
 
   let itemHelptext: string = '';
   let arrayOfItems: Array<string> = [];
@@ -90,32 +77,46 @@ export const ItemAnswer: FC<IProps> = ({
   return {
     text: (
       <TextareaItem
-        question={entity.text}
+        entity={entity}
         helptext={itemHelptext}
+        answers={answers}
+        setAnswers={setAnswers}
       ></TextareaItem>
     ),
     string: (
-      <InputItem question={entity.text} helptext={itemHelptext}></InputItem>
+      <InputItem
+        entity={entity}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
+      ></InputItem>
     ),
     boolean: (
       <CheckboxItem
-        question={entity.text}
+        entity={entity}
         helptext={itemHelptext}
         answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
       ></CheckboxItem>
     ),
     date: (
       <DatepickerItem
-        question={entity.text}
+        entity={entity}
         helptext={itemHelptext}
         answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
       ></DatepickerItem>
     ),
     radio: (
       <RadiobuttonItem
-        question={entity.text}
+        entity={entity}
         helptext={itemHelptext}
         answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
       ></RadiobuttonItem>
     ),
     nothing: <p></p>,
