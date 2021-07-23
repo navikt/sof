@@ -1,14 +1,15 @@
 import React, { FC, useState } from 'react';
-import { Datepicker } from 'nav-datovelger';
-import { Checkbox, Textarea } from 'nav-frontend-skjema';
-import { AnswerInputMultiSelect } from './AnswerInputMultiSelect';
-import { AnswerInputRadiobuttons } from './AnswerInputRadiobuttons';
 import './questionnaireStylesheet.css';
+import TextareaItem from './items/TextareaItem';
+import InputItem from './items/InputItem';
+import CheckboxItem from './items/CheckboxItem';
+import DatepickerItem from './items/DatepickerItem';
+import RadiobuttonItem from './items/RadiobuttonItem';
 
 interface IProps {
-  question: string;
-  linkId: string;
-  answerType: string | undefined;
+  entity: any;
+  entityItems: any[];
+  radioOptionItems: any[];
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
@@ -24,102 +25,100 @@ interface IProps {
  * @returns an input field
  */
 export const ItemAnswer: FC<IProps> = ({
-  question,
-  linkId,
-  answerType,
+  entity,
+  entityItems,
+  radioOptionItems,
   answers,
   setAnswers,
 }) => {
   const [inputValue, setInputValue] = useState('');
-  const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
-  const [inputEndDate, setEndDate] = useState('dd.mm.åååå');
 
-  const handleOnChange = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, e.target.value);
-    setAnswers(copiedAnswers);
-    setInputValue(e.target.value);
-  };
+  let itemHelptext: string = '';
+  let arrayOfItems: Array<string> = [];
 
-  const BasicDatepicker = () => {
-    // const [date, setDate] = useState('');
-    const [inputStartDate, setStartDate] = useState('dd.mm.åååå');
+  if (entityItems != undefined && entity.answerOption == undefined) {
+    entityItems.forEach((element) => {
+      if (element.linkId.includes('help')) {
+        itemHelptext = element.text;
+      } else if (element.linkId.includes('.')) {
+        arrayOfItems.push(element.text);
+      }
+    });
+  } else if (entity.answerOption != undefined) {
+    radioOptionItems.forEach((element) => {
+      arrayOfItems.push(element.valueCoding.display);
+      console.log(element.valueCoding.display);
+    });
+  }
 
-    return <Datepicker onChange={setStartDate} value={inputStartDate} />;
-  };
-
-  //Method: fetch and save input dates to array
-  const handleDateInput = (e: any) => {
-    if (question === 'Start') {
-      setStartDate(e);
-      console.log(inputStartDate);
-    } else if (question === 'Slutt') {
-      setEndDate(e);
-      console.log(inputEndDate);
+  const renderSwitch = () => {
+    switch (entity.type) {
+      case 'text':
+        return 'text';
+        break;
+      case 'string':
+        return 'string';
+      case 'group':
+        if (entityItems[1].type === 'boolean') {
+          return 'boolean';
+        } else if (entityItems[1].type === 'date') {
+          return 'date';
+        } else {
+          return 'nothing';
+        }
+      case 'choice':
+        return 'radio';
+      default:
+        return 'nothing';
+        break;
     }
   };
 
-  // Example of possible answerOptions from Questionnaire
-  const exampleOptions = [
-    {
-      valueCoding: {
-        code: 'Y',
-        display: 'Ja, det stemmer',
-      },
-    },
-    {
-      valueCoding: {
-        code: 'N',
-        display: 'Nei, det er helt uaktuelt',
-      },
-    },
-    {
-      valueCoding: {
-        code: 'HELE',
-        display: 'Opplever det hele tiden',
-      },
-    },
-  ];
-
-  return (
-    <>
-      {answerType === 'boolean' ? (
-        <div style={{ margin: '10px' }}>
-          <Checkbox label={question}></Checkbox>
-        </div>
-      ) : answerType === 'choice' ? (
-        <AnswerInputRadiobuttons
-          linkId={linkId}
-          answers={answers}
-          setAnswers={setAnswers}
-          answerOptions={exampleOptions}
-        />
-      ) : answerType === 'date' && question === 'Slutt' ? (
-        <div>
-          <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
-        </div>
-      ) : answerType === 'date' ? (
-        <div>
-          <BasicDatepicker /*onChange={handleDateInput}*/></BasicDatepicker>
-        </div>
-      ) : answerType === 'string' ? (
-        <AnswerInputMultiSelect
-          linkId={linkId}
-          answers={answers}
-          setAnswers={setAnswers}
-        />
-      ) : answerType === 'text' ? (
-        <Textarea
-          label=""
-          description={question}
-          value={inputValue}
-          style={{ maxWidth: '690px' }}
-          onChange={handleOnChange}
-          maxLength={0}
-        ></Textarea>
-      ) : (
-        <></>
-      )}
-    </>
-  );
+  return {
+    text: (
+      <TextareaItem
+        entity={entity}
+        helptext={itemHelptext}
+        answers={answers}
+        setAnswers={setAnswers}
+      ></TextareaItem>
+    ),
+    string: (
+      <InputItem
+        entity={entity}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
+      ></InputItem>
+    ),
+    boolean: (
+      <CheckboxItem
+        entity={entity}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
+      ></CheckboxItem>
+    ),
+    date: (
+      <DatepickerItem
+        entity={entity}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
+      ></DatepickerItem>
+    ),
+    radio: (
+      <RadiobuttonItem
+        entity={entity}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+        answers={answers}
+        setAnswers={setAnswers}
+      ></RadiobuttonItem>
+    ),
+    nothing: <p></p>,
+  }[renderSwitch()];
 };

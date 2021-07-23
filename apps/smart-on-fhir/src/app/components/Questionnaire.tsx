@@ -10,7 +10,6 @@ import { saveQuestionnaire } from '../utils/saveQuestionnaire';
 import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -31,20 +30,9 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   );
   const response = questionnaireResponse;
 
-  // Utkast til logikken for å hente hjelpetekst
-  const getHelptext = (item: any) => {
-    if (item.type === 'display') {
-      if (item.linkId.includes('help')) {
-        return <h1>{item.text}</h1>;
-      }
-    }
-    return <></>;
-  };
-
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
     q.item?.map((itemChild: any) => {
-      //console.log('C: ', itemChild);
       if (loading) {
         setQuestions((prevState) => [...prevState, itemChild]);
       }
@@ -81,49 +69,42 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   }, [questionnaire]);
 
   return (
+    //Itererer gjennom alle spørsmålene (spørsmål = item) og filtrerer på spørsmålenes linkId.
+    //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
+    //pushes inn i subItems.
     <>
       {questions.map((item: any) => {
-        return item.linkId.includes('automatic') ? null : (
-          <div key={item.linkId}>
-            {item.linkId.includes('help') ? (
-              <p>
-                {/* Foreløpig håndtering av hjelpetekst*/}
-                {item.linkId} {item.text}
-              </p>
-            ) : item.linkId.includes('.') ? (
-              <p>
-                {/*Foreløpig håndtering av underspørsmål*/}
-                {item.linkId} {item.text}
-              </p>
-            ) : (
-              <div>
-                {/* Foreløpig håndtering av hovedspørsmål*/}
-                <span
-                  className="typo-undertittel"
-                  id="mitt-faguttrykk"
-                  aria-describedby="min-hjelpetekst"
-                >
-                  {item.text}
-                </span>
-                <Hjelpetekst
-                  id="min-hjelpetekst"
-                  aria-labelledby="mitt-faguttrykk"
-                  style={{ marginLeft: ' 10px' }}
-                >
-                  Mulighet til å jobbe litt eller delvis
-                </Hjelpetekst>
-              </div>
-            )}
-            {/* Svartyper */}
+        let mainItem: any;
+        let subItems: any[] = [];
+        let radioOptions: string[] = [];
+        if (
+          !item.linkId.includes('automatic') &&
+          !item.linkId.includes('help') &&
+          !item.linkId.includes('.')
+        ) {
+          mainItem = item;
+          //Hvis spørsmålet (item) har en item-array
+          if (item.item !== undefined) {
+            item.item.map((entityItem: any) => {
+              subItems.push(entityItem);
+            });
+          } else if (item.answerOption) {
+            item.answerOption.map((option: any) => {
+              radioOptions.push(option);
+            });
+          }
+
+          return (
             <ItemAnswer
-              question={item.text}
-              linkId={item.linkId}
-              answerType={item.type}
+              entity={mainItem}
+              entityItems={subItems}
+              radioOptionItems={radioOptions}
               answers={answers}
               setAnswers={setAnswers}
             />
-          </div>
-        );
+          );
+        }
+        return;
       })}
       <Hovedknapp
         onClick={() => clickSave(answers, response, patient, user, client)}
