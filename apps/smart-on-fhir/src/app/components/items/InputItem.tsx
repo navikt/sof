@@ -89,66 +89,88 @@ const InputItem = (props: any) => {
   return (
     <>
       {props.helptext !== '' ? (
-        <div className="componentItems">
-          <Input
-            bredde="fullbredde"
-            onChange={handleOnChange}
-            onFocus={handleOnFocus}
-            value={inputValue}
-            label={
-              <div style={{ display: 'flex' }}>
-                {props.entity.text}
-                <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
-                  {props.helptext}
-                </Hjelpetekst>
-              </div>
-            }
-          />
-          <Popover
-            ankerEl={anker}
-            onRequestClose={() => setAnker(undefined)}
-            orientering={PopoverOrientering.UnderVenstre}
-            autoFokus={false}
-            utenPil
-          >
-            {exampleElements.map((dataElem: string, index: number) => {
-              return (
-                <div key={props.entity.linkId + index}>
-                  {displayElements(dataElem)}
+        <div className="componentItems" style={{ display: 'flex' }}>
+          <div className="innerContainerInput">
+            <Input
+              bredde="fullbredde"
+              onChange={handleOnChange}
+              onFocus={handleOnFocus}
+              value={inputValue}
+              label={
+                <div style={{ display: 'flex' }}>
+                  {props.entity.text}
+                  <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
+                    {props.helptext}
+                  </Hjelpetekst>
                 </div>
-              );
-            })}
-          </Popover>
-          <Knapp mini style={{ marginLeft: '10px' }} onClick={handleAddElement}>
-            Legg til
-          </Knapp>
+              }
+            />
+            <Popover
+              ankerEl={anker}
+              onRequestClose={() => setAnker(undefined)}
+              orientering={PopoverOrientering.UnderVenstre}
+              autoFokus={false}
+              utenPil
+            >
+              {exampleElements.map((dataElem: string, index: number) => {
+                return (
+                  <div key={props.entity.linkId + index}>
+                    {displayElements(dataElem)}
+                  </div>
+                );
+              })}
+            </Popover>
+          </div>
+          <div style={{ paddingTop: '35px' }}>
+            <Knapp
+              mini
+              style={{
+                marginLeft: '10px',
+                height: '22px',
+              }}
+              onClick={handleAddElement}
+            >
+              Legg til
+            </Knapp>
+          </div>
         </div>
       ) : (
         <div className="componentItems">
-          <Input
-            label={props.entity.text}
-            onChange={handleOnChange}
-            onFocus={handleOnFocus}
-            value={inputValue}
-          />
-          <Popover
-            ankerEl={anker}
-            onRequestClose={() => setAnker(undefined)}
-            orientering={PopoverOrientering.UnderVenstre}
-            autoFokus={false}
-            utenPil
-          >
-            {exampleElements.map((dataElem: string, index: number) => {
-              return (
-                <div key={props.entity.linkId + index}>
-                  {displayElements(dataElem)}
-                </div>
-              );
-            })}
-          </Popover>
-          <Knapp mini style={{ marginLeft: '10px' }} onClick={handleAddElement}>
-            Legg til
-          </Knapp>
+          <div className="innerContainerInput">
+            <Input
+              label={props.entity.text}
+              onChange={handleOnChange}
+              onFocus={handleOnFocus}
+              value={inputValue}
+            />
+            <Popover
+              ankerEl={anker}
+              onRequestClose={() => setAnker(undefined)}
+              orientering={PopoverOrientering.UnderVenstre}
+              autoFokus={false}
+              utenPil
+            >
+              {exampleElements.map((dataElem: string, index: number) => {
+                return (
+                  <div key={props.entity.linkId + index}>
+                    {displayElements(dataElem)}
+                  </div>
+                );
+              })}
+            </Popover>
+          </div>
+          <div style={{ paddingTop: '35px' }}>
+            <Knapp
+              mini
+              style={{
+                marginLeft: '10px',
+                height: '22px',
+              }}
+              onClick={handleAddElement}
+            >
+              Legg til
+            </Knapp>
+          </div>
         </div>
       )}
       <p>
