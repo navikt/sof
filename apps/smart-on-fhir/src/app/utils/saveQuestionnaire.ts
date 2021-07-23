@@ -1,6 +1,7 @@
 import Client from 'fhirclient/lib/Client';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
+import { setUUIDIdentifier } from './setIdentifier';
 
 /**
  * Function to save a questionnaire to the server
@@ -8,6 +9,7 @@ import questionnaireResponse from '../json-files/questionnaireResponsePleiepenge
  */
 export const saveQuestionnaire = async (client: Client | undefined) => {
   if (client) {
+    setUUIDIdentifier(questionnairePleiepenger);
     await client.create(questionnairePleiepenger).then((questionnaire) => {
       questionnaireResponse.questionnaire = `Questionnaire/${questionnaire.id}`;
     });
