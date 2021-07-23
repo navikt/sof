@@ -52,28 +52,36 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   }, [questionnaire]);
 
   return (
+    //Itererer gjennom alle spørsmålene (spørsmål = item) og filtrerer på spørsmålenes linkId.
+    //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
+    //pushes inn i subItems.
     <>
       {questions.map((item: any) => {
         let mainItem: any;
         let subItems: any[] = [];
+        let radioOptions: string[] = [];
         if (
           !item.linkId.includes('automatic') &&
           !item.linkId.includes('help') &&
           !item.linkId.includes('.')
         ) {
           mainItem = item;
+          //Hvis spørsmålet (item) har en item-array
           if (item.item !== undefined) {
             item.item.map((entityItem: any) => {
               subItems.push(entityItem);
             });
           } else if (item.answerOption) {
-            mainItem = item;
+            item.answerOption.map((option: any) => {
+              radioOptions.push(option);
+            });
           }
 
           return (
             <ItemAnswer
               entity={mainItem}
               entityItems={subItems}
+              radioOptionItems={radioOptions}
               answers={answers}
               setAnswers={setAnswers}
             />

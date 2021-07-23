@@ -8,7 +8,7 @@ const InputItem = (props: any) => {
   return (
     <>
       {props.helptext !== '' ? (
-        <div>
+        <div className="componentItems">
           <Input
             bredde="fullbredde"
             label={
@@ -22,7 +22,7 @@ const InputItem = (props: any) => {
           />
         </div>
       ) : (
-        <div>
+        <div className="componentItems">
           <Input label={props.question} />
         </div>
       )}

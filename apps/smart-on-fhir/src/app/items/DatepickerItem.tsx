@@ -15,22 +15,27 @@ const DatepickerItem = (props: any) => {
   )}-01`;
 
   return (
-    <>
+    <div className="componentItems">
       <Element>{props.question}</Element>
-      {optionarray.map((item) => (
-        <div>
-          <Normaltekst key={item}>{item}</Normaltekst>
-          <Datepicker
-            key={props.question + item}
-            locale={'nb'}
-            inputId={''}
-            value={date}
-            onChange={handleOnChange}
-            dayPickerProps={{}}
-          />
-        </div>
-      ))}
-    </>
+      <div
+        className="outerContainer"
+        style={{ display: 'flex', marginBottom: '20px' }}
+      >
+        {optionarray.map((item) => (
+          <div className="innerContainer" style={{ marginRight: '30px' }}>
+            <Normaltekst key={item}>{item}</Normaltekst>
+            <Datepicker
+              key={props.question + item}
+              locale={'nb'}
+              inputId={''}
+              value={date}
+              onChange={handleOnChange}
+              dayPickerProps={{}}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 

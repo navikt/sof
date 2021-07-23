@@ -4,10 +4,12 @@ import TextareaItem from '../items/TextareaItem';
 import InputItem from '../items/InputItem';
 import CheckboxItem from '../items/CheckboxItem';
 import DatepickerItem from '../items/DatepickerItem';
+import RadiobuttonItem from '../items/RadiobuttonItem';
 
 interface IProps {
   entity: any;
   entityItems: any[];
+  radioOptionItems: any[];
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
@@ -25,6 +27,7 @@ interface IProps {
 export const ItemAnswer: FC<IProps> = ({
   entity,
   entityItems,
+  radioOptionItems,
   answers,
   setAnswers,
 }) => {
@@ -52,8 +55,12 @@ export const ItemAnswer: FC<IProps> = ({
         itemHelptext = element.text;
       } else if (element.linkId.includes('.')) {
         arrayOfItems.push(element.text);
-        console.log(element.text);
       }
+    });
+  } else if (entity.answerOption != undefined) {
+    radioOptionItems.forEach((element) => {
+      arrayOfItems.push(element.valueCoding.display);
+      console.log(element.valueCoding.display);
     });
   }
 
@@ -72,6 +79,8 @@ export const ItemAnswer: FC<IProps> = ({
         } else {
           return 'nothing';
         }
+      case 'choice':
+        return 'radio';
       default:
         return 'nothing';
         break;
@@ -101,6 +110,13 @@ export const ItemAnswer: FC<IProps> = ({
         helptext={itemHelptext}
         answeroptions={arrayOfItems}
       ></DatepickerItem>
+    ),
+    radio: (
+      <RadiobuttonItem
+        question={entity.text}
+        helptext={itemHelptext}
+        answeroptions={arrayOfItems}
+      ></RadiobuttonItem>
     ),
     nothing: <p></p>,
   }[renderSwitch()];

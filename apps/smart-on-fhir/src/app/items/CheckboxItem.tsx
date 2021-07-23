@@ -1,19 +1,17 @@
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
+import '.././components/questionnaireStylesheet.css';
 
 const handleOnChange = () => {};
 
 //Expects to receive an array and a text
 const CheckboxItem = (props: any) => {
   const optionarray: Array<any> = props.answeroptions;
-  optionarray.forEach((element) => {
-    console.log('CheckboxItem:', element);
-  });
 
   return (
     <>
       {props.helptext != '' ? (
-        <div>
+        <div className="componentItems">
           <CheckboxGruppe legend={props.question}>
             {optionarray.map((item) => (
               <Checkbox
@@ -33,7 +31,7 @@ const CheckboxItem = (props: any) => {
           ;
         </div>
       ) : (
-        <div>
+        <div className="componentItems">
           <CheckboxGruppe legend={props.question}>
             {optionarray.map((item) => (
               <Checkbox key={item} label={item} name={item.text} />

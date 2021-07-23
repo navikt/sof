@@ -12,7 +12,7 @@ const RadiobuttonItem = (props: any) => {
   return (
     <>
       {props.helptext != '' ? (
-        <div>
+        <div className="componentItems">
           <RadioGruppe legend={props.question}>
             {optionarray.map((item) => (
               <Radio
@@ -29,16 +29,14 @@ const RadiobuttonItem = (props: any) => {
               />
             ))}
           </RadioGruppe>
-          ;
         </div>
       ) : (
-        <div>
+        <div className="componentItems">
           <RadioGruppe legend={props.question}>
             {optionarray.map((item) => (
               <Radio key={item} label={item} name={item} />
             ))}
           </RadioGruppe>
-          ;
         </div>
       )}
     </>

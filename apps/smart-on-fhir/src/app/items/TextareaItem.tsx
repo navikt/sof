@@ -7,7 +7,7 @@ const TextareaItem = (props: any) => {
   return (
     <>
       {props.helptext != '' ? (
-        <div>
+        <div className="componentItems">
           <Textarea
             label={
               <div style={{ display: 'flex' }}>
@@ -24,10 +24,9 @@ const TextareaItem = (props: any) => {
           ></Textarea>
         </div>
       ) : (
-        <div>
+        <div className="componentItems">
           <Textarea
-            label=""
-            description={props.question}
+            label={props.question}
             value={''}
             style={{ maxWidth: '690px', marginBottom: '10px' }}
             onChange={handleOnChange}
