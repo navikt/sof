@@ -8,7 +8,11 @@ export const LandingPage = () => {
     <div className="app-container">
       <BannerHeader />
       <Sidetittel>Skjemaer</Sidetittel>
-      <div className="contentContainer"></div>
+      <div className="contentContainer">
+        <table></table>
+      </div>
+      <Link to="/skjema">Legeerklæring: pleiepengeskjema</Link>
+      {/* Husk at "to=.." må matche "path=.." i main.tsx*/}
     </div>
   );
 };
