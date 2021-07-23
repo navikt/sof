@@ -1,6 +1,10 @@
 {
   "resourceType": "Questionnaire",
   "id": "123456789",
+  "identifier": {
+    "use": "official",
+    "value": ""
+  },
   "version": "1.0.0",
   "name": "pleiepengeskjema",
   "title": "Legeerklæring: pleiepenger for sykt barn",
