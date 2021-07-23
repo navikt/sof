@@ -31,6 +31,8 @@ export const saveToServer = async (
     // If there is already a questionnaire response saved and in progress
     // for this patient (on the correct questionnaire), the old QR is updated
     const responseId = response.entry[0].resource?.id;
+    questionnaireResponse.id = responseId; // set the correct id to the qr
+
     await client.request({
       url: `QuestionnaireResponse/${responseId}`,
       method: 'PUT',
