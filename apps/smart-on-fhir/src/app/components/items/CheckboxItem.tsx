@@ -7,9 +7,6 @@ import '../questionnaireStylesheet.css';
 const CheckboxItem = (props: any) => {
   const optionarray: Array<any> = props.answeroptions;
   const [textValue, setTextValue] = useState(false);
-  const handleOnChange = (e: any) => {
-    setTextValue(e.target.checked);
-  };
 
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);

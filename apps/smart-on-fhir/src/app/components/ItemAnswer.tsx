@@ -47,7 +47,6 @@ export const ItemAnswer: FC<IProps> = ({
   } else if (entity.answerOption != undefined) {
     radioOptionItems.forEach((element) => {
       arrayOfItems.push(element.valueCoding.display);
-      console.log(element.valueCoding.display);
     });
   }
 
