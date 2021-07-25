@@ -10,7 +10,7 @@ import EtikettBase, { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
 export const LandingPage = () => {
   return (
     <div className="app-container">
-      <BannerHeader />
+      <BannerHeader page={''} />
       <Sidetittel style={{ marginBottom: '50px' }}>Skjemaer</Sidetittel>
       <div className="contentContainer">
         <table>
