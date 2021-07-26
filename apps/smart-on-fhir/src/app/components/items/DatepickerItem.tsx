@@ -3,12 +3,14 @@ import { Datepicker } from 'nav-datovelger';
 
 interface IProps {
   index: number;
+  text: string;
   dateList: string[];
   setDateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export const DatepickerItem: FC<IProps> = ({
   index,
+  text,
   dateList,
   setDateList,
 }) => {
@@ -23,8 +25,9 @@ export const DatepickerItem: FC<IProps> = ({
   }, [date]);
 
   return (
-    <>
+    <div style={{ display: 'block' }}>
+      <p className="typo-normal">{text}</p>
       <Datepicker onChange={setDate} value={date} />
-    </>
+    </div>
   );
 };

@@ -1,7 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Datepicker } from 'nav-datovelger';
 import { DatepickerItem } from './DatepickerItem';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { HelptextItem } from './HelptextItem';
 
 interface IProps {
@@ -14,7 +12,6 @@ interface IProps {
   >;
 }
 
-//Expects to receive an array with texts for "start" and "end"
 const DateItem: FC<IProps> = ({
   entity,
   helptext,
@@ -23,39 +20,33 @@ const DateItem: FC<IProps> = ({
   setAnswers,
 }) => {
   const [dateList, setDateList] = useState<string[]>([]);
-  const optionarray: string[] = answeroptions;
+  const optionList: string[] = answeroptions;
 
   useEffect(() => {
+    // // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts
     const copiedAnswers = new Map(answers);
-    copiedAnswers.set(entity.linkId, dateList.toString());
+    copiedAnswers.set(entity.linkId, '[' + dateList.toString() + ']');
     setAnswers(copiedAnswers);
   }, [dateList]);
 
   return (
     <div className="componentItems">
-      <p
-        className="typo-element"
-        style={{ display: 'flex', alignItems: 'center' }}
-      >
-        {entity.linkId} {entity.text}
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        <p className="typo-element">{entity.text}</p>
         <HelptextItem text={helptext} />
-      </p>
+      </div>
       <div style={{ display: 'flex' }}>
-        {optionarray?.map((option: string, index: number) => {
+        {optionList?.map((option: string, index: number) => {
           return (
-            <div style={{ display: 'block' }}>
-              <p className="typo-normal">{option}</p>
-              <DatepickerItem
-                index={index}
-                dateList={dateList}
-                setDateList={setDateList}
-              />
-              {console.log('ID link:', entity.linkId)}
-            </div>
+            <DatepickerItem
+              index={index}
+              text={option}
+              dateList={dateList}
+              setDateList={setDateList}
+            />
           );
         })}
       </div>
-      {console.log('Dates:', dateList)}
     </div>
   );
 };
