@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import './questionnaireStylesheet.css';
 import TextareaItem from './items/TextareaItem';
 import InputItem from './items/InputItem';
@@ -7,9 +7,9 @@ import DatepickerItem from './items/DatepickerItem';
 import RadiobuttonItem from './items/RadiobuttonItem';
 
 interface IProps {
-  entity: any;
-  entityItems: any[];
-  radioOptionItems: any[];
+  entity: itemType;
+  entityItems: itemType[];
+  radioOptionItems: answerOptionType[];
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
@@ -31,12 +31,11 @@ export const ItemAnswer: FC<IProps> = ({
   answers,
   setAnswers,
 }) => {
-  const [inputValue, setInputValue] = useState('');
-
-  let itemHelptext: string = '';
-  let arrayOfItems: Array<string> = [];
+  let itemHelptext = '';
+  const arrayOfItems: Array<string> = [];
 
   if (entityItems != undefined && entity.answerOption == undefined) {
+    // If there is a help text or subquestions, set these
     entityItems.forEach((element) => {
       if (element.linkId.includes('help')) {
         itemHelptext = element.text;
@@ -45,10 +44,18 @@ export const ItemAnswer: FC<IProps> = ({
       }
     });
   } else if (entity.answerOption != undefined) {
+    // Set the values for the radio buttons
     radioOptionItems.forEach((element) => {
       arrayOfItems.push(element.valueCoding.display);
     });
   }
+
+  const itemProps = {
+    entity: entity,
+    helptext: itemHelptext,
+    answers: answers,
+    setAnswers: setAnswers,
+  };
 
   const renderSwitch = () => {
     switch (entity.type) {
@@ -74,50 +81,11 @@ export const ItemAnswer: FC<IProps> = ({
   };
 
   return {
-    text: (
-      <TextareaItem
-        entity={entity}
-        helptext={itemHelptext}
-        answers={answers}
-        setAnswers={setAnswers}
-      ></TextareaItem>
-    ),
-    string: (
-      <InputItem
-        entity={entity}
-        helptext={itemHelptext}
-        answeroptions={arrayOfItems}
-        answers={answers}
-        setAnswers={setAnswers}
-      ></InputItem>
-    ),
-    boolean: (
-      <CheckboxItem
-        entity={entity}
-        helptext={itemHelptext}
-        answeroptions={arrayOfItems}
-        answers={answers}
-        setAnswers={setAnswers}
-      ></CheckboxItem>
-    ),
-    date: (
-      <DatepickerItem
-        entity={entity}
-        helptext={itemHelptext}
-        answeroptions={arrayOfItems}
-        answers={answers}
-        setAnswers={setAnswers}
-      ></DatepickerItem>
-    ),
-    radio: (
-      <RadiobuttonItem
-        entity={entity}
-        helptext={itemHelptext}
-        answeroptions={arrayOfItems}
-        answers={answers}
-        setAnswers={setAnswers}
-      ></RadiobuttonItem>
-    ),
-    nothing: <p></p>,
+    text: <TextareaItem {...itemProps} />,
+    string: <InputItem {...itemProps} />,
+    boolean: <CheckboxItem {...itemProps} answeroptions={arrayOfItems} />,
+    date: <DatepickerItem {...itemProps} answeroptions={arrayOfItems} />,
+    radio: <RadiobuttonItem {...itemProps} answeroptions={arrayOfItems} />,
+    nothing: <></>,
   }[renderSwitch()];
 };
