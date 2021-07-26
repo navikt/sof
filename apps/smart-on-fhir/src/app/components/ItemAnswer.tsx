@@ -3,7 +3,7 @@ import './questionnaireStylesheet.css';
 import TextareaItem from './items/TextareaItem';
 import InputItem from './items/InputItem';
 import CheckboxItem from './items/CheckboxItem';
-import DatepickerItem from './items/DatepickerItem';
+import DateItem from './items/DateItem';
 import RadiobuttonItem from './items/RadiobuttonItem';
 
 interface IProps {
@@ -101,13 +101,13 @@ export const ItemAnswer: FC<IProps> = ({
       ></CheckboxItem>
     ),
     date: (
-      <DatepickerItem
+      <DateItem
         entity={entity}
         helptext={itemHelptext}
         answeroptions={arrayOfItems}
         answers={answers}
         setAnswers={setAnswers}
-      ></DatepickerItem>
+      ></DateItem>
     ),
     radio: (
       <RadiobuttonItem
