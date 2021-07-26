@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Input } from 'nav-frontend-skjema';
-import { useEffect, useState } from 'react';
+import { ListItem } from './ListItem';
+
 
 /**
  * Renders a question with type String
@@ -174,9 +176,7 @@ const InputItem = (props: any) => {
           </div>
         </div>
       )}
-      <p>
-        <b>{props.answers.get(props.entity.linkId)}</b>
-      </p>
+      <ListItem valueList={tempValueList} setValueList={setTempValueList} />
     </>
   );
 };
