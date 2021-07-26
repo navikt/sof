@@ -18,8 +18,9 @@ const RadiobuttonItem = (props: any) => {
   }, [radioValue]);
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {props.helptext != '' ? (
+      {props.helptext !== '' ? (
         <div className="componentItems">
           <RadioGruppe legend={props.entity.text}>
             {optionarray.map((item) => (
