@@ -14,18 +14,20 @@ export const App = () => {
 
   return (
     <div className="app-container">
-      <div className="TesterContainer">
-        <BannerHeader page="app" />
-      </div>
-
-      <div className="titleContainer">
-        <Sidetittel className="tittel">{questionnareTitle}</Sidetittel>
-      </div>
-      <div className="main-body">
-        <div className="ingress">
-          <Ingress>{questionDescription}</Ingress>
+      <div>
+        <div className="banner-container">
+          <BannerHeader page="app" />
         </div>
-        <Questionnaire createHeader={createHeader} />
+
+        <div className="titleContainer">
+          <Sidetittel className="tittel">{questionnareTitle}</Sidetittel>
+        </div>
+        <div className="main-body">
+          <div className="ingress">
+            <Ingress>{questionDescription}</Ingress>
+          </div>
+          <Questionnaire createHeader={createHeader} />
+        </div>
       </div>
     </div>
   );

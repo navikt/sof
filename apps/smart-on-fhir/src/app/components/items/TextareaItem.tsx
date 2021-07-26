@@ -15,10 +15,12 @@ const TextareaItem = (props: any) => {
   }, [textValue]);
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {props.helptext != '' ? (
+      {props.helptext !== '' ? (
         <div className="componentItems">
           <Textarea
+            className="inputTextAreas"
             label={
               <div style={{ display: 'flex' }}>
                 {props.entity.text}
@@ -28,7 +30,6 @@ const TextareaItem = (props: any) => {
               </div>
             }
             value={textValue}
-            style={{ maxWidth: '690px', marginBottom: '10px' }}
             onChange={handleOnChange}
             maxLength={0}
           ></Textarea>
@@ -36,9 +37,9 @@ const TextareaItem = (props: any) => {
       ) : (
         <div className="componentItems">
           <Textarea
+            className="inputTextAreas"
             label={props.entity.text}
             value={textValue}
-            style={{ maxWidth: '690px', marginBottom: '10px' }}
             onChange={handleOnChange}
             maxLength={0}
           ></Textarea>

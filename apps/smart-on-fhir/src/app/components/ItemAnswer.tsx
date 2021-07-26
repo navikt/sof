@@ -33,8 +33,8 @@ export const ItemAnswer: FC<IProps> = ({
 }) => {
   const [inputValue, setInputValue] = useState('');
 
-  let itemHelptext: string = '';
-  let arrayOfItems: Array<string> = [];
+  let itemHelptext = '';
+  const arrayOfItems: Array<string> = [];
 
   if (entityItems != undefined && entity.answerOption == undefined) {
     entityItems.forEach((element) => {

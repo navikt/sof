@@ -1,3 +1,21 @@
+.contentContainer {
+  width: 950px;
+}
+
+.skjemaTable {
+  width: 100%;
+}
+
+.titleColumn {
+  width: 75%;
+}
+.statusColumn {
+  width: 15%;
+}
+.chevronColumn {
+  width: 10%;
+}
+
 .chevron_td {
   text-align: right;
 }

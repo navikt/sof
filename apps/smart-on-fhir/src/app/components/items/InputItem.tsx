@@ -92,7 +92,7 @@ const InputItem = (props: any) => {
         <div className="componentItems" style={{ display: 'flex' }}>
           <div className="innerContainerInput">
             <Input
-              bredde="fullbredde"
+              className="inputTextAreas"
               onChange={handleOnChange}
               onFocus={handleOnFocus}
               value={inputValue}
@@ -138,6 +138,7 @@ const InputItem = (props: any) => {
         <div className="componentItems">
           <div className="innerContainerInput">
             <Input
+              className="inputTextAreas"
               label={props.entity.text}
               onChange={handleOnChange}
               onFocus={handleOnFocus}

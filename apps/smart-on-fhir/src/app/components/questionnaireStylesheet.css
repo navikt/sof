@@ -2,8 +2,12 @@
   margin-top: 25px;
 }
 
-.skjemaelement {
-  width: 690px;
+.componentItems {
+  margin: 30px 0;
+}
+
+.inputTextAreas {
+  width: 950px;
 }
 
 .radio-button {
@@ -16,8 +20,4 @@
 
 .buttons {
   margin: 10px;
-}
-
-.componentItems {
-  margin-top: 20px;
 }

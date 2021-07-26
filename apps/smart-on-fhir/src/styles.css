@@ -3,7 +3,11 @@
 /*DARK BAND-HEADER ON TOP OF PAGE + ITS CONTENTS*/
 
 .app-container {
-  margin: 140px 50px;
+  max-width: 1050px;
+  min-width: 850px;
+  display: flex;
+  margin: 140px auto;
+  padding: 0 50px;
 }
 
 .nav-header-container {
