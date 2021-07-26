@@ -2,29 +2,19 @@ import React, { FC, useState, useEffect } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { DatepickerItem } from './DatepickerItem';
 
-interface IProps {
-  entity: any;
-  helptext: string;
-  answeroptions: string[];
-  answers: Map<string, string | boolean>;
-  setAnswers: React.Dispatch<
-    React.SetStateAction<Map<string, string | boolean>>
-  >;
-}
-
 /**
  * Renders a question with type Date
  * @returns a calendar (DatepickerItem) for user input
  */
 
-const DateItem: FC<IProps> = ({
+const DateItem: FC<IItemProps> = ({
   entity,
   helptext,
   answeroptions,
   answers,
   setAnswers,
 }) => {
-  const optionList: string[] = answeroptions;
+  const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]);
 
   useEffect(() => {

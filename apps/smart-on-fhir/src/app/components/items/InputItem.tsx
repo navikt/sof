@@ -5,13 +5,12 @@ import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Input } from 'nav-frontend-skjema';
 import { ListItem } from './ListItem';
 
-
 /**
  * Renders a question with type String
  * @returns an input field for multi-selection
  */
 
-const InputItem = (props: any) => {
+const InputItem = (props: IItemProps) => {
   const [inputValue, setInputValue] = useState('');
   const [tempValueList, setTempValueList] = useState<string[]>([]);
   const [anker, setAnker] = useState(undefined);

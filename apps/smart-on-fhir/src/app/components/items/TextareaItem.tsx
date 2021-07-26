@@ -7,8 +7,9 @@ import { useEffect, useState } from 'react';
  * @returns a text box (TextArea) for user input
  */
 
-const TextareaItem = (props: any) => {
+const TextareaItem = (props: IItemProps) => {
   const [textValue, setTextValue] = useState('');
+
   const handleOnChange = (e: any) => {
     setTextValue(e.target.value);
   };
