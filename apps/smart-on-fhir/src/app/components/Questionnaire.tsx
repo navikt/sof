@@ -147,6 +147,9 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       <button onClick={() => saveQuestionnaire(client)}>Lagre et skjema</button>
 
       <button onClick={() => deleteQuestionnaire()}>Slett</button>
+
+      {console.log('A:', answers)}
+
     </>
   );
 };
