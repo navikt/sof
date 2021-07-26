@@ -1,12 +1,9 @@
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
-import { Input, Label } from 'nav-frontend-skjema';
+import { Input } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
-
-//Forventa argumenter:
-//entity: object
-//helptext: string
+import { ListItem } from './ListItem';
 
 const InputItem = (props: any) => {
   const [inputValue, setInputValue] = useState('');
@@ -174,9 +171,7 @@ const InputItem = (props: any) => {
           </div>
         </div>
       )}
-      <p>
-        <b>{props.answers.get(props.entity.linkId)}</b>
-      </p>
+      <ListItem valueList={tempValueList} setValueList={setTempValueList} />
     </>
   );
 };
