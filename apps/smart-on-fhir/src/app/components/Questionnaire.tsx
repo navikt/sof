@@ -7,9 +7,10 @@ import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
 import { saveQuestionnaire } from '../utils/saveQuestionnaire';
-import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import { IBundle, IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
+import { getAnswersFromServer } from '../utils/setAnswersFromServer';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -29,6 +30,15 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     new Map()
   );
   const response = questionnaireResponse;
+
+  useEffect(() => {
+    console.log('ta da!!');
+    client && patient
+      ? getAnswersFromServer(client, patient, setAnswers, answers)
+      : null;
+    console.log(answers);
+    // Tanke: flyutt ut getAnswersFromServer til egen fil og kall den her
+  }, []);
 
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
@@ -64,9 +74,14 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       saveAnswers(answers, response, patient, user, client);
     }
   };
+
   useEffect(() => {
     props.createHeader(questionnaire.title, questionnaire.description);
   }, [questionnaire]);
+
+  const deleteQuestionnaire = () => {
+    client?.delete('Questionnaire/1340124');
+  };
 
   return (
     //Itererer gjennom alle spørsmålene (spørsmål = item) og filtrerer på spørsmålenes linkId.
@@ -121,6 +136,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
 
       {/*This button is here temporarily to make it easy to save a questionnaire in the EHR launcer*/}
       <button onClick={() => saveQuestionnaire(client)}>Lagre et skjema</button>
+
+      <button onClick={() => deleteQuestionnaire()}>Slett</button>
     </>
   );
 };
