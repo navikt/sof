@@ -2,7 +2,11 @@ import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
 
-//Expects to receive an array and a text
+/**
+ * Renders a question with type Choice
+ * @returns radiobuttons with corresponding label
+ */
+
 const RadiobuttonItem = (props: any) => {
   const optionarray: Array<any> = props.answeroptions;
   const [radioValue, setRadioValue] = useState('');

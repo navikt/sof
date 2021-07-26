@@ -8,6 +8,11 @@ interface IProps {
   setDateList: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
+/**
+ * Currently used together with DateItem-component
+ * @returns a Datepicker for user input
+ */
+
 export const DatepickerItem: FC<IProps> = ({
   index,
   text,

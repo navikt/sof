@@ -12,6 +12,11 @@ interface IProps {
   >;
 }
 
+/**
+ * Renders a question with type Date
+ * @returns a calendar (DatepickerItem) for user input
+ */
+
 const DateItem: FC<IProps> = ({
   entity,
   helptext,
@@ -23,7 +28,7 @@ const DateItem: FC<IProps> = ({
   const [dateList, setDateList] = useState<string[]>([]);
 
   useEffect(() => {
-    // // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts
+    // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
     copiedAnswers.set(entity.linkId, '[' + dateList.toString() + ']');
     setAnswers(copiedAnswers);
@@ -34,7 +39,7 @@ const DateItem: FC<IProps> = ({
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <p className="typo-element">{entity.text}</p>
         {
-          // Håndterer hjelpetekst ved behov
+          // Checks for helptext, and displays if any
           helptext !== '' ? (
             <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
               {helptext}

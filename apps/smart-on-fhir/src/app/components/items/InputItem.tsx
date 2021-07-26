@@ -1,12 +1,13 @@
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
-import { Input, Label } from 'nav-frontend-skjema';
+import { Input } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
 
-//Forventa argumenter:
-//entity: object
-//helptext: string
+/**
+ * Renders a question with type String
+ * @returns an input field for multi-selection
+ */
 
 const InputItem = (props: any) => {
   const [inputValue, setInputValue] = useState('');

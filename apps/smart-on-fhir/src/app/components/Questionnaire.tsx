@@ -121,6 +121,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
 
       {/*This button is here temporarily to make it easy to save a questionnaire in the EHR launcer*/}
       <button onClick={() => saveQuestionnaire(client)}>Lagre et skjema</button>
+
+      {console.log(answers)}
     </>
   );
 };
