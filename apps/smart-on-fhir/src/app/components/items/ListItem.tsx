@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect } from 'react';
-import { Fareknapp } from 'nav-frontend-knapper';
+import { Xknapp } from 'nav-frontend-ikonknapper';
 
 interface IProps {
   valueList: string[];
@@ -16,6 +16,7 @@ export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
     const copiedList: string[] = [...valueList];
     copiedList.splice(copiedList.indexOf(tempValue), 1);
     setValueList(copiedList);
+    console.log('Temp changed', tempValue);
   }, [tempValue]);
 
   return (
@@ -25,9 +26,7 @@ export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
           <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <p>{value}</p>
-              <Fareknapp mini onClick={() => handleOnClick(value)}>
-                X
-              </Fareknapp>
+              <Xknapp mini onClick={() => handleOnClick(value)} />;
             </div>
           </>
         );
