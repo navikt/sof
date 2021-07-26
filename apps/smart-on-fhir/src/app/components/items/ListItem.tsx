@@ -14,9 +14,11 @@ export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
 
   useEffect(() => {
     const copiedList: string[] = [...valueList];
-    copiedList.splice(copiedList.indexOf(tempValue), 1);
+    // Sjekker om ønsket element er i listen før fjerning av elementet
+    if (copiedList.indexOf(tempValue) >= 0) {
+      copiedList.splice(copiedList.indexOf(tempValue), 1);
+    }
     setValueList(copiedList);
-    console.log('Temp changed', tempValue);
   }, [tempValue]);
 
   return (
@@ -25,8 +27,8 @@ export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
         return (
           <>
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <p>{value}</p>
-              <Xknapp mini onClick={() => handleOnClick(value)} />;
+              <Xknapp mini onClick={() => handleOnClick(value)} />
+              <p className="typo-normal">{value}</p>
             </div>
           </>
         );

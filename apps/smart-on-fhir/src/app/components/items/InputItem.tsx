@@ -1,13 +1,9 @@
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
-import { Input, Label } from 'nav-frontend-skjema';
+import { Input } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
 import { ListItem } from './ListItem';
-
-//Forventa argumenter:
-//entity: object
-//helptext: string
 
 const InputItem = (props: any) => {
   const [inputValue, setInputValue] = useState('');
