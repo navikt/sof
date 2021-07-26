@@ -5,6 +5,13 @@ interface IProps {
   valueList: string[];
   setValueList: React.Dispatch<React.SetStateAction<string[]>>;
 }
+
+/**
+ * ListItem is a component that renders a list of elements.
+ * Currently used together with the InputItem-component.
+ * @returns A list of elements, with the possibility to remove elements from the list of elements
+ */
+
 export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
   const [tempValue, setTempValue] = useState('');
 

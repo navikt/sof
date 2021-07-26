@@ -14,7 +14,10 @@ export const App = () => {
 
   return (
     <div className="app-container">
-      <BannerHeader />
+      <div className="TesterContainer">
+        <BannerHeader page="app" />
+      </div>
+
       <div className="titleContainer">
         <Sidetittel className="tittel">{questionnareTitle}</Sidetittel>
       </div>

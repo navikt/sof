@@ -6,7 +6,7 @@
     "value": ""
   },
   "status": "in-progress",
-  "questionnaire": "Questionnaire/1339713",
+  "questionnaire": "Questionnaire/1340031",
   "subject": {
     "resourceType": "Reference",
     "id": "",
@@ -59,7 +59,7 @@
     },
     {
       "linkId": "4",
-      "text": "Er det behov for at to omsorgspersoner samtidig?",
+      "text": "Er det behov for to omsorgspersoner samtidig?",
       "answer": [
         {
           "valueString": ""
