@@ -2,12 +2,12 @@ import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
 import { saveQuestionnaire } from '../utils/saveQuestionnaire';
-import { IBundle, IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
@@ -34,11 +34,13 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   useEffect(() => {
     console.log('ta da!!');
     client && patient
-      ? getAnswersFromServer(client, patient, setAnswers, answers)
+      ? getAnswersFromServer(client, patient, setAnswers)
       : null;
-    console.log(answers);
-    // Tanke: flyutt ut getAnswersFromServer til egen fil og kall den her
   }, []);
+
+  useEffect(() => {
+    console.log('Ansewers er oppdatert og er nå: ', answers);
+  }, [answers]);
 
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
@@ -83,43 +85,50 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     client?.delete('Questionnaire/1340124');
   };
 
+  const displayQuestion = (item: any) => {
+    let mainItem: any;
+    let subItems: any[] = [];
+    let radioOptions: answerOptionType[] = [];
+    if (
+      !item.linkId.includes('automatic') &&
+      !item.linkId.includes('help') &&
+      !item.linkId.includes('.')
+    ) {
+      mainItem = item;
+      //If question (item) has an item-array
+      if (item.item !== undefined) {
+        item.item.map((entityItem: any) => {
+          subItems.push(entityItem);
+        });
+      } else if (item.answerOption) {
+        item.answerOption.map((option: any) => {
+          radioOptions.push(option);
+        });
+      }
+
+      console.log('radioOptions: ', radioOptions);
+
+      return (
+        <ItemAnswer
+          entity={mainItem}
+          entityItems={subItems}
+          radioOptionItems={radioOptions}
+          answers={answers}
+          setAnswers={setAnswers}
+        />
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   return (
     //Itererer gjennom alle spørsmålene (spørsmål = item) og filtrerer på spørsmålenes linkId.
     //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
     //pushes inn i subItems.
     <>
       {questions.map((item: any) => {
-        let mainItem: any;
-        let subItems: any[] = [];
-        let radioOptions: string[] = [];
-        if (
-          !item.linkId.includes('automatic') &&
-          !item.linkId.includes('help') &&
-          !item.linkId.includes('.')
-        ) {
-          mainItem = item;
-          //Hvis spørsmålet (item) har en item-array
-          if (item.item !== undefined) {
-            item.item.map((entityItem: any) => {
-              subItems.push(entityItem);
-            });
-          } else if (item.answerOption) {
-            item.answerOption.map((option: any) => {
-              radioOptions.push(option);
-            });
-          }
-
-          return (
-            <ItemAnswer
-              entity={mainItem}
-              entityItems={subItems}
-              radioOptionItems={radioOptions}
-              answers={answers}
-              setAnswers={setAnswers}
-            />
-          );
-        }
-        return;
+        return displayQuestion(item);
       })}
       <Hovedknapp
         onClick={() => clickSave(answers, response, patient, user, client)}
