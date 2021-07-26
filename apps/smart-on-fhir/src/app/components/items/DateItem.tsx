@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
+import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { DatepickerItem } from './DatepickerItem';
-import { HelptextItem } from './HelptextItem';
 
 interface IProps {
   entity: any;
@@ -19,8 +19,8 @@ const DateItem: FC<IProps> = ({
   answers,
   setAnswers,
 }) => {
-  const [dateList, setDateList] = useState<string[]>([]);
   const optionList: string[] = answeroptions;
+  const [dateList, setDateList] = useState<string[]>([]);
 
   useEffect(() => {
     // // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts
@@ -33,17 +33,31 @@ const DateItem: FC<IProps> = ({
     <div className="componentItems">
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <p className="typo-element">{entity.text}</p>
-        <HelptextItem text={helptext} />
+        {
+          // Håndterer hjelpetekst ved behov
+          helptext !== '' ? (
+            <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
+              {helptext}
+            </Hjelpetekst>
+          ) : (
+            <></>
+          )
+        }
       </div>
       <div style={{ display: 'flex' }}>
         {optionList?.map((option: string, index: number) => {
           return (
-            <DatepickerItem
-              index={index}
-              text={option}
-              dateList={dateList}
-              setDateList={setDateList}
-            />
+            <div
+              key={entity.linkId + index}
+              style={{ display: 'block', margin: '10px' }}
+            >
+              <DatepickerItem
+                index={index}
+                text={option}
+                dateList={dateList}
+                setDateList={setDateList}
+              />
+            </div>
           );
         })}
       </div>

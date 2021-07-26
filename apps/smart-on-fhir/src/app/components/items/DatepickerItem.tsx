@@ -14,20 +14,20 @@ export const DatepickerItem: FC<IProps> = ({
   dateList,
   setDateList,
 }) => {
-  const [date, setDate] = useState('åååå.mm.dd');
+  const [date, setDate] = useState('dd.mm.åååå');
 
   useEffect(() => {
     const copyList: string[] = [...dateList];
-    if (date !== 'åååå.mm.dd') {
+    if (date !== 'dd.mm.åååå') {
       copyList[index] = date;
     }
     setDateList(copyList);
   }, [date]);
 
   return (
-    <div style={{ display: 'block' }}>
+    <>
       <p className="typo-normal">{text}</p>
       <Datepicker onChange={setDate} value={date} />
-    </div>
+    </>
   );
 };
