@@ -3,7 +3,7 @@ import Client from 'fhirclient/lib/Client';
 import { fhirclient } from 'fhirclient/lib/types';
 import { oauth2 } from 'fhirclient';
 import { useLocation } from 'react-router-dom';
-import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import { IPatient, IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 
 type ContextProps = {
   client: Client;
@@ -12,6 +12,10 @@ type ContextProps = {
     | fhirclient.FHIR.Patient
     | fhirclient.FHIR.Practitioner
     | fhirclient.FHIR.RelatedPerson;
+  questionnaire: IQuestionnaire;
+  setQuestionnaire: React.Dispatch<
+    React.SetStateAction<IQuestionnaire | undefined>
+  >;
   error: Error;
 };
 export const FhirContext = React.createContext<Partial<ContextProps>>({});
@@ -33,6 +37,7 @@ export const FhirContextProvider = (props: any) => {
     | fhirclient.FHIR.Practitioner
     | fhirclient.FHIR.RelatedPerson
   >();
+  const [questionnaire, setQuestionnaire] = useState<IQuestionnaire>();
   const [error, setError] = useState<Error>();
 
   useEffect(() => {
@@ -64,6 +69,8 @@ export const FhirContextProvider = (props: any) => {
     error,
     patient,
     user,
+    questionnaire,
+    setQuestionnaire,
   };
   return (
     <FhirContext.Provider value={context}>

@@ -47,7 +47,7 @@ const RadiobuttonItem = (props: IItemProps) => {
               {props.entity.text}
               {
                 // Checks for helptext, and displays if any
-                props.helptext === '' ? (
+                props.helptext !== '' ? (
                   <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                     {props.helptext}
                   </Hjelpetekst>
