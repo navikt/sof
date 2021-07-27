@@ -1,23 +1,27 @@
 import { Textarea } from 'nav-frontend-skjema';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { useEffect, useState } from 'react';
-import { useFhirContext } from '../../context/fhirContext';
-import { getAnswersFromServer } from '../../utils/setAnswersFromServer';
 
 const TextareaItem = (props: IItemProps) => {
   const [textValue, setTextValue] = useState('');
-  const { patient, client } = useFhirContext();
 
   const handleOnChange = (e: any) => {
     setTextValue(e.target.value);
   };
 
-  /*useEffect(() => {
-    client && patient
-      ? getAnswersFromServer(client, patient, setTextValue, props.entity.linkId)
-      : null;
-    console.log('Text area utem');
-  }, []);*/
+  // When answers is updated: set the fields text to the correct answer.
+  // It is only done if textValue is empty, meaning that it should only
+  // make changes to textValue if there is an answer saved on the server
+  // that has been fetched, and there is no new answer that can be overwritten.
+  useEffect(() => {
+    console.log(props.answers);
+    if (
+      textValue === '' &&
+      typeof props.answers.get(props.entity.linkId) === 'string'
+    ) {
+      setTextValue(props.answers.get(props.entity.linkId) as string);
+    }
+  }, [props.answers]);
 
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);

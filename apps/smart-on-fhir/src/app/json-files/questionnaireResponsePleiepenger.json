@@ -80,7 +80,7 @@
       "text": "Forventet varighet på barnets tilsyns- og pleiebehov: Start",
       "answer": [
         {
-          "valueDate": "0000-01-01"
+          "valueDate": ""
         }
       ]
     },
@@ -89,7 +89,7 @@
       "text": "Forventet varighet på barnets tilsyns- og pleiebehov: Slutt",
       "answer": [
         {
-          "valueDate": "0000-01-01"
+          "valueDate": ""
         }
       ]
     },

@@ -49,7 +49,7 @@ export const setValueDate = (item: any, value: string) => {
         item.answer.push({ valueDate: listOfDates[i] });
       } else {
         throw new Error(
-          'The value is either non existent or it is not on the right format. The format shpould be YYYY-MM-DD'
+          'The value is either non existent or it is not on the right format. The format should be YYYY-MM-DD'
         );
       }
     }

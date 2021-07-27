@@ -8,11 +8,28 @@ const RadiobuttonItem = (props: any) => {
   const [radioValue, setRadioValue] = useState('');
 
   const handleOnChange = (value: string) => {
+    console.log('onChange');
     setRadioValue(value);
   };
 
+  // When answers is updated: set the radiobuttons to the correct answer.
+  // It is only done if radioValue is empty, meaning that it should only
+  // make changes to radioValue if there is an answer saved on the server
+  // that has been fetched, and there is no new answer that can be overwritten.
+  // Does not currently work. Maybe we can get e.target from onChange and do something.
+  useEffect(() => {
+    console.log(props.answers);
+    if (
+      radioValue === '' &&
+      typeof props.answers.get(props.entity.linkId) === 'string'
+    ) {
+      setRadioValue(props.answers.get(props.entity.linkId) as string);
+    }
+  }, [props.answers]);
+
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);
+    console.log('radioValue: ', radioValue);
     copiedAnswers.set(props.entity.linkId, radioValue);
     props.setAnswers(copiedAnswers);
   }, [radioValue]);
