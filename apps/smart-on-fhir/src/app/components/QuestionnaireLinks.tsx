@@ -2,7 +2,14 @@ import { Cell, ContentContainer, Grid } from '@navikt/ds-react';
 import { HoyreChevron } from 'nav-frontend-chevron';
 import { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
 
-const QuestionnaireLinks = (props: any) => {
+
+interface IQuestionnaireLinksProps {
+  title: string;
+  status: boolean;
+  handleClick: any;
+}
+
+const QuestionnaireLinks = (props: IQuestionnaireLinksProps) => {
   function statusChecker(params: boolean) {
     if (props.status) {
       return <EtikettInfo className="etiketter">Ikke startet</EtikettInfo>;
@@ -12,7 +19,7 @@ const QuestionnaireLinks = (props: any) => {
   }
 
   return (
-    <div className="questionnaireLinkContainer">
+    <div className="questionnaireLinkContainer" onClick={props.handleClick}>
       <ContentContainer className="ContentContainer">
         <Grid>
           <Cell className={'navds-story-cell tittelcelle'} xs={8}>

@@ -11,7 +11,6 @@ import { setUUIDIdentifier } from './utils/setIdentifier';
 import { useEffect } from 'react';
 import QuestionnaireLinks from './components/QuestionnaireLinks';
 
-
 export const LandingPage = () => {
   const { questionnaire, setQuestionnaire, client } = useFhirContext();
 
@@ -68,18 +67,21 @@ export const LandingPage = () => {
                 <QuestionnaireLinks
                   title={'Legeerklæring: pleiepenger for sykt barn'}
                   status={true}
+                  handleClick={() => handleClick('pleiepengeskjema', '1.0.0')}
                 ></QuestionnaireLinks>
               </Link>
               <Link className="questionLink" to="/skjema">
                 <QuestionnaireLinks
                   title={'Henvisning til fysioterapeut'}
                   status={true}
+                  handleClick={handleClick}
                 ></QuestionnaireLinks>
               </Link>
               <Link className="questionLink" to="/skjema">
                 <QuestionnaireLinks
                   title={'Søknad om grunnstønad'}
                   status={false}
+                  handleClick={handleClick}
                 ></QuestionnaireLinks>
               </Link>
             </div>
