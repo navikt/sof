@@ -2,6 +2,7 @@ import { Cell, ContentContainer, Grid } from '@navikt/ds-react';
 import { HoyreChevron } from 'nav-frontend-chevron';
 import { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
 
+
 interface IQuestionnaireLinksProps {
   title: string;
   status: boolean;
