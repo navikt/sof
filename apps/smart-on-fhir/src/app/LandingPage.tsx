@@ -4,7 +4,7 @@ import { BannerHeader } from './components/BannerHeader';
 import { Sidetittel } from 'nav-frontend-typografi';
 import '@navikt/ds-css';
 import './landingpageStylesheet.css';
-import QuestionnaireLinks from './components/questionnaireLinks';
+import QuestionnaireLinks from './components/QuestionnaireLinks';
 
 export const LandingPage = () => {
   return (

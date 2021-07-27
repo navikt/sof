@@ -20,7 +20,7 @@ const QuestionnaireLinks = (props: any) => {
           </Cell>
           <Cell className={'navds-story-cell statuscelle'} xs={3}>
             Status:
-            {statusChecker(props.statusValue)}
+            {statusChecker(props.status)}
           </Cell>
           <Cell className={'navds-story-cell chevroncelle'} xs={1}>
             <HoyreChevron></HoyreChevron>
