@@ -60,12 +60,12 @@ test('it should remove date', () => {
   expect(filledItemDate.answer[0].valueDate).toBe('');
 });
 
-test('it should throw an error when date is 0000-01-01', () => {
+test('it should throw an error when date is 0000-00-00', () => {
   expect(() => {
     setValueDate(dateItem, '0000-00-00');
   }).toThrow(
     new Error(
-      'The value is either non existent or it is not on the right format. The format shpould be YYYY-MM-DD'
+      'The value is either non existent or it is not on the right format. The format should be YYYY-MM-DD'
     )
   );
 });
@@ -75,7 +75,7 @@ test('it should throw an error when date is 2020-13-14', () => {
     setValueDate(dateItem, '2020-13-14');
   }).toThrow(
     new Error(
-      'The value is either non existent or it is not on the right format. The format shpould be YYYY-MM-DD'
+      'The value is either non existent or it is not on the right format. The format should be YYYY-MM-DD'
     )
   );
 });
@@ -85,7 +85,7 @@ test('it should throw an error when date is 2020-12-32', () => {
     setValueDate(dateItem, '2020-12-32');
   }).toThrow(
     new Error(
-      'The value is either non existent or it is not on the right format. The format shpould be YYYY-MM-DD'
+      'The value is either non existent or it is not on the right format. The format should be YYYY-MM-DD'
     )
   );
 });

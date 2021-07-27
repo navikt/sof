@@ -2,14 +2,14 @@ import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-import { saveQuestionnaire } from '../utils/saveQuestionnaire';
 import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
+import { getAnswersFromServer } from '../utils/setAnswersFromServer';
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -29,6 +29,14 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     new Map()
   );
   const response = questionnaireResponse;
+
+  // This will be called when the questionnaire is opened, and sets
+  // answers to the answers allready saved ont he server (if there are any).
+  useEffect(() => {
+    client && patient
+      ? getAnswersFromServer(client, patient, setAnswers)
+      : null;
+  }, []);
 
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
@@ -64,9 +72,45 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       saveAnswers(answers, response, patient, user, client);
     }
   };
+
   useEffect(() => {
     props.createHeader(questionnaire.title, questionnaire.description);
   }, [questionnaire]);
+
+  const displayQuestion = (item: any) => {
+    let mainItem: any;
+    let subItems: any[] = [];
+    let options: answerOptionType[] = [];
+    if (
+      !item.linkId.includes('automatic') &&
+      !item.linkId.includes('help') &&
+      !item.linkId.includes('.')
+    ) {
+      mainItem = item;
+      //If question (item) has an item-array
+      if (item.item !== undefined) {
+        item.item.map((entityItem: any) => {
+          subItems.push(entityItem);
+        });
+      } else if (item.answerOption) {
+        item.answerOption.map((option: any) => {
+          options.push(option);
+        });
+      }
+
+      return (
+        <ItemAnswer
+          entity={mainItem}
+          entityItems={subItems}
+          optionItems={options}
+          answers={answers}
+          setAnswers={setAnswers}
+        />
+      );
+    } else {
+      return <></>;
+    }
+  };
 
   return (
     //Itererer gjennom alle spørsmålene (spørsmål = item) og filtrerer på spørsmålenes linkId.
@@ -74,37 +118,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     //pushes inn i subItems.
     <>
       {questions.map((item: any) => {
-        let mainItem: any;
-        let subItems: any[] = [];
-        let radioOptions: string[] = [];
-        if (
-          !item.linkId.includes('automatic') &&
-          !item.linkId.includes('help') &&
-          !item.linkId.includes('.')
-        ) {
-          mainItem = item;
-          //Hvis spørsmålet (item) har en item-array
-          if (item.item !== undefined) {
-            item.item.map((entityItem: any) => {
-              subItems.push(entityItem);
-            });
-          } else if (item.answerOption) {
-            item.answerOption.map((option: any) => {
-              radioOptions.push(option);
-            });
-          }
-
-          return (
-            <ItemAnswer
-              entity={mainItem}
-              entityItems={subItems}
-              radioOptionItems={radioOptions}
-              answers={answers}
-              setAnswers={setAnswers}
-            />
-          );
-        }
-        return;
+        return displayQuestion(item);
       })}
       <Hovedknapp
         onClick={() => clickSave(answers, response, patient, user, client)}
@@ -118,9 +132,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       >
         Send skjema
       </Hovedknapp>
-
-      {/*This button is here temporarily to make it easy to save a questionnaire in the EHR launcer*/}
-      <button onClick={() => saveQuestionnaire(client)}>Lagre et skjema</button>
     </>
   );
 };

@@ -3,7 +3,11 @@
 /*DARK BAND-HEADER ON TOP OF PAGE + ITS CONTENTS*/
 
 .app-container {
-  margin: 140px 50px;
+  max-width: 1050px;
+  min-width: 700px;
+  display: flex;
+  margin: 140px auto;
+  padding: 0 50px;
 }
 
 .nav-header-container {
@@ -33,12 +37,18 @@
   align-items: center;
 }
 
-#child-logo {
-  color: white;
-  font-size: 2.5rem;
+.patientNameContainer {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
 }
 
-#child-name {
+#person-logo {
+  height: 40px;
+  margin: 15px 5px;
+}
+
+#patient-name {
   color: white;
   font-size: 1.5rem;
   margin: 0;
@@ -49,7 +59,7 @@
   margin: 1px;
 }
 
-.logo {
+.nav-logo {
   height: 50px;
   margin: 15px 20px;
 }
