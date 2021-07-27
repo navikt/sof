@@ -14,6 +14,18 @@ const CheckboxItem = (props: IItemProps) => {
     props.setAnswers(copiedAnswers);
   }, [textValue]);
 
+  // When answers is updated: set the checkbox to the correct answer.
+  // Make changes to textValue if there is an answer saved on the server
+  // that has been fetched, and there is no new answer that can be overwritten.
+  // (this might not work properly, maybe a value can be overwritten by the
+  // answer in the server).
+  useEffect(() => {
+    console.log(props.answers);
+    if (typeof props.answers.get(props.entity.linkId) === 'boolean') {
+      setTextValue(props.answers.get(props.entity.linkId) as boolean);
+    }
+  }, [props.answers]);
+
   return (
     <>
       {props.helptext != '' ? (

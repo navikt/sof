@@ -6,7 +6,6 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-import { saveQuestionnaire } from '../utils/saveQuestionnaire';
 import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
@@ -30,6 +29,14 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     new Map()
   );
   const response = questionnaireResponse;
+
+  // This will be called when the questionnaire is opened, and sets
+  // answers to the answers allready saved ont he server (if there are any).
+  useEffect(() => {
+    client && patient
+      ? getAnswersFromServer(client, patient, setAnswers)
+      : null;
+  }, []);
 
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
@@ -69,10 +76,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   useEffect(() => {
     props.createHeader(questionnaire.title, questionnaire.description);
   }, [questionnaire]);
-
-  const deleteQuestionnaire = () => {
-    client?.delete('Questionnaire/1340124');
-  };
 
   const displayQuestion = (item: any) => {
     let mainItem: any;
@@ -129,13 +132,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       >
         Send skjema
       </Hovedknapp>
-
-      {/*This button is here temporarily to make it easy to save a questionnaire in the EHR launcer*/}
-      <button onClick={() => saveQuestionnaire(client)}>Lagre et skjema</button>
-
-      <button onClick={() => deleteQuestionnaire()}>Slett</button>
-
-      {console.log('A:', answers)}
     </>
   );
 };

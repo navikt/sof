@@ -73,6 +73,20 @@ const InputItem = (props: IItemProps) => {
     return <></>;
   };
 
+  // When answers is updated: set the inputValue to the correct answer.
+  // It is only done if inputValue is empty, meaning that it should only
+  // make changes to inputValue if there is an answer saved on the server
+  // that has been fetched, and there is no new answer that can be overwritten.
+  useEffect(() => {
+    console.log(props.answers);
+    if (
+      inputValue === '' &&
+      typeof props.answers.get(props.entity.linkId) === 'string'
+    ) {
+      setInputValue(props.answers.get(props.entity.linkId) as string);
+    }
+  }, [props.answers]);
+
   useEffect(() => {
     // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts
     const copiedAnswers = new Map(props.answers);

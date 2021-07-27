@@ -51,6 +51,8 @@ const DateItem: FC<IItemProps> = ({
                 text={option}
                 dateList={dateList}
                 setDateList={setDateList}
+                answers={answers}
+                entity={entity}
               />
             </div>
           );
