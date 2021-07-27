@@ -6,8 +6,8 @@
   margin: 30px 0;
 }
 
-.inputTextAreas {
-  width: 700px;
+.innerContainerInput {
+  width: 100%;
 }
 
 .radio-button {
@@ -20,4 +20,8 @@
 
 .buttons {
   margin: 10px;
+}
+
+.questionnaireLinkContainer:hover {
+  background-color: #f5f5f5;
 }
