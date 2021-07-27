@@ -37,8 +37,8 @@ const InputItem = (props: IItemProps) => {
   };
 
   const handleAddElement = () => {
-    // Legger til valgt element i listen over valgte elementer
-    if (!tempValueList.includes(inputValue)) {
+    // Adds the input element in the tempValueList, if not element is contained already or an empty string
+    if (!tempValueList.includes(inputValue) && inputValue !== '') {
       setTempValueList((prevState) => [...prevState, inputValue]);
     }
   };
@@ -79,17 +79,13 @@ const InputItem = (props: IItemProps) => {
   // and there is an answer saved on the server,
   // the tempValueList sets to the saved answers.
   useEffect(() => {
-    console.log(typeof props.answers.get(props.entity.linkId) === 'string');
     if (
       tempValueList.length === 0 &&
       props.answers.get(props.entity.linkId) &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
-      const tempAnswer: string = props.answers.get(
-        props.entity.linkId
-      ) as string;
-      const tempAnswerList = JSON.parse(tempAnswer);
-      setTempValueList(tempAnswerList);
+      const temp: string = props.answers.get(props.entity.linkId) as string;
+      setTempValueList(JSON.parse(temp));
     }
   }, []);
 

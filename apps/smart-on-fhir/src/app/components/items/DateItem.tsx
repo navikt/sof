@@ -15,14 +15,30 @@ const DateItem: FC<IItemProps> = ({
   setAnswers,
 }) => {
   const optionList: string[] | undefined = answeroptions;
-  const [dateList, setDateList] = useState<string[]>([]);
+  const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
 
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
-    copiedAnswers.set(entity.linkId, '[' + dateList.toString() + ']');
+    copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
     setAnswers(copiedAnswers);
   }, [dateList]);
+
+  // When rendering for the first time:
+  // set the date to the correct answer.
+  // It is only done if the date is empty, meaning that it should only
+  // make changes to date if there is an answer saved on the server
+  // that has been fetched, and there is no new answer that can be overwritten.
+  useEffect(() => {
+    if (
+      dateList.length === 0 &&
+      answers.get(entity.linkId) &&
+      typeof answers.get(entity.linkId) === 'string'
+    ) {
+      const temp: string = answers.get(entity.linkId) as string;
+      setDateList(JSON.parse(temp));
+    }
+  }, []);
 
   return (
     <div className="componentItems">
@@ -51,8 +67,6 @@ const DateItem: FC<IItemProps> = ({
                 text={option}
                 dateList={dateList}
                 setDateList={setDateList}
-                answers={answers}
-                entity={entity}
               />
             </div>
           );
