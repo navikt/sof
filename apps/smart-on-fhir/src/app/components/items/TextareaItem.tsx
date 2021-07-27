@@ -34,29 +34,27 @@ const TextareaItem = (props: IItemProps) => {
 
   return (
     <>
-      <div className="componentItems">
-        <Textarea
-          className="inputTextAreas"
-          label={
-            <div style={{ display: 'flex' }}>
-              {props.entity.text}
-              {
-                // Checks for helptext, and displays if any
-                props.helptext !== '' ? (
+      {
+        <div className="componentItems">
+          <Textarea
+            label={
+              props.helptext !== '' ? (
+                <div style={{ display: 'flex' }}>
+                  {props.entity.text}
                   <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                     {props.helptext}
                   </Hjelpetekst>
-                ) : (
-                  <></>
-                )
-              }
-            </div>
-          }
-          value={textValue}
-          onChange={handleOnChange}
-          maxLength={0}
-        ></Textarea>
-      </div>
+                </div>
+              ) : (
+                props.entity.text
+              )
+            }
+            value={textValue}
+            onChange={handleOnChange}
+            maxLength={0}
+          ></Textarea>
+        </div>
+      }
     </>
   );
 };

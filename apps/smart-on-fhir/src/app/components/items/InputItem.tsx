@@ -107,19 +107,16 @@ const InputItem = (props: IItemProps) => {
             onFocus={handleOnFocus}
             value={inputValue}
             label={
-              <div style={{ display: 'flex' }}>
-                {props.entity.text}
-                {
-                  // Checks for helptext, and displays if any
-                  props.helptext !== '' ? (
-                    <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
-                      {props.helptext}
-                    </Hjelpetekst>
-                  ) : (
-                    <></>
-                  )
-                }
-              </div>
+              props.helptext !== '' ? (
+                <div style={{ display: 'flex' }}>
+                  {props.entity.text}
+                  <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
+                    {props.helptext}
+                  </Hjelpetekst>
+                </div>
+              ) : (
+                props.entity.text
+              )
             }
           />
           <Popover
