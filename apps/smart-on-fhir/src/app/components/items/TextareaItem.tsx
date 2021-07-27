@@ -2,8 +2,14 @@ import { Textarea } from 'nav-frontend-skjema';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { useEffect, useState } from 'react';
 
-const TextareaItem = (props: any) => {
+/**
+ * Renders a question with type Text
+ * @returns a text box (TextArea) for user input
+ */
+
+const TextareaItem = (props: IItemProps) => {
   const [textValue, setTextValue] = useState('');
+
   const handleOnChange = (e: any) => {
     setTextValue(e.target.value);
   };
