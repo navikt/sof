@@ -13,19 +13,18 @@ const TextareaItem = (props: IItemProps) => {
     setTextValue(e.target.value);
   };
 
-  // When answers is updated: set the fields text to the correct answer.
+  // When rendering for the first time: set the fields text to the correct answer.
   // It is only done if textValue is empty, meaning that it should only
   // make changes to textValue if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
-    console.log(props.answers);
     if (
       textValue === '' &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
       setTextValue(props.answers.get(props.entity.linkId) as string);
     }
-  }, [props.answers]);
+  }, []);
 
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);
@@ -34,7 +33,6 @@ const TextareaItem = (props: IItemProps) => {
   }, [textValue]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {
         <div className="componentItems">
