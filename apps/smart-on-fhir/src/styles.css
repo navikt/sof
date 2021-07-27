@@ -3,16 +3,23 @@
 /*DARK BAND-HEADER ON TOP OF PAGE + ITS CONTENTS*/
 
 .app-container {
-  margin: 140px 50px;
+  max-width: 1050px;
+  min-width: 690px;
+  display: flex;
+  margin: 140px auto;
+  padding: 0 50px;
 }
 
 .nav-header-container {
+  display: flex;
+  align-items: center;
   position: absolute;
   height: 82px;
   left: 0%;
   right: 0%;
   top: 0px;
   background: rgba(38, 38, 38, 0.9);
+  justify-content: space-between;
 }
 
 .bandline {
@@ -26,17 +33,22 @@
 }
 
 .name-container {
-  position: absolute;
-  top: 20px;
-  left: 120px;
+  display: flex;
+  align-items: center;
 }
 
-#child-logo {
-  color: white;
-  font-size: 2.5rem;
+.patientNameContainer {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
 }
 
-#child-name {
+#person-logo {
+  height: 40px;
+  margin: 15px 5px;
+}
+
+#patient-name {
   color: white;
   font-size: 1.5rem;
   margin: 0;
@@ -47,9 +59,13 @@
   margin: 1px;
 }
 
-.logo {
+.nav-logo {
   height: 50px;
   margin: 15px 20px;
+}
+
+Tilbakeknapp {
+  position: absolute;
 }
 
 /*TITLE AREA, UNDER THE DARK BAND HEADER*/

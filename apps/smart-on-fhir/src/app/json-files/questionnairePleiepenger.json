@@ -1,6 +1,10 @@
 {
   "resourceType": "Questionnaire",
   "id": "123456789",
+  "identifier": {
+    "use": "official",
+    "value": ""
+  },
   "version": "1.0.0",
   "name": "pleiepengeskjema",
   "title": "Legeerklæring: pleiepenger for sykt barn",
@@ -56,121 +60,7 @@
     },
     {
       "linkId": "4",
-      "text": "Vurder barnets tilsyn- og pleiebehov",
-      "type": "text",
-      "item": [
-        {
-          "linkId": "4-help",
-          "text": "Dette kan for eksempel være en beskrivelse av hva barnet trenger hjelp til og omsorgspersonens rolle i pleien.",
-          "type": "display"
-        }
-      ],
-      "required": "true"
-    },
-    {
-      "linkId": "5",
-      "text": "Varighet på barnets tilsyns- og pleiebehov",
-      "type": "group",
-      "item": [
-        {
-          "linkId": "5-help",
-          "text": "Her skal du sette en dato på hvor langt fram i tid du forventer at barnet har behov for kontinuerlig tilsyn og pleie. Hvis du er usikker på varigheten setter du en dato så langt frem i tid som du er sikker på per nå.",
-          "type": "display"
-        },
-        {
-          "linkId": "5.1",
-          "text": "Start",
-          "type": "date",
-          "required": "false"
-        },
-        {
-          "linkId": "5.2",
-          "text": "Slutt",
-          "type": "date",
-          "required": "false"
-        }
-      ],
-      "required": "true"
-    },
-    {
-      "linkId": "6",
-      "text": "Kryss av for det som gjelder barnet",
-      "type": "group",
-      "item": [
-        {
-          "linkId": "6.1",
-          "text": "Barnet har større tilsyns- og pleiebehov enn barn på samme alder",
-          "type": "boolean",
-          "initial": [
-            {
-              "valueBoolean": false
-            }
-          ],
-          "required": "false"
-        },
-        {
-          "linkId": "6.2",
-          "text": "Barnets behov skyldes sykdom eller skade",
-          "type": "boolean",
-          "initial": [
-            {
-              "valueBoolean": false
-            }
-          ],
-          "required": "false"
-        },
-        {
-          "linkId": "6.3",
-          "text": "Barnet er under oppfølging av BUP",
-          "type": "boolean",
-          "initial": [
-            {
-              "valueBoolean": false
-            }
-          ],
-          "required": "false"
-        }
-      ]
-    },
-    {
-      "linkId": "7",
-      "text": "Når har barnet behov for tilsyn?",
-      "type": "choice",
-      "answerOption": [
-        {
-          "valueCoding": {
-            "code": "HELE",
-            "display": "Hele tiden"
-          }
-        },
-        {
-          "valueCoding": {
-            "code": "DELER",
-            "display": "Enkelte situasjoner / deler av dagen"
-          }
-        }
-      ],
-      "required": "true",
-      "item": [
-        {
-          "linkId": "7.1",
-          "text": "Beskriv hvilke situasjoner / deler av dagen det gjelder for",
-          "type": "text",
-          "enableWhen": [
-            {
-              "question": "7",
-              "operator": "=",
-              "answerCoding": {
-                "code": "DELER"
-              }
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "linkId": "9",
-      "text": "Er det behov for at to omsorgspersoner pleier eller har tilsyn med barnet i samme tidsrom?",
+      "text": "Er det behov for to omsorgspersoner samtidig?",
       "type": "choice",
       "answerOption": [
         {
@@ -186,73 +76,80 @@
           }
         }
       ],
-      "enableWhen": [
+      "required": "true"
+    },
+    {
+      "linkId": "5",
+      "text": "Vurder barnets tilsyn- og pleiebehov",
+      "type": "text",
+      "item": [
         {
-          "question": "8",
-          "operator": "=",
-          "answerCoding": {
-            "code": "Y"
+          "linkId": "5-help",
+          "text": "Dette kan for eksempel være en beskrivelse av hva barnet trenger hjelp til og omsorgspersonens rolle i pleien.",
+          "type": "display"
+        }
+      ],
+      "required": "true"
+    },
+    {
+      "linkId": "6",
+      "text": "Forventet varighet på barnets tilsyns- og pleiebehov",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "6-help",
+          "text": "Her skal du sette en dato på hvor langt fram i tid du forventer at barnet har behov for kontinuerlig tilsyn og pleie. Hvis du er usikker på varigheten setter du en dato så langt frem i tid som du er sikker på per nå.",
+          "type": "display"
+        },
+        {
+          "linkId": "6.1",
+          "text": "Start",
+          "type": "date",
+          "required": "false"
+        },
+        {
+          "linkId": "6.2",
+          "text": "Slutt",
+          "type": "date",
+          "required": "false"
+        }
+      ],
+      "required": "true"
+    },
+    {
+      "linkId": "7",
+      "text": "Er barnet under oppfølging av BUP?",
+      "type": "choice",
+      "answerOption": [
+        {
+          "valueCoding": {
+            "code": "Ja",
+            "display": "Ja"
+          }
+        },
+        {
+          "valueCoding": {
+            "code": "Nei",
+            "display": "Nei"
           }
         }
       ],
       "required": "true"
     },
     {
-      "linkId": "10",
-      "text": "Beskriv hvorfor det er nødvendig med to omsorgspersoner samtidig",
+      "linkId": "8",
+      "text": "Om mulig, beskriv barnets funksjonsnivå ved hjelp av CGAS",
       "type": "text",
       "enableWhen": [
         {
-          "question": "9",
+          "question": "7",
           "operator": "=",
           "answerCoding": {
-            "code": "Y"
+            "code": "Ja"
           }
         }
       ],
-      "required": "true"
-    },
-    {
-      "linkId": "11-automatic",
-      "text": "Pasientens fødselsnummer",
-      "type": "integer",
-      "required": "true"
-    },
-    {
-      "linkId": "12-automatic",
-      "text": "Pasientens navn",
-      "type": "text",
-      "required": "true"
-    },
-    {
-      "linkId": "13-automatic",
-      "text": "Legens HPR-nummer",
-      "type": "integer",
-      "required": "true"
-    },
-    {
-      "linkId": "14-automatic",
-      "text": "Legens navn",
-      "type": "text",
-      "required": "true"
-    },
-    {
-      "linkId": "15-automatic",
-      "text": "Legens telefonnummer",
-      "type": "integer",
-      "required": "true"
-    },
-    {
-      "linkId": "16-automatic",
-      "text": "Sykehusets navn",
-      "type": "text",
-      "required": "true"
-    },
-    {
-      "linkId": "17-automatic",
-      "text": "Sykehusets adresse",
-      "type": "text",
-      "required": "true"
+      "required": "false"
     }
   ]
 }

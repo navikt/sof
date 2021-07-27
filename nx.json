@@ -1,7 +1,7 @@
 {
   "npmScope": "sof",
   "affected": {
-    "defaultBase": "master"
+    "defaultBase": "main"
   },
   "implicitDependencies": {
     "package.json": {
@@ -27,15 +27,8 @@
     ]
   },
   "projects": {
-    "api": {
-      "tags": []
-    },
     "smart-on-fhir": {
       "tags": []
-    },
-    "smart-on-fhir-e2e": {
-      "tags": [],
-      "implicitDependencies": ["smart-on-fhir"]
     }
   }
 }

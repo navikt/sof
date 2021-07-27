@@ -1,17 +1,20 @@
-import React, { FC, useState } from 'react';
-import { Textarea } from 'nav-frontend-skjema';
-import { Input } from 'nav-frontend-skjema';
-import { Knapp } from 'nav-frontend-knapper';
-import { Checkbox } from 'nav-frontend-skjema';
-import { Radio } from 'nav-frontend-skjema';
+import React, { FC, useState, useEffect } from 'react';
 import './questionnaireStylesheet.css';
+<<<<<<< HEAD
 import { Datepicker, isISODateString } from 'nav-datovelger';
 import Panel from 'nav-frontend-paneler';
+=======
+import TextareaItem from './items/TextareaItem';
+import InputItem from './items/InputItem';
+import CheckboxItem from './items/CheckboxItem';
+import DateItem from './items/DateItem';
+import RadiobuttonItem from './items/RadiobuttonItem';
+>>>>>>> main
 
 interface IProps {
-  question: string;
-  linkId: string;
-  answerType: string | undefined;
+  entity: itemType;
+  entityItems: itemType[];
+  optionItems: answerOptionType[];
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
@@ -27,30 +30,47 @@ interface IProps {
  * @returns an input field
  */
 export const ItemAnswer: FC<IProps> = ({
-  question,
-  linkId,
-  answerType,
+  entity,
+  entityItems,
+  optionItems,
   answers,
   setAnswers,
 }) => {
+<<<<<<< HEAD
   const [inputValue, setInputValue] = useState('');
   const [answerOptions, setAnswerOptions] = useState([]);
   const [inputStartDates, setStartDate] = useState<string[]>([]);
   const [inputEndDates, setEndDate] = useState<string[]>([]);
+=======
+  let itemHelptext = '';
+  const arrayOfItems: Array<string> = [];
+  const [enableWhen, setEnableWhen] = useState(true); // True as default, in order to render questions from Questionnaire
+>>>>>>> main
 
-  const handleOnChange = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, e.target.value);
-    setAnswers(copiedAnswers);
-    setInputValue(e.target.value);
+  if (entityItems != undefined && entity.answerOption == undefined) {
+    // If there is a help text or subquestions, set these
+    entityItems.forEach((element) => {
+      if (element.linkId.includes('help')) {
+        itemHelptext = element.text;
+      } else if (element.linkId.includes('.')) {
+        arrayOfItems.push(element.text);
+      }
+    });
+  } else if (entity.answerOption != undefined) {
+    // Set the values for the radio buttons
+    optionItems.forEach((element) => {
+      arrayOfItems.push(element.valueCoding.display);
+    });
+  }
+
+  const itemProps = {
+    entity: entity,
+    helptext: itemHelptext,
+    answers: answers,
+    setAnswers: setAnswers,
   };
 
-  const handleOnChecked = (e: any) => {
-    const copiedAnswers = new Map(answers);
-    copiedAnswers.set(linkId, e.target.checked);
-    setAnswers(copiedAnswers);
-  };
-
+<<<<<<< HEAD
   //Method: fetch and save input dates to array
   const handleDateInput = (e: any) => {
     if (question === 'Start') {
@@ -62,11 +82,46 @@ export const ItemAnswer: FC<IProps> = ({
   };
 
   // TODO: create a method that updates answers when a radio button is clicked
+=======
+  const renderSwitch = () => {
+    switch (entity.type) {
+      case 'text':
+        return 'text';
+      case 'string':
+        return 'string';
+      case 'group':
+        if (entityItems[1].type === 'boolean') {
+          return 'boolean';
+        } else if (entityItems[1].type === 'date') {
+          return 'date';
+        } else {
+          return 'nothing';
+        }
+      case 'choice':
+        return 'radio';
+      default:
+        return 'nothing';
+    }
+  };
+>>>>>>> main
 
-  const testArray: Array<string> = ['Ja', 'Nei'];
+  useEffect(() => {
+    // Check if displaying enableWhen-items from Questionnaire
+    if (entity.enableWhen) {
+      if (
+        answers.get(entity.enableWhen[0].question) ===
+        entity.enableWhen[0].answerCoding.code
+      ) {
+        setEnableWhen(true);
+      } else {
+        setEnableWhen(false);
+      }
+    }
+  }, [answers]);
 
   return (
     <>
+<<<<<<< HEAD
       {answerType === 'boolean' ? (
         <div style={{ margin: '10px' }}>
           <Checkbox label={question}></Checkbox>
@@ -111,6 +166,20 @@ export const ItemAnswer: FC<IProps> = ({
           onChange={handleOnChange}
           maxLength={0}
         ></Textarea>
+=======
+      {/* Displays the items in the same order as in Questionnaire.json */}
+      {enableWhen ? (
+        {
+          text: <TextareaItem {...itemProps} />,
+          string: <InputItem {...itemProps} />,
+          boolean: <CheckboxItem {...itemProps} answeroptions={arrayOfItems} />,
+          date: <DateItem {...itemProps} answeroptions={arrayOfItems} />,
+          radio: (
+            <RadiobuttonItem {...itemProps} answeroptions={arrayOfItems} />
+          ),
+          nothing: <></>,
+        }[renderSwitch()]
+>>>>>>> main
       ) : (
         <></>
       )}

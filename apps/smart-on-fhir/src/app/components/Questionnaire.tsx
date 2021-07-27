@@ -1,13 +1,20 @@
 import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
-import questionnaireResponse from '../json-files/questionnaireResponse.json';
+import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
-import { Hovedknapp, Knapp } from 'nav-frontend-knapper';
+import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
+<<<<<<< HEAD
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Undertittel } from 'nav-frontend-typografi';
+=======
+import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import { fhirclient } from 'fhirclient/lib/types';
+import Client from 'fhirclient/lib/Client';
+import { getAnswersFromServer } from '../utils/setAnswersFromServer';
+>>>>>>> main
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -22,26 +29,23 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   const questionnaire = questionnairePleiepenger;
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const { patient, user } = useFhirContext();
+  const { patient, user, client } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
   const response = questionnaireResponse;
 
-  // Utkast til logikken for å hente hjelpetekst
-  const getHelptext = (item: any) => {
-    if (item.type === 'display') {
-      if (item.linkId.includes('help')) {
-        return <h1>{item.text}</h1>;
-      }
-    }
-    return <></>;
-  };
+  // This will be called when the questionnaire is opened, and sets
+  // answers to the answers allready saved ont he server (if there are any).
+  useEffect(() => {
+    client && patient
+      ? getAnswersFromServer(client, patient, setAnswers)
+      : null;
+  }, []);
 
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
     q.item?.map((itemChild: any) => {
-      //console.log('C: ', itemChild);
       if (loading) {
         setQuestions((prevState) => [...prevState, itemChild]);
       }
@@ -51,21 +55,75 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     });
   };
 
-  // Laster spørsmålene fra Questionnaire til questions-listen
+  // Saves questions from Questionnaire to the questions list
   useEffect(() => {
     getItemChildren(questionnaire);
     setLoading(false);
   }, [loading]);
 
+  // Function to make sure all values sent to saveAnswers are defined.
+  const clickSave = (
+    answers: Map<string, string | boolean>,
+    response: any,
+    patient: IPatient | undefined,
+    user:
+      | fhirclient.FHIR.Patient
+      | fhirclient.FHIR.Practitioner
+      | fhirclient.FHIR.RelatedPerson
+      | undefined,
+    client: Client | undefined
+  ) => {
+    if (answers && response && patient && user && client) {
+      saveAnswers(answers, response, patient, user, client);
+    }
+  };
+
   useEffect(() => {
     props.createHeader(questionnaire.title, questionnaire.description);
-    console.log(questionnaire.title);
-    console.log(questionnaire.description);
   }, [questionnaire]);
 
+  const displayQuestion = (item: any) => {
+    let mainItem: any;
+    let subItems: any[] = [];
+    let options: answerOptionType[] = [];
+    if (
+      !item.linkId.includes('automatic') &&
+      !item.linkId.includes('help') &&
+      !item.linkId.includes('.')
+    ) {
+      mainItem = item;
+      //If question (item) has an item-array
+      if (item.item !== undefined) {
+        item.item.map((entityItem: any) => {
+          subItems.push(entityItem);
+        });
+      } else if (item.answerOption) {
+        item.answerOption.map((option: any) => {
+          options.push(option);
+        });
+      }
+
+      return (
+        <ItemAnswer
+          entity={mainItem}
+          entityItems={subItems}
+          optionItems={options}
+          answers={answers}
+          setAnswers={setAnswers}
+        />
+      );
+    } else {
+      return <></>;
+    }
+  };
+
   return (
+    //Itererer gjennom alle spørsmålene (spørsmål = item) og filtrerer på spørsmålenes linkId.
+    //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
+    //pushes inn i subItems.
     <>
       {questions.map((item: any) => {
+<<<<<<< HEAD
         return item.linkId.includes('automatic') ? null : (
           <div key={item.linkId}>
             {item.linkId.includes('help') ? (
@@ -107,21 +165,22 @@ export const Questionnaire: FC<callFromApp> = (props) => {
             />
           </div>
         );
+=======
+        return displayQuestion(item);
+>>>>>>> main
       })}
-      <Knapp
-        className="buttons"
-        onClick={() => saveAnswers(answers, response, patient, user)}
+      <Hovedknapp
+        onClick={() => clickSave(answers, response, patient, user, client)}
       >
-        Lagre skjema
-      </Knapp>
+        Lagre
+      </Hovedknapp>
+
       <Hovedknapp
         className="buttons"
         onClick={() => console.log('Trykket på send')}
       >
         Send skjema
       </Hovedknapp>
-
-      {console.log('A:', answers)}
     </>
   );
 };
