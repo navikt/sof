@@ -87,20 +87,6 @@ const RadiobuttonItem = (props: IItemProps) => {
               checked={checked[index]}
             />
           ))}
-          {/*Object.entries(radioValueList).map(([key, value]) => {
-            return (
-              <>
-                {console.log(key, value)}
-                <Radio
-                  onChange={() => handleOnChange(key)}
-                  key={key}
-                  label={key}
-                  name={'group' + props.entity.linkId}
-                  checked={value}
-                />
-              </>
-            );
-          })*/}
         </RadioGruppe>
       </div>
     </>

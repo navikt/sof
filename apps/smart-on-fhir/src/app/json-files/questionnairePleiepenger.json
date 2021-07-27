@@ -74,12 +74,6 @@
             "code": "Nei",
             "display": "Nei"
           }
-        },
-        {
-          "valueCoding": {
-            "code": "N",
-            "display": "Tester"
-          }
         }
       ],
       "required": "true"
