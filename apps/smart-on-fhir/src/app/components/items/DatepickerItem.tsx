@@ -23,7 +23,7 @@ export const DatepickerItem: FC<IProps> = ({
   const [date, setDate] = useState(dateList[index] || 'dd.mm.åååå'); // The written value in the Datepicker field
 
   useEffect(() => {
-    // Check if date is an empty string
+    // If date is an empty string, set date to default value
     if (date === '') setDate('dd.mm.åååå');
     // Updates the array of dates if a date is selected
     const copyList: string[] = [...dateList];

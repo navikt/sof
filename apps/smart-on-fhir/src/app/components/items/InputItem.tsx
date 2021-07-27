@@ -32,7 +32,7 @@ const InputItem = (props: IItemProps) => {
   };
 
   const handleOnFocus = (e: any) => {
-    // Viser popovervinduet når inputfeltet er fokusert
+    // Displays the popover-window when the input field is focused
     setAnker(e.currentTarget);
   };
 
@@ -44,13 +44,13 @@ const InputItem = (props: IItemProps) => {
   };
 
   const handleChooseElement = (e: any) => {
-    // Setter valgt element som inputfelttekst
+    // Sets the chosen element in the input field
     setInputValue(e.target.innerHTML);
     setAnker(undefined);
   };
 
   const displayElements = (element: string) => {
-    // Sammenligner elementene med inputfeltteksten && sjekker om elementet allerede er valgt
+    // Compares elements with the input field && checks if element is already chosen
     const tempAnswer = props.answers.get(props.entity.linkId);
     if (
       element.toLowerCase().includes(inputValue.toLowerCase()) &&
@@ -75,7 +75,7 @@ const InputItem = (props: IItemProps) => {
   };
 
   // When rendering for the first time,
-  // if tempValueList is empty (no new answers can be overwritten)
+  // if tempValueList is empty (secures that no new answers can be overwritten)
   // and there is an answer saved on the server,
   // the tempValueList sets to the saved answers.
   useEffect(() => {
@@ -94,7 +94,7 @@ const InputItem = (props: IItemProps) => {
     const copiedAnswers = new Map(props.answers);
     copiedAnswers.set(props.entity.linkId, JSON.stringify(tempValueList));
     props.setAnswers(copiedAnswers);
-    setInputValue(''); // Tømmer inputfeltet for tekst
+    setInputValue(''); // Set input field to default value (empty)
   }, [tempValueList]);
 
   return (
