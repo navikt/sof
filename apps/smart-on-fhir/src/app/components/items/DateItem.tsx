@@ -15,7 +15,7 @@ const DateItem: FC<IItemProps> = ({
   setAnswers,
 }) => {
   const optionList: string[] | undefined = answeroptions;
-  const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
+  const [dateList, setDateList] = useState<string[]>(['Tittei']); // A (temporarily) list of the dates from the calendar input
 
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts

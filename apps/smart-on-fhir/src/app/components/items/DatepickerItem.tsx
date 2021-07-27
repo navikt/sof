@@ -20,7 +20,7 @@ export const DatepickerItem: FC<IProps> = ({
   dateList,
   setDateList,
 }) => {
-  const [date, setDate] = useState('dd.mm.åååå');
+  const [date, setDate] = useState(dateList[index] || 'dd.mm.åååå'); // The written value in the Datepicker field
 
   useEffect(() => {
     // Check if date is an empty string
