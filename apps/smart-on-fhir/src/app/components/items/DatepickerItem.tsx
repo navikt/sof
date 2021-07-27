@@ -6,11 +6,10 @@ interface IProps {
   text: string;
   dateList: string[];
   setDateList: React.Dispatch<React.SetStateAction<string[]>>;
-  answers: Map<string, string | boolean>;
-  entity: itemType;
 }
 
 /**
+ * DatepickerItem displays a calender for input
  * Currently used together with DateItem-component
  * @returns a Datepicker for user input
  */
@@ -20,32 +19,19 @@ export const DatepickerItem: FC<IProps> = ({
   text,
   dateList,
   setDateList,
-  answers,
-  entity,
 }) => {
-  const [date, setDate] = useState('dd.mm.åååå');
+  const [date, setDate] = useState(dateList[index] || 'dd.mm.åååå'); // The written value in the Datepicker / input field
 
   useEffect(() => {
+    // If date is an empty string, set date to default value
+    if (date === '') setDate('dd.mm.åååå');
+    // Updates the array of dates if a date is selected
     const copyList: string[] = [...dateList];
     if (date !== 'dd.mm.åååå') {
       copyList[index] = date;
     }
     setDateList(copyList);
   }, [date]);
-
-  // When answers is updated: set the date to the correct answer.
-  // It is only done if the date is empty, meaning that it should only
-  // make changes to date if there is an answer saved on the server
-  // that has been fetched, and there is no new answer that can be overwritten.
-  useEffect(() => {
-    console.log(answers);
-    if (
-      date === 'dd.mm.åååå' &&
-      typeof answers.get(entity.linkId) === 'string'
-    ) {
-      setDate(answers.get(entity.linkId) as string);
-    }
-  }, [answers]);
 
   return (
     <>

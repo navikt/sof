@@ -11,8 +11,8 @@ import { ListItem } from './ListItem';
  */
 
 const InputItem = (props: IItemProps) => {
-  const [inputValue, setInputValue] = useState('');
-  const [tempValueList, setTempValueList] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState(''); // The written value in the input field
+  const [tempValueList, setTempValueList] = useState<string[]>([]); // A (temporarily) list of the values added from the input field
   const [anker, setAnker] = useState(undefined);
 
   const [exampleElements] = useState([
@@ -26,30 +26,31 @@ const InputItem = (props: IItemProps) => {
     'R63.0: Anoreksi',
     // Et utvalg av diagnoser fra https://finnkode.ehelse.no/#icd10/0/0/0/-1 (koder fra ICD-10)
   ]);
+
   const handleOnChange = (e: any) => {
     setInputValue(e.target.value);
   };
 
   const handleOnFocus = (e: any) => {
-    // Viser popovervinduet når inputfeltet er fokusert
+    // Displays the popover-window when the input field is focused
     setAnker(e.currentTarget);
   };
 
   const handleAddElement = () => {
-    // Legger til valgt element i listen over valgte elementer
-    if (!tempValueList.includes(inputValue)) {
+    // Adds the input element in the tempValueList, if not element is contained already or an empty string
+    if (!tempValueList.includes(inputValue) && inputValue !== '') {
       setTempValueList((prevState) => [...prevState, inputValue]);
     }
   };
 
   const handleChooseElement = (e: any) => {
-    // Setter valgt element som inputfelttekst
+    // Sets the chosen element in the input field
     setInputValue(e.target.innerHTML);
     setAnker(undefined);
   };
 
   const displayElements = (element: string) => {
-    // Sammenligner elementene med inputfeltteksten && sjekker om elementet allerede er valgt
+    // Compares elements with the input field && checks if element is already chosen
     const tempAnswer = props.answers.get(props.entity.linkId);
     if (
       element.toLowerCase().includes(inputValue.toLowerCase()) &&
@@ -73,123 +74,80 @@ const InputItem = (props: IItemProps) => {
     return <></>;
   };
 
-  // When answers is updated: set the inputValue to the correct answer.
-  // It is only done if inputValue is empty, meaning that it should only
-  // make changes to inputValue if there is an answer saved on the server
-  // that has been fetched, and there is no new answer that can be overwritten.
+  // When rendering for the first time,
+  // if tempValueList is empty (secures that no new answers can be overwritten)
+  // and there is an answer saved on the server,
+  // the tempValueList sets to the saved answers.
   useEffect(() => {
-    console.log(props.answers);
     if (
-      inputValue === '' &&
+      tempValueList.length === 0 &&
+      props.answers.get(props.entity.linkId) &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
-      setInputValue(props.answers.get(props.entity.linkId) as string);
+      const temp: string = props.answers.get(props.entity.linkId) as string;
+      setTempValueList(JSON.parse(temp));
     }
-  }, [props.answers]);
+  }, []);
 
   useEffect(() => {
     // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts
     const copiedAnswers = new Map(props.answers);
-    if (tempValueList.length > 1) {
-      copiedAnswers.set(
-        props.entity.linkId,
-        '[' + tempValueList.toString() + ']'
-      );
-    } else {
-      copiedAnswers.set(props.entity.linkId, tempValueList.toString());
-    }
+    copiedAnswers.set(props.entity.linkId, JSON.stringify(tempValueList));
     props.setAnswers(copiedAnswers);
-    setInputValue(''); // Tømmer inputfeltet for tekst
+    setInputValue(''); // Set input field to default value (empty)
   }, [tempValueList]);
 
   return (
     <>
-      {props.helptext !== '' ? (
-        <div className="componentItems" style={{ display: 'flex' }}>
-          <div className="innerContainerInput">
-            <Input
-              className="inputTextAreas"
-              onChange={handleOnChange}
-              onFocus={handleOnFocus}
-              value={inputValue}
-              label={
+      <div className="componentItems" style={{ display: 'flex' }}>
+        <div className="innerContainerInput">
+          <Input
+            className="inputTextAreas"
+            onChange={handleOnChange}
+            onFocus={handleOnFocus}
+            value={inputValue}
+            label={
+              props.helptext !== '' ? (
                 <div style={{ display: 'flex' }}>
                   {props.entity.text}
                   <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                     {props.helptext}
                   </Hjelpetekst>
                 </div>
-              }
-            />
-            <Popover
-              ankerEl={anker}
-              onRequestClose={() => setAnker(undefined)}
-              orientering={PopoverOrientering.UnderVenstre}
-              autoFokus={false}
-              utenPil
-            >
-              {exampleElements.map((dataElem: string, index: number) => {
-                return (
-                  <div key={props.entity.linkId + index}>
-                    {displayElements(dataElem)}
-                  </div>
-                );
-              })}
-            </Popover>
-          </div>
-          <div style={{ paddingTop: '35px' }}>
-            <Knapp
-              mini
-              style={{
-                marginLeft: '10px',
-                height: '22px',
-              }}
-              onClick={handleAddElement}
-            >
-              Legg til
-            </Knapp>
-          </div>
+              ) : (
+                props.entity.text
+              )
+            }
+          />
+          <Popover
+            ankerEl={anker}
+            onRequestClose={() => setAnker(undefined)}
+            orientering={PopoverOrientering.UnderVenstre}
+            autoFokus={false}
+            utenPil
+          >
+            {exampleElements.map((dataElem: string, index: number) => {
+              return (
+                <div key={props.entity.linkId + index}>
+                  {displayElements(dataElem)}
+                </div>
+              );
+            })}
+          </Popover>
         </div>
-      ) : (
-        <div className="componentItems">
-          <div className="innerContainerInput">
-            <Input
-              className="inputTextAreas"
-              label={props.entity.text}
-              onChange={handleOnChange}
-              onFocus={handleOnFocus}
-              value={inputValue}
-            />
-            <Popover
-              ankerEl={anker}
-              onRequestClose={() => setAnker(undefined)}
-              orientering={PopoverOrientering.UnderVenstre}
-              autoFokus={false}
-              utenPil
-            >
-              {exampleElements.map((dataElem: string, index: number) => {
-                return (
-                  <div key={props.entity.linkId + index}>
-                    {displayElements(dataElem)}
-                  </div>
-                );
-              })}
-            </Popover>
-          </div>
-          <div style={{ paddingTop: '35px' }}>
-            <Knapp
-              mini
-              style={{
-                marginLeft: '10px',
-                height: '22px',
-              }}
-              onClick={handleAddElement}
-            >
-              Legg til
-            </Knapp>
-          </div>
+        <div style={{ paddingTop: '35px' }}>
+          <Knapp
+            mini
+            style={{
+              marginLeft: '10px',
+              height: '22px',
+            }}
+            onClick={handleAddElement}
+          >
+            Legg til
+          </Knapp>
         </div>
-      )}
+      </div>
       <ListItem valueList={tempValueList} setValueList={setTempValueList} />
     </>
   );
