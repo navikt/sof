@@ -53,9 +53,6 @@ const RadiobuttonItem = (props: IItemProps) => {
   }, []);
 
   useEffect(() => {
-    console.log('RV', radioValue);
-    console.log('C', checked);
-
     const copiedAnswers = new Map(props.answers);
     copiedAnswers.set(props.entity.linkId, radioValue);
     props.setAnswers(copiedAnswers);
