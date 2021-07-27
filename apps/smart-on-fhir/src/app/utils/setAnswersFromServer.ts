@@ -1,4 +1,8 @@
-import { IBundle, IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import {
+  IBundle,
+  IPatient,
+  IQuestionnaire,
+} from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
 
 type questionnaireResponseItemType = {
@@ -42,14 +46,13 @@ const setAllAnswers = (response: any, setAnswers: setAnswersType) => {
 export const getAnswersFromServer = async (
   client: Client,
   patient: IPatient,
-  setAnswers: setAnswersType
+  setAnswers: setAnswersType,
+  questionnaire: IQuestionnaire
 ) => {
   const response = (await client.request(
-    `QuestionnaireResponse?subject=Patient/${patient.id}&questionnaire=Questionnaire/1340187&status=in-progress`
+    `QuestionnaireResponse?subject=Patient/${patient.id}&questionnaire=Questionnaire/${questionnaire.id}&status=in-progress`
   )) as IBundle;
-  // NB: burde ikke hardkode inn questionnaire^^
   if (response.total !== 0 && response.entry && response.entry[0].resource) {
     setAllAnswers(response.entry[0].resource, setAnswers);
   }
-  console.log('response: ', response);
 };

@@ -1,12 +1,11 @@
 import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
-import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
+import { IPatient, IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
@@ -21,10 +20,9 @@ type callFromApp = {
 };
 
 export const Questionnaire: FC<callFromApp> = (props) => {
-  const questionnaire = questionnairePleiepenger;
   const [questions, setQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const { patient, user, client } = useFhirContext();
+  const { patient, user, client, questionnaire } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -33,13 +31,13 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   // This will be called when the questionnaire is opened, and sets
   // answers to the answers allready saved ont he server (if there are any).
   useEffect(() => {
-    client && patient
-      ? getAnswersFromServer(client, patient, setAnswers)
+    client && patient && questionnaire
+      ? getAnswersFromServer(client, patient, setAnswers, questionnaire)
       : null;
   }, []);
 
   // Get the items from the Questionnaire
-  const getItemChildren = (q: any) => {
+  const getItemChildren = (q: IQuestionnaire) => {
     q.item?.map((itemChild: any) => {
       if (loading) {
         setQuestions((prevState) => [...prevState, itemChild]);
@@ -52,8 +50,9 @@ export const Questionnaire: FC<callFromApp> = (props) => {
 
   // Saves questions from Questionnaire to the questions list
   useEffect(() => {
-    getItemChildren(questionnaire);
+    //questionnaire ? getItemChildren(questionnaire) : null;
     setLoading(false);
+    //console.log('her i questionnaire');
   }, [loading]);
 
   // Function to make sure all values sent to saveAnswers are defined.
@@ -66,15 +65,18 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       | fhirclient.FHIR.Practitioner
       | fhirclient.FHIR.RelatedPerson
       | undefined,
-    client: Client | undefined
+    client: Client | undefined,
+    questionnaire: IQuestionnaire | undefined
   ) => {
-    if (answers && response && patient && user && client) {
-      saveAnswers(answers, response, patient, user, client);
+    if (answers && response && patient && user && client && questionnaire) {
+      saveAnswers(answers, response, patient, user, client, questionnaire);
     }
   };
 
   useEffect(() => {
-    props.createHeader(questionnaire.title, questionnaire.description);
+    if (questionnaire && questionnaire.description && questionnaire.title) {
+      props.createHeader(questionnaire.title, questionnaire.description);
+    }
   }, [questionnaire]);
 
   const displayQuestion = (item: any) => {
@@ -121,7 +123,9 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         return displayQuestion(item);
       })}
       <Hovedknapp
-        onClick={() => clickSave(answers, response, patient, user, client)}
+        onClick={() =>
+          clickSave(answers, response, patient, user, client, questionnaire)
+        }
       >
         Lagre
       </Hovedknapp>
