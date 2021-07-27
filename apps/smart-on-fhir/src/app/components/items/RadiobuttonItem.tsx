@@ -11,7 +11,7 @@ const RadiobuttonItem = (props: IItemProps) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
   const [radioValue, setRadioValue] = useState('');
 
-  const handleOnChange = (e: any, value: string) => {
+  const handleOnChange = (value: string) => {
     setRadioValue(value);
   };
 
@@ -43,7 +43,7 @@ const RadiobuttonItem = (props: IItemProps) => {
         >
           {optionarray?.map((option: string) => (
             <Radio
-              onChange={(e: any) => handleOnChange(e, option)}
+              onChange={() => handleOnChange(option)}
               key={option}
               label={option}
               name={'group' + props.entity.linkId}
