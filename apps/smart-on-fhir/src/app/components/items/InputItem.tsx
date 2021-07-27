@@ -11,8 +11,8 @@ import { ListItem } from './ListItem';
  */
 
 const InputItem = (props: IItemProps) => {
-  const [inputValue, setInputValue] = useState('');
-  const [tempValueList, setTempValueList] = useState<string[]>([]);
+  const [inputValue, setInputValue] = useState(''); // The written value in the input field
+  const [tempValueList, setTempValueList] = useState<string[]>([]); // A (temporarily) list of the values added from the input field
   const [anker, setAnker] = useState(undefined);
 
   const [exampleElements] = useState([
@@ -26,6 +26,7 @@ const InputItem = (props: IItemProps) => {
     'R63.0: Anoreksi',
     // Et utvalg av diagnoser fra https://finnkode.ehelse.no/#icd10/0/0/0/-1 (koder fra ICD-10)
   ]);
+
   const handleOnChange = (e: any) => {
     setInputValue(e.target.value);
   };
@@ -73,31 +74,29 @@ const InputItem = (props: IItemProps) => {
     return <></>;
   };
 
-  // When answers is updated: set the inputValue to the correct answer.
-  // It is only done if inputValue is empty, meaning that it should only
-  // make changes to inputValue if there is an answer saved on the server
-  // that has been fetched, and there is no new answer that can be overwritten.
+  // When rendering for the first time,
+  // if tempValueList is empty (no new answers can be overwritten)
+  // and there is an answer saved on the server,
+  // the tempValueList sets to the saved answers.
   useEffect(() => {
-    console.log(props.answers);
+    console.log(typeof props.answers.get(props.entity.linkId) === 'string');
     if (
-      inputValue === '' &&
+      tempValueList.length === 0 &&
+      props.answers.get(props.entity.linkId) &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
-      setInputValue(props.answers.get(props.entity.linkId) as string);
+      const tempAnswer: string = props.answers.get(
+        props.entity.linkId
+      ) as string;
+      const tempAnswerList = JSON.parse(tempAnswer);
+      setTempValueList(tempAnswerList);
     }
-  }, [props.answers]);
+  }, []);
 
   useEffect(() => {
     // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts
     const copiedAnswers = new Map(props.answers);
-    if (tempValueList.length > 1) {
-      copiedAnswers.set(
-        props.entity.linkId,
-        '[' + tempValueList.toString() + ']'
-      );
-    } else {
-      copiedAnswers.set(props.entity.linkId, tempValueList.toString());
-    }
+    copiedAnswers.set(props.entity.linkId, JSON.stringify(tempValueList));
     props.setAnswers(copiedAnswers);
     setInputValue(''); // Tømmer inputfeltet for tekst
   }, [tempValueList]);
