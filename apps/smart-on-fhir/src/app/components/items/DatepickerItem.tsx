@@ -20,7 +20,7 @@ export const DatepickerItem: FC<IProps> = ({
   dateList,
   setDateList,
 }) => {
-  const [date, setDate] = useState(dateList[index] || 'dd.mm.åååå'); // The written value in the Datepicker field
+  const [date, setDate] = useState(dateList[index] || 'dd.mm.åååå'); // The written value in the Datepicker / input field
 
   useEffect(() => {
     // If date is an empty string, set date to default value
