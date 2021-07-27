@@ -5,7 +5,7 @@ import { Sidetittel } from 'nav-frontend-typografi';
 import '@navikt/ds-css';
 import './landingpageStylesheet.css';
 import { HoyreChevron } from 'nav-frontend-chevron';
-import EtikettBase, { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
+import { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
 
 export const LandingPage = () => {
   return (
