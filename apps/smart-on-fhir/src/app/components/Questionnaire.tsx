@@ -77,7 +77,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   const displayQuestion = (item: any) => {
     let mainItem: any;
     let subItems: any[] = [];
-    let radioOptions: answerOptionType[] = [];
+    let options: answerOptionType[] = [];
     if (
       !item.linkId.includes('automatic') &&
       !item.linkId.includes('help') &&
@@ -91,7 +91,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         });
       } else if (item.answerOption) {
         item.answerOption.map((option: any) => {
-          radioOptions.push(option);
+          options.push(option);
         });
       }
 
@@ -99,7 +99,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         <ItemAnswer
           entity={mainItem}
           entityItems={subItems}
-          radioOptionItems={radioOptions}
+          optionItems={options}
           answers={answers}
           setAnswers={setAnswers}
         />

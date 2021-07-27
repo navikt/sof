@@ -12,7 +12,7 @@ type itemType = {
   required: string;
   answerOption?: answerOptionType[];
   item?: itemType;
-  enableWhen: {
+  enableWhen?: {
     question: string;
     operator: string;
     answerCoding: { code: string };

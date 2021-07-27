@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState, useEffect } from 'react';
 import './questionnaireStylesheet.css';
 import TextareaItem from './items/TextareaItem';
 import InputItem from './items/InputItem';
@@ -9,7 +9,7 @@ import RadiobuttonItem from './items/RadiobuttonItem';
 interface IProps {
   entity: itemType;
   entityItems: itemType[];
-  radioOptionItems: answerOptionType[];
+  optionItems: answerOptionType[];
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
@@ -27,12 +27,13 @@ interface IProps {
 export const ItemAnswer: FC<IProps> = ({
   entity,
   entityItems,
-  radioOptionItems,
+  optionItems,
   answers,
   setAnswers,
 }) => {
   let itemHelptext = '';
   const arrayOfItems: Array<string> = [];
+  const [enableWhen, setEnableWhen] = useState(true); // True as default, in order to render questions from Questionnaire
 
   if (entityItems != undefined && entity.answerOption == undefined) {
     // If there is a help text or subquestions, set these
@@ -45,7 +46,7 @@ export const ItemAnswer: FC<IProps> = ({
     });
   } else if (entity.answerOption != undefined) {
     // Set the values for the radio buttons
-    radioOptionItems.forEach((element) => {
+    optionItems.forEach((element) => {
       arrayOfItems.push(element.valueCoding.display);
     });
   }
@@ -61,7 +62,6 @@ export const ItemAnswer: FC<IProps> = ({
     switch (entity.type) {
       case 'text':
         return 'text';
-        break;
       case 'string':
         return 'string';
       case 'group':
@@ -76,16 +76,40 @@ export const ItemAnswer: FC<IProps> = ({
         return 'radio';
       default:
         return 'nothing';
-        break;
     }
   };
 
-  return {
-    text: <TextareaItem {...itemProps} />,
-    string: <InputItem {...itemProps} />,
-    boolean: <CheckboxItem {...itemProps} answeroptions={arrayOfItems} />,
-    date: <DateItem {...itemProps} answeroptions={arrayOfItems} />,
-    radio: <RadiobuttonItem {...itemProps} answeroptions={arrayOfItems} />,
-    nothing: <></>,
-  }[renderSwitch()];
+  useEffect(() => {
+    // Check if displaying enableWhen-items from Questionnaire
+    if (entity.enableWhen) {
+      if (
+        answers.get(entity.enableWhen[0].question) ===
+        entity.enableWhen[0].answerCoding.code
+      ) {
+        setEnableWhen(true);
+      } else {
+        setEnableWhen(false);
+      }
+    }
+  }, [answers]);
+
+  return (
+    <>
+      {/* Displays the items in the same order as in Questionnaire.json */}
+      {enableWhen ? (
+        {
+          text: <TextareaItem {...itemProps} />,
+          string: <InputItem {...itemProps} />,
+          boolean: <CheckboxItem {...itemProps} answeroptions={arrayOfItems} />,
+          date: <DateItem {...itemProps} answeroptions={arrayOfItems} />,
+          radio: (
+            <RadiobuttonItem {...itemProps} answeroptions={arrayOfItems} />
+          ),
+          nothing: <></>,
+        }[renderSwitch()]
+      ) : (
+        <></>
+      )}
+    </>
+  );
 };
