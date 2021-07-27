@@ -1,14 +1,16 @@
+import { useEffect, useState } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
-import { Input, Label } from 'nav-frontend-skjema';
-import { useEffect, useState } from 'react';
+import { Input } from 'nav-frontend-skjema';
+import { ListItem } from './ListItem';
 
-//Forventa argumenter:
-//entity: object
-//helptext: string
+/**
+ * Renders a question with type String
+ * @returns an input field for multi-selection
+ */
 
-const InputItem = (props: any) => {
+const InputItem = (props: IItemProps) => {
   const [inputValue, setInputValue] = useState('');
   const [tempValueList, setTempValueList] = useState<string[]>([]);
   const [anker, setAnker] = useState(undefined);
@@ -106,7 +108,7 @@ const InputItem = (props: any) => {
         <div className="componentItems" style={{ display: 'flex' }}>
           <div className="innerContainerInput">
             <Input
-              bredde="fullbredde"
+              className="inputTextAreas"
               onChange={handleOnChange}
               onFocus={handleOnFocus}
               value={inputValue}
@@ -152,6 +154,7 @@ const InputItem = (props: any) => {
         <div className="componentItems">
           <div className="innerContainerInput">
             <Input
+              className="inputTextAreas"
               label={props.entity.text}
               onChange={handleOnChange}
               onFocus={handleOnFocus}
@@ -187,9 +190,7 @@ const InputItem = (props: any) => {
           </div>
         </div>
       )}
-      <p>
-        <b>{props.answers.get(props.entity.linkId)}</b>
-      </p>
+      <ListItem valueList={tempValueList} setValueList={setTempValueList} />
     </>
   );
 };

@@ -2,9 +2,13 @@ import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
 
-//Expects to receive an array and a text
-const RadiobuttonItem = (props: any) => {
-  const optionarray: Array<any> = props.answeroptions;
+/**
+ * Renders a question with type Choice
+ * @returns radiobuttons with corresponding label
+ */
+
+const RadiobuttonItem = (props: IItemProps) => {
+  const optionarray: Array<string> | undefined = props.answeroptions;
   const [radioValue, setRadioValue] = useState('');
 
   const handleOnChange = (value: string) => {
@@ -35,11 +39,12 @@ const RadiobuttonItem = (props: any) => {
   }, [radioValue]);
 
   return (
+    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {props.helptext != '' ? (
+      {props.helptext !== '' ? (
         <div className="componentItems">
           <RadioGruppe legend={props.entity.text}>
-            {optionarray.map((item) => (
+            {optionarray?.map((item) => (
               <Radio
                 onChange={() => handleOnChange(item)}
                 key={item}
@@ -59,7 +64,7 @@ const RadiobuttonItem = (props: any) => {
       ) : (
         <div className="componentItems">
           <RadioGruppe legend={props.entity.text}>
-            {optionarray.map((item) => (
+            {optionarray?.map((item) => (
               <Radio
                 onChange={() => handleOnChange(item)}
                 key={item}

@@ -23,7 +23,7 @@ interface IItemProps {
   entity: itemType;
   helptext?: string;
   answers: Map<string, string | boolean>;
-  answerOptions?: answerOptionType;
+  answeroptions?: string[]; // OBS! Not the same as answerOptions, but only the label text
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
   >;
