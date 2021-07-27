@@ -1,9 +1,9 @@
 import React, { FC, useState, useEffect } from 'react';
 import './questionnaireStylesheet.css';
 import TextareaItem from './items/TextareaItem';
-import InputItem from './items/InputItem';
 import CheckboxItem from './items/CheckboxItem';
 import DateItem from './items/DateItem';
+import InputItem from './items/InputItem';
 import RadiobuttonItem from './items/RadiobuttonItem';
 
 interface IProps {

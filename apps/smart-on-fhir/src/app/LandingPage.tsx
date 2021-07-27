@@ -4,13 +4,20 @@ import { BannerHeader } from './components/BannerHeader';
 import { Sidetittel } from 'nav-frontend-typografi';
 import '@navikt/ds-css';
 import './landingpageStylesheet.css';
+<<<<<<< HEAD
 import { HoyreChevron } from 'nav-frontend-chevron';
 import { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
+=======
+>>>>>>> 01608d34d89b6d30917f1793ba30bfbfa852e8fe
 import { useFhirContext } from './context/fhirContext';
 import { IBundle, IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 import jsonQuestionnaire from './json-files/questionnairePleiepenger.json';
 import { setUUIDIdentifier } from './utils/setIdentifier';
 import { useEffect } from 'react';
+<<<<<<< HEAD
+=======
+import QuestionnaireLinks from './components/QuestionnaireLinks';
+>>>>>>> 01608d34d89b6d30917f1793ba30bfbfa852e8fe
 
 export const LandingPage = () => {
   const { questionnaire, setQuestionnaire, client } = useFhirContext();
@@ -60,8 +67,9 @@ export const LandingPage = () => {
     <div>
       <div className="app-container">
         <BannerHeader page={''} />
-        <div>
+        <div className="questionnairesContainer">
           <Sidetittel style={{ marginBottom: '50px' }}>Skjemaer</Sidetittel>
+<<<<<<< HEAD
           <div className="contentContainer">
             <table className="skjemaTable">
               <thead>
@@ -111,6 +119,32 @@ export const LandingPage = () => {
                 </tr>
               </tbody>
             </table>
+=======
+          <div>
+            <div className="listOfLinks">
+              <Link className="questionLink" to="/skjema">
+                <QuestionnaireLinks
+                  title={'Legeerklæring: pleiepenger for sykt barn'}
+                  status={true}
+                  handleClick={() => handleClick('pleiepengeskjema', '1.0.0')}
+                ></QuestionnaireLinks>
+              </Link>
+              <Link className="questionLink" to="/skjema">
+                <QuestionnaireLinks
+                  title={'Henvisning til fysioterapeut'}
+                  status={true}
+                  handleClick={handleClick}
+                ></QuestionnaireLinks>
+              </Link>
+              <Link className="questionLink" to="/skjema">
+                <QuestionnaireLinks
+                  title={'Søknad om grunnstønad'}
+                  status={false}
+                  handleClick={handleClick}
+                ></QuestionnaireLinks>
+              </Link>
+            </div>
+>>>>>>> 01608d34d89b6d30917f1793ba30bfbfa852e8fe
           </div>
         </div>
       </div>
