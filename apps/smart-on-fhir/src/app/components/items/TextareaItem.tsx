@@ -1,23 +1,18 @@
 import { Textarea } from 'nav-frontend-skjema';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { useEffect, useState } from 'react';
-import { useFhirContext } from '../../context/fhirContext';
-import { getAnswersFromServer } from '../../utils/setAnswersFromServer';
+
+/**
+ * Renders a question with type Text
+ * @returns a text box (TextArea) for user input
+ */
 
 const TextareaItem = (props: IItemProps) => {
   const [textValue, setTextValue] = useState('');
-  const { patient, client } = useFhirContext();
 
   const handleOnChange = (e: any) => {
     setTextValue(e.target.value);
   };
-
-  /*useEffect(() => {
-    client && patient
-      ? getAnswersFromServer(client, patient, setTextValue, props.entity.linkId)
-      : null;
-    console.log('Text area utem');
-  }, []);*/
 
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);

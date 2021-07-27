@@ -4,8 +4,8 @@ import { useEffect, useState } from 'react';
 import '../questionnaireStylesheet.css';
 
 //Expects to receive an array and a text
-const CheckboxItem = (props: any) => {
-  const optionarray: Array<any> = props.answeroptions;
+const CheckboxItem = (props: IItemProps) => {
+  const optionarray: Array<string> | undefined = props.answeroptions;
   const [textValue, setTextValue] = useState(false);
 
   useEffect(() => {
@@ -19,18 +19,18 @@ const CheckboxItem = (props: any) => {
       {props.helptext != '' ? (
         <div className="componentItems">
           <CheckboxGruppe legend={props.entity.text}>
-            {optionarray.map((item) => (
+            {optionarray?.map((option: string) => (
               <Checkbox
-                key={item}
+                key={option}
                 label={
                   <div style={{ display: 'flex' }}>
-                    {item}
+                    {option}
                     <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                       {props.helptext}
                     </Hjelpetekst>
                   </div>
                 }
-                name={item.text}
+                name={props.entity.linkId + option}
               />
             ))}
           </CheckboxGruppe>
@@ -39,8 +39,12 @@ const CheckboxItem = (props: any) => {
       ) : (
         <div className="componentItems">
           <CheckboxGruppe legend={props.entity.text}>
-            {optionarray.map((item) => (
-              <Checkbox key={item} label={item} name={item.text} />
+            {optionarray?.map((option: string) => (
+              <Checkbox
+                key={option}
+                label={option}
+                name={props.entity.linkId + option}
+              />
             ))}
           </CheckboxGruppe>
         </div>

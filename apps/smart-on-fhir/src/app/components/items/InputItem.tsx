@@ -1,11 +1,16 @@
+import { useEffect, useState } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Input } from 'nav-frontend-skjema';
-import { useEffect, useState } from 'react';
 import { ListItem } from './ListItem';
 
-const InputItem = (props: any) => {
+/**
+ * Renders a question with type String
+ * @returns an input field for multi-selection
+ */
+
+const InputItem = (props: IItemProps) => {
   const [inputValue, setInputValue] = useState('');
   const [tempValueList, setTempValueList] = useState<string[]>([]);
   const [anker, setAnker] = useState(undefined);

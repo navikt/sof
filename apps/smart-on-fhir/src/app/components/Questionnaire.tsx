@@ -31,17 +31,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   );
   const response = questionnaireResponse;
 
-  useEffect(() => {
-    console.log('ta da!!');
-    client && patient
-      ? getAnswersFromServer(client, patient, setAnswers)
-      : null;
-  }, []);
-
-  useEffect(() => {
-    console.log('Ansewers er oppdatert og er nå: ', answers);
-  }, [answers]);
-
   // Get the items from the Questionnaire
   const getItemChildren = (q: any) => {
     q.item?.map((itemChild: any) => {
@@ -106,8 +95,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         });
       }
 
-      console.log('radioOptions: ', radioOptions);
-
       return (
         <ItemAnswer
           entity={mainItem}
@@ -149,7 +136,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       <button onClick={() => deleteQuestionnaire()}>Slett</button>
 
       {console.log('A:', answers)}
-
     </>
   );
 };
