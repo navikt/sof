@@ -11,7 +11,7 @@ const RadiobuttonItem = (props: IItemProps) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
   const [radioValue, setRadioValue] = useState('');
 
-  const handleOnChange = (value: string) => {
+  const handleOnChange = (e: any, value: string) => {
     setRadioValue(value);
   };
 
@@ -22,42 +22,35 @@ const RadiobuttonItem = (props: IItemProps) => {
   }, [radioValue]);
 
   return (
-    // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
-      {props.helptext !== '' ? (
-        <div className="componentItems">
-          <RadioGruppe legend={props.entity.text}>
-            {optionarray?.map((item) => (
-              <Radio
-                onChange={() => handleOnChange(item)}
-                key={item}
-                label={
-                  <div style={{ display: 'flex' }}>
-                    {props.entity.text}
-                    <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
-                      {props.helptext}
-                    </Hjelpetekst>
-                  </div>
-                }
-                name={'group' + props.entity.linkId}
-              />
-            ))}
-          </RadioGruppe>
-        </div>
-      ) : (
-        <div className="componentItems">
-          <RadioGruppe legend={props.entity.text}>
-            {optionarray?.map((item) => (
-              <Radio
-                onChange={() => handleOnChange(item)}
-                key={item}
-                label={item}
-                name={'group' + props.entity.linkId}
-              />
-            ))}
-          </RadioGruppe>
-        </div>
-      )}
+      <div className="componentItems">
+        <RadioGruppe
+          legend={
+            <div style={{ display: 'flex' }}>
+              {props.entity.text}
+              {
+                // Checks for helptext, and displays if any
+                props.helptext === '' ? (
+                  <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
+                    {props.helptext}
+                  </Hjelpetekst>
+                ) : (
+                  <></>
+                )
+              }
+            </div>
+          }
+        >
+          {optionarray?.map((option: string) => (
+            <Radio
+              onChange={(e: any) => handleOnChange(e, option)}
+              key={option}
+              label={option}
+              name={'group' + props.entity.linkId}
+            />
+          ))}
+        </RadioGruppe>
+      </div>
     </>
   );
 };

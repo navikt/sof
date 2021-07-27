@@ -123,13 +123,13 @@
       "answerOption": [
         {
           "valueCoding": {
-            "code": "Y",
+            "code": "Ja",
             "display": "Ja"
           }
         },
         {
           "valueCoding": {
-            "code": "N",
+            "code": "Nei",
             "display": "Nei"
           }
         }
@@ -145,7 +145,7 @@
           "question": "7",
           "operator": "=",
           "answerCoding": {
-            "code": "Y"
+            "code": "Ja"
           }
         }
       ],
