@@ -10,10 +10,24 @@ import { useEffect, useState } from 'react';
 const RadiobuttonItem = (props: IItemProps) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
   const [radioValue, setRadioValue] = useState('');
+  const [checked, setChecked] = useState<boolean[]>(
+    new Array(optionarray?.length).fill(false)
+  );
 
-  const handleOnChange = (value: string) => {
-    console.log('onChange');
+  const handleOnChange = (value: string, index: number) => {
     setRadioValue(value);
+    console.log(checked);
+    console.log(index);
+    const copyList: boolean[] = [...checked];
+    copyList.map((bool: boolean, i: number) => {
+      if (index === i) {
+        copyList[i] = true;
+      } else {
+        copyList[i] = false;
+      }
+    });
+    copyList[index] = true;
+    setChecked(copyList);
   };
 
   // When answers is updated: set the radiobuttons to the correct answer.
@@ -22,18 +36,27 @@ const RadiobuttonItem = (props: IItemProps) => {
   // that has been fetched, and there is no new answer that can be overwritten.
   // Does not currently work. Maybe we can get e.target from onChange and do something.
   useEffect(() => {
-    console.log(props.answers);
     if (
-      radioValue === '' &&
+      radioValue !== '' &&
+      props.answers.get(props.entity.linkId) &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
-      setRadioValue(props.answers.get(props.entity.linkId) as string);
+      const temp: string = props.answers.get(props.entity.linkId) as string;
+      optionarray?.map((text: string, index: number) => {
+        if (text === temp) {
+          checked[index] = true;
+        } else {
+          checked[index] = false;
+        }
+      });
     }
-  }, [props.answers]);
+  }, []);
 
   useEffect(() => {
+    console.log('RV', radioValue);
+    console.log('C', checked);
+
     const copiedAnswers = new Map(props.answers);
-    console.log('radioValue: ', radioValue);
     copiedAnswers.set(props.entity.linkId, radioValue);
     props.setAnswers(copiedAnswers);
   }, [radioValue]);
@@ -43,29 +66,41 @@ const RadiobuttonItem = (props: IItemProps) => {
       <div className="componentItems">
         <RadioGruppe
           legend={
-            <div style={{ display: 'flex' }}>
-              {props.entity.text}
-              {
-                // Checks for helptext, and displays if any
-                props.helptext !== '' ? (
-                  <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
-                    {props.helptext}
-                  </Hjelpetekst>
-                ) : (
-                  <></>
-                )
-              }
-            </div>
+            props.helptext !== '' ? (
+              <div style={{ display: 'flex' }}>
+                {props.entity.text}
+                <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
+                  {props.helptext}
+                </Hjelpetekst>
+              </div>
+            ) : (
+              props.entity.text
+            )
           }
         >
-          {optionarray?.map((option: string) => (
+          {optionarray?.map((option: string, index: number) => (
             <Radio
-              onChange={() => handleOnChange(option)}
+              onChange={() => handleOnChange(option, index)}
               key={option}
               label={option}
               name={'group' + props.entity.linkId}
+              checked={checked[index]}
             />
           ))}
+          {/*Object.entries(radioValueList).map(([key, value]) => {
+            return (
+              <>
+                {console.log(key, value)}
+                <Radio
+                  onChange={() => handleOnChange(key)}
+                  key={key}
+                  label={key}
+                  name={'group' + props.entity.linkId}
+                  checked={value}
+                />
+              </>
+            );
+          })*/}
         </RadioGruppe>
       </div>
     </>

@@ -65,14 +65,20 @@
       "answerOption": [
         {
           "valueCoding": {
-            "code": "Y",
+            "code": "Ja",
             "display": "Ja"
           }
         },
         {
           "valueCoding": {
-            "code": "N",
+            "code": "Nei",
             "display": "Nei"
+          }
+        },
+        {
+          "valueCoding": {
+            "code": "N",
+            "display": "Tester"
           }
         }
       ],
