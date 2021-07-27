@@ -6,15 +6,10 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-<<<<<<< HEAD
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
-import { Undertittel } from 'nav-frontend-typografi';
-=======
 import { IPatient } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
->>>>>>> main
 
 /**
  * Questionnaire is a component that renders a querstionnaire.
@@ -123,51 +118,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     //pushes inn i subItems.
     <>
       {questions.map((item: any) => {
-<<<<<<< HEAD
-        return item.linkId.includes('automatic') ? null : (
-          <div key={item.linkId}>
-            {item.linkId.includes('help') ? (
-              <p>
-                {/* Foreløpig håndtering av hjelpetekst*/}
-                {item.linkId} {item.text}
-              </p>
-            ) : item.linkId.includes('.') ? (
-              <p>
-                {/*Foreløpig håndtering av underspørsmål*/}
-                {item.linkId} {item.text}
-              </p>
-            ) : (
-              <div>
-                {/* Foreløpig håndtering av hovedspørsmål*/}
-                <span
-                  className="typo-undertittel"
-                  id="mitt-faguttrykk"
-                  aria-describedby="min-hjelpetekst"
-                >
-                  {item.text}
-                </span>
-                <Hjelpetekst
-                  id="min-hjelpetekst"
-                  aria-labelledby="mitt-faguttrykk"
-                  style={{ marginLeft: ' 10px' }}
-                >
-                  Mulighet til å jobbe litt eller delvis
-                </Hjelpetekst>
-              </div>
-            )}
-            {/* Svartyper */}
-            <ItemAnswer
-              question={item.text}
-              linkId={item.linkId}
-              answerType={item.type}
-              answers={answers}
-              setAnswers={setAnswers}
-            />
-          </div>
-        );
-=======
         return displayQuestion(item);
->>>>>>> main
       })}
       <Hovedknapp
         onClick={() => clickSave(answers, response, patient, user, client)}
