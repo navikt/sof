@@ -16,8 +16,6 @@ const RadiobuttonItem = (props: IItemProps) => {
 
   const handleOnChange = (value: string, index: number) => {
     setRadioValue(value);
-    console.log(checked);
-    console.log(index);
     const copyList: boolean[] = [...checked];
     copyList.map((bool: boolean, i: number) => {
       if (index === i) {
