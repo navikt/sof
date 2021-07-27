@@ -1,10 +1,10 @@
 import React, { FC, useState, useEffect } from 'react';
+import './questionnaireStylesheet.css';
+import TextareaItem from './items/TextareaItem';
 import CheckboxItem from './items/CheckboxItem';
 import DateItem from './items/DateItem';
 import InputItem from './items/InputItem';
 import RadiobuttonItem from './items/RadiobuttonItem';
-import TextareaItem from './items/TextareaItem';
-import './questionnaireStylesheet.css';
 
 interface IProps {
   entity: itemType;
@@ -78,7 +78,6 @@ export const ItemAnswer: FC<IProps> = ({
         return 'nothing';
     }
   };
-  
 
   useEffect(() => {
     // Check if displaying enableWhen-items from Questionnaire
