@@ -16,7 +16,7 @@ export const App = () => {
     <div className="app-container">
       <div>
         <div className="banner-container">
-          <BannerHeader page="app" />
+          <BannerHeader />
         </div>
 
         <div className="titleContainer">
