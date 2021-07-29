@@ -6,7 +6,8 @@ import { useEffect, useState } from 'react';
  * Renders a question with type Text
  * @returns a text box (TextArea) for user input
  */
-const TextareaItem = (props: IItemProps) => {
+
+const TextareaItem = (props: IItemProps & savedType) => {
   const [textValue, setTextValue] = useState('');
 
   const handleOnChange = (e: any) => {
@@ -18,13 +19,14 @@ const TextareaItem = (props: IItemProps) => {
   // make changes to textValue if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
+    console.log('textarea');
     if (
       textValue === '' &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
       setTextValue(props.answers.get(props.entity.linkId) as string);
     }
-  }, []);
+  }, [props.saved]);
 
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);

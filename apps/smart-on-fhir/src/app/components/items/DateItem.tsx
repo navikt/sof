@@ -1,18 +1,20 @@
 import React, { FC, useState, useEffect } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { DatepickerItem } from './DatepickerItem';
+import { string } from 'prop-types';
 
 /**
  * Renders a question with type Date
  * @returns a calendar (DatepickerItem) for user input
  */
 
-const DateItem: FC<IItemProps> = ({
+const DateItem: FC<IItemProps & savedType> = ({
   entity,
   helptext,
   answeroptions,
   answers,
   setAnswers,
+  saved,
 }) => {
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
@@ -20,6 +22,12 @@ const DateItem: FC<IItemProps> = ({
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
+    /*let i: number = 1;
+    dateList.map((value: string) => {
+      copiedAnswers.set(entity.linkId + '.' + i, JSON.stringify(value));
+      i++;
+    });
+    */
     copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
     setAnswers(copiedAnswers);
   }, [dateList]);
@@ -30,6 +38,7 @@ const DateItem: FC<IItemProps> = ({
   // make changes to date if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
+    //console.log('date');
     if (
       dateList.length === 0 &&
       answers.get(entity.linkId) &&
@@ -38,7 +47,7 @@ const DateItem: FC<IItemProps> = ({
       const temp: string = answers.get(entity.linkId) as string;
       setDateList(JSON.parse(temp));
     }
-  }, []);
+  }, [saved]);
 
   return (
     <div className="componentItems">

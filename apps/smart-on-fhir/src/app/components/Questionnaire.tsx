@@ -27,13 +27,22 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     new Map()
   );
   const response = questionnaireResponse;
+  const [saved, setSaved] = useState(false);
 
   // This will be called when the questionnaire is opened, and sets
   // answers to the answers allready saved ont he server (if there are any).
   useEffect(() => {
-    client && patient && questionnaire
-      ? getAnswersFromServer(client, patient, setAnswers, questionnaire)
-      : null;
+    if (client && patient && questionnaire) {
+      getAnswersFromServer(
+        client,
+        patient,
+        setAnswers,
+        questionnaire,
+        setSaved
+      );
+    } else {
+      null;
+    }
   }, []);
 
   // Get the items from the Questionnaire
@@ -52,7 +61,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   useEffect(() => {
     questionnaire ? getItemChildren(questionnaire) : null;
     setLoading(false);
-    console.log('her i questionnaire');
   }, [loading]);
 
   // Function to make sure all values sent to saveAnswers are defined.
@@ -107,6 +115,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
           optionItems={options}
           answers={answers}
           setAnswers={setAnswers}
+          saved={saved}
         />
       );
     } else {
@@ -123,9 +132,10 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         return displayQuestion(item);
       })}
       <Hovedknapp
-        onClick={() =>
-          clickSave(answers, response, patient, user, client, questionnaire)
-        }
+        onClick={() => {
+          clickSave(answers, response, patient, user, client, questionnaire);
+          setSaved(true);
+        }}
       >
         Lagre
       </Hovedknapp>
@@ -136,6 +146,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       >
         Send skjema
       </Hovedknapp>
+      {console.log(answers)}
     </>
   );
 };

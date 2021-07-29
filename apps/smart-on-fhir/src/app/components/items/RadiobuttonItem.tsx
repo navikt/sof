@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react';
  * @returns radiobuttons with corresponding label
  */
 
-const RadiobuttonItem = (props: IItemProps) => {
+const RadiobuttonItem = (props: IItemProps & savedType) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
   const [radioValue, setRadioValue] = useState(''); // The label value of a checked radiobutton
   const [checked, setChecked] = useState<boolean[]>(
@@ -32,8 +32,9 @@ const RadiobuttonItem = (props: IItemProps) => {
   // it should only make changes to checked (list) if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
+    console.log('radio');
     if (
-      radioValue !== '' &&
+      radioValue === '' &&
       props.answers.get(props.entity.linkId) &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
@@ -47,7 +48,7 @@ const RadiobuttonItem = (props: IItemProps) => {
         }
       });
     }
-  }, []);
+  }, [props.saved]);
 
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);
