@@ -47,9 +47,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   // Saves questions from Questionnaire to the questions list when questionnaire is updated
   useEffect(() => {
     questionnaire ? getItemChildren(questionnaire) : null;
-
   }, [questionnaire]);
-
 
   // Function to make sure all values sent to saveAnswers are defined.
   const clickSave = (

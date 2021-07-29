@@ -7,6 +7,9 @@ import './landingpageStylesheet.css';
 import { useFhirContext } from './context/fhirContext';
 import QuestionnaireLinks from './components/QuestionnaireLinks';
 import { setQuestionnaireContext } from './utils/setQuestionnaireContext';
+import pleipengeskjema from './json-files/questionnairePleiepenger.json';
+import vacation from './json-files/questionnaireVacation.json';
+import { IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 
 export const LandingPage = () => {
   const { setQuestionnaire, client } = useFhirContext();
@@ -28,21 +31,23 @@ export const LandingPage = () => {
                       'pleiepengeskjema',
                       '1.0.0',
                       setQuestionnaire,
-                      client
+                      client,
+                      pleipengeskjema as unknown as IQuestionnaire
                     )
                   }
                 ></QuestionnaireLinks>
               </Link>
               <Link className="questionLink" to="/skjema">
                 <QuestionnaireLinks
-                  title={'Henvisning til fysioterapeut'}
+                  title={'Vacation'}
                   status={true}
                   handleClick={() =>
                     setQuestionnaireContext(
-                      'pleiepengeskjema',
+                      'vacation',
                       '1.0.0',
                       setQuestionnaire,
-                      client
+                      client,
+                      vacation as unknown as IQuestionnaire
                     )
                   }
                 ></QuestionnaireLinks>
@@ -56,7 +61,8 @@ export const LandingPage = () => {
                       'pleiepengeskjema',
                       '1.0.0',
                       setQuestionnaire,
-                      client
+                      client,
+                      vacation as unknown as IQuestionnaire
                     )
                   }
                 ></QuestionnaireLinks>
