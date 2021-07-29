@@ -22,33 +22,38 @@ export const setQuestionnaireContext = async (
     `Questionnaire?name=${name}&version=${version}&status=active`
   )) as IBundle;
 
-  if (
-    response.total &&
-    response.total !== 0 &&
-    response.entry &&
-    setQuestionnaire
-  ) {
-    // If the questionnaire exist, save it in the context
-    setQuestionnaire(response.entry[0].resource as IQuestionnaire);
-  } else if (jsonQuestionnaire.status === 'active') {
-    // If not, save a questionnaire to the server and set this as the questionnaire in the contex
-    const headers = {
-      'Content-Type': 'application/fhir+json',
-      Accept: '*/*',
-    };
-    await client
-      ?.request({
-        url: `Questionnaire`,
-        method: 'POST',
-        body: JSON.stringify(jsonQuestionnaire),
-        headers,
-      })
-      .then((response) => {
-        setUUIDIdentifier(response);
-        setQuestionnaire ? setQuestionnaire(response) : null;
-      });
+  console.log('Client: ', client);
+
+  if (client) {
+    if (response.total !== 0 && response.entry && setQuestionnaire) {
+      // If the questionnaire exist, save it in the context
+      setQuestionnaire(response.entry[0].resource as IQuestionnaire);
+    } else if (jsonQuestionnaire.status === 'active') {
+      // If not, save a questionnaire to the server and set this as the questionnaire in the contex
+      const headers = {
+        'Content-Type': 'application/fhir+json',
+        Accept: '*/*',
+      };
+      await client
+        ?.request({
+          url: `Questionnaire`,
+          method: 'POST',
+          body: JSON.stringify(jsonQuestionnaire),
+          headers,
+        })
+        .then((response) => {
+          setUUIDIdentifier(response);
+          setQuestionnaire ? setQuestionnaire(response) : null;
+        });
+    }
   } else {
     // If the questionnaire json file is not active yet, it should not be used
+    // We will currently set a default questionnaire to be used if we e.g. are
+    // unable to connect to the server. This will allow us to see the questionnaire
+    // in DIPS even though the functionality does not work correctly yet.
+    setQuestionnaire
+      ? setQuestionnaire(jsonQuestionnaire as unknown as IQuestionnaire)
+      : null;
     console.log('Fant ikke et skjema');
   }
 };
