@@ -10,18 +10,16 @@ import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
 
-/**
- * Questionnaire is a component that renders a querstionnaire.
- * @returns The questionnaire containing all questions with input fields.
- */
-
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
 };
 
+/**
+ * Questionnaire is a component that renders a querstionnaire.
+ * @returns The questionnaire containing all questions with input fields.
+ */
 export const Questionnaire: FC<callFromApp> = (props) => {
   const [questions, setQuestions] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const { patient, user, client, questionnaire } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
@@ -39,20 +37,19 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   // Get the items from the Questionnaire
   const getItemChildren = (q: IQuestionnaire) => {
     q.item?.map((itemChild: any) => {
-      if (loading) {
-        setQuestions((prevState) => [...prevState, itemChild]);
-      }
+      setQuestions((prevState) => [...prevState, itemChild]);
       if (itemChild && typeof itemChild === 'object') {
         getItemChildren(itemChild);
       }
     });
   };
 
-  // Saves questions from Questionnaire to the questions list
+  // Saves questions from Questionnaire to the questions list when questionnaire is updated
   useEffect(() => {
     questionnaire ? getItemChildren(questionnaire) : null;
-    setLoading(false);
-  }, [loading]);
+
+  }, [questionnaire]);
+
 
   // Function to make sure all values sent to saveAnswers are defined.
   const clickSave = (
@@ -72,6 +69,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     }
   };
 
+  // Set header and description
   useEffect(() => {
     if (questionnaire && questionnaire.description && questionnaire.title) {
       props.createHeader(questionnaire.title, questionnaire.description);

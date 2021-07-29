@@ -3,6 +3,11 @@ import { Checkbox, CheckboxGruppe } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
 import '../questionnaireStylesheet.css';
 
+/**
+ * This component renders a checkbox.
+ * @param props should contain setAnswers, a help text, answers, an itemType.
+ * @returns One checkbox
+ */
 //Expects to receive an array and a text
 const CheckboxItem = (props: IItemProps) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
@@ -20,7 +25,6 @@ const CheckboxItem = (props: IItemProps) => {
   // (this might not work properly, maybe a value can be overwritten by the
   // answer in the server).
   useEffect(() => {
-    console.log(props.answers);
     if (typeof props.answers.get(props.entity.linkId) === 'boolean') {
       setTextValue(props.answers.get(props.entity.linkId) as boolean);
     }
