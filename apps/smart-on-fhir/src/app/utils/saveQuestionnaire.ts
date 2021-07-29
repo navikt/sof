@@ -4,7 +4,8 @@ import questionnaireResponse from '../json-files/questionnaireResponsePleiepenge
 import { setUUIDIdentifier } from './setIdentifier';
 
 /**
- * Function to save a questionnaire to the server
+ * Function to save a questionnaire to the server.
+ * This function is not currently in use.
  * @param client the client from the fhir context
  */
 export const saveQuestionnaire = async (client: Client | undefined) => {

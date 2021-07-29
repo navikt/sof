@@ -1,5 +1,6 @@
 import {
   IPatient,
+  IQuestionnaire,
   IQuestionnaireResponse,
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
@@ -92,7 +93,8 @@ export const saveAnswers = async (
     | fhirclient.FHIR.Patient
     | fhirclient.FHIR.Practitioner
     | fhirclient.FHIR.RelatedPerson,
-  client: Client
+  client: Client,
+  questionnaire: IQuestionnaire
 ) => {
   answers.forEach((value, key) => {
     //Get the correct object from response.item:
@@ -115,7 +117,7 @@ export const saveAnswers = async (
   });
   setAutomaticAnswers(questionnaireResponse, patient, user);
 
-  saveToServer(questionnaireResponse, client, patient);
+  saveToServer(questionnaireResponse, client, patient, questionnaire);
 
   return questionnaireResponse;
 };
