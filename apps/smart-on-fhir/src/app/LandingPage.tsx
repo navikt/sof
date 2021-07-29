@@ -58,7 +58,7 @@ export const LandingPage = () => {
   return (
     <div>
       <div className="app-container">
-        <BannerHeader page={''} />
+        <BannerHeader />
         <div className="questionnairesContainer">
           <Sidetittel style={{ marginBottom: '50px' }}>Skjemaer</Sidetittel>
           <div>
