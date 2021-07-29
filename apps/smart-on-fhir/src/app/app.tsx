@@ -1,10 +1,7 @@
 import { Questionnaire } from './components/Questionnaire';
 import { Ingress, Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import { useState } from 'react';
-import { BannerHeader } from './components/BannerHeader';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import informationIcon from './logos/informationIcon.svg';
-import { Divide } from '@navikt/ds-icons';
 
 export const App = () => {
   const [questionnareTitle, setTitle] = useState('');
