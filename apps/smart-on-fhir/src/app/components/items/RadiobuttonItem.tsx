@@ -12,7 +12,6 @@ const RadiobuttonItem = (props: IItemProps) => {
   const [radioValue, setRadioValue] = useState('');
 
   const handleOnChange = (value: string) => {
-    console.log('onChange');
     setRadioValue(value);
   };
 
@@ -22,7 +21,6 @@ const RadiobuttonItem = (props: IItemProps) => {
   // that has been fetched, and there is no new answer that can be overwritten.
   // Does not currently work. Maybe we can get e.target from onChange and do something.
   useEffect(() => {
-    console.log(props.answers);
     if (
       radioValue === '' &&
       typeof props.answers.get(props.entity.linkId) === 'string'
@@ -33,7 +31,6 @@ const RadiobuttonItem = (props: IItemProps) => {
 
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);
-    console.log('radioValue: ', radioValue);
     copiedAnswers.set(props.entity.linkId, radioValue);
     props.setAnswers(copiedAnswers);
   }, [radioValue]);
