@@ -21,10 +21,10 @@ const QuestionnaireLinks = (props: IQuestionnaireLinksProps) => {
     <div className="questionnaireLinkContainer" onClick={props.handleClick}>
       <ContentContainer className="ContentContainer">
         <Grid>
-          <Cell className={'navds-story-cell tittelcelle'} xs={8}>
+          <Cell className={'navds-story-cell tittelcelle'} xs={7}>
             {props.title}
           </Cell>
-          <Cell className={'navds-story-cell statuscelle'} xs={3}>
+          <Cell className={'navds-story-cell statuscelle'} xs={4}>
             Status:
             {statusChecker()}
           </Cell>
