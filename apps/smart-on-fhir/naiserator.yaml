@@ -28,4 +28,4 @@ spec:
     enabled: false
     path: /internal/prometheus
   ingresses:
-    - 'https://sof.dev.nav.no/'
+    - 'https://sof.ekstern.dev.nav.no'
