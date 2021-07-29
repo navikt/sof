@@ -6,7 +6,7 @@
   max-width: 1050px;
   min-width: 690px;
   display: flex;
-  margin: 140px auto;
+  margin: 30px auto;
   padding: 0 50px;
 }
 
@@ -64,8 +64,9 @@
   margin: 15px 20px;
 }
 
-Tilbakeknapp {
-  position: absolute;
+.informationIcon {
+  height: 75px;
+  margin-bottom: 10px;
 }
 
 /*TITLE AREA, UNDER THE DARK BAND HEADER*/
@@ -79,10 +80,6 @@ Tilbakeknapp {
 }
 
 /*MAIN BODY WITH THE QUESTIONAORES*/
-
-.main-body {
-  border-style: groove none none none;
-}
 
 .ingress {
   margin: 25px 0 40px;
