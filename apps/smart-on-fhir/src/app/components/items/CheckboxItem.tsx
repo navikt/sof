@@ -28,39 +28,28 @@ const CheckboxItem = (props: IItemProps) => {
 
   return (
     <>
-      {props.helptext != '' ? (
-        <div className="componentItems">
-          <CheckboxGruppe legend={props.entity.text}>
-            {optionarray?.map((option: string) => (
-              <Checkbox
-                key={option}
-                label={
+      <div className="componentItems">
+        <CheckboxGruppe legend={props.entity.text}>
+          {optionarray?.map((option: string) => (
+            <Checkbox
+              key={option}
+              label={
+                props.helptext !== '' ? (
                   <div style={{ display: 'flex' }}>
                     {option}
                     <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                       {props.helptext}
                     </Hjelpetekst>
                   </div>
-                }
-                name={props.entity.linkId + option}
-              />
-            ))}
-          </CheckboxGruppe>
-          ;
-        </div>
-      ) : (
-        <div className="componentItems">
-          <CheckboxGruppe legend={props.entity.text}>
-            {optionarray?.map((option: string) => (
-              <Checkbox
-                key={option}
-                label={option}
-                name={props.entity.linkId + option}
-              />
-            ))}
-          </CheckboxGruppe>
-        </div>
-      )}
+                ) : (
+                  option
+                )
+              }
+            />
+          ))}
+        </CheckboxGruppe>
+        ;
+      </div>
     </>
   );
 };

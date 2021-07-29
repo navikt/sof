@@ -1,12 +1,8 @@
-import React from 'react';
 import Hvit from '../logos/Hvit.svg';
 import Person from '../logos/Person.svg';
-import { Child } from '@navikt/ds-icons';
 import { Element, Ingress } from 'nav-frontend-typografi';
 import { useFhirContext } from '../context/fhirContext';
 import { getPatientName } from '../utils/getPatientName';
-import { Tilbakeknapp } from 'nav-frontend-ikonknapper';
-import { Link } from 'react-router-dom';
 
 export const BannerHeader = () => {
   const { patient } = useFhirContext();

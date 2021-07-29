@@ -22,7 +22,7 @@ const RadiobuttonItem = (props: IItemProps) => {
   // that has been fetched, and there is no new answer that can be overwritten.
   // Does not currently work. Maybe we can get e.target from onChange and do something.
   useEffect(() => {
-    console.log(props.answers);
+    //console.log('Skriver ut fra RadioButton', props.answers);
     if (
       radioValue === '' &&
       typeof props.answers.get(props.entity.linkId) === 'string'

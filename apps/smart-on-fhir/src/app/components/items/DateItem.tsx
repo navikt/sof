@@ -17,11 +17,36 @@ const DateItem: FC<IItemProps> = ({
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
 
+  const checkDate = (param: string) => {
+    console.log(
+      'LinkID:',
+      entity.linkId,
+      'Lengden til dateList:',
+      dateList.length
+    );
+    if (dateList.length === 1) {
+      console.log(entity.linkId, 'Det er EN ting i dateList');
+      console.log(dateList[0]);
+    } else if (dateList.length === 2) {
+      console.log(entity.linkId, 'Det er TO ting i dateList');
+      let firstDate = new Date('2021-07-01');
+      let secondDate = new Date(dateList[1]);
+      console.log(firstDate);
+      console.log(dateList[0]);
+      console.log(secondDate);
+      console.log(dateList[1]);
+    }
+  };
+
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
+    // console.log('Skriver ut noe fra datoklassen', answers);
     copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
     setAnswers(copiedAnswers);
+    // console.log('Skriver ut noe fra datoklassen etter set Answers', answers);
+
+    checkDate('nå må det faen meg gå');
   }, [dateList]);
 
   // When rendering for the first time:

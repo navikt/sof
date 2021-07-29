@@ -52,7 +52,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   useEffect(() => {
     questionnaire ? getItemChildren(questionnaire) : null;
     setLoading(false);
-    console.log('her i questionnaire');
   }, [loading]);
 
   // Function to make sure all values sent to saveAnswers are defined.
