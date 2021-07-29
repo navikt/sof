@@ -9,10 +9,10 @@ import { useEffect, useState } from 'react';
 
 const RadiobuttonItem = (props: IItemProps) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
-  const [radioValue, setRadioValue] = useState('');
+  const [radioValue, setRadioValue] = useState(''); // The label value of a checked radiobutton
   const [checked, setChecked] = useState<boolean[]>(
     new Array(optionarray?.length).fill(false)
-  );
+  ); // A list of the options with true or false, depending on if checked
 
   const handleOnChange = (value: string, index: number) => {
     setRadioValue(value);
@@ -24,15 +24,13 @@ const RadiobuttonItem = (props: IItemProps) => {
         copyList[i] = false;
       }
     });
-    copyList[index] = true;
     setChecked(copyList);
   };
 
-  // When answers is updated: set the radiobuttons to the correct answer.
-  // It is only done if radioValue is empty, meaning that it should only
-  // make changes to radioValue if there is an answer saved on the server
+  // When rendering for the first time: set the radiobuttons to the correct answer.
+  // It is only done if radioValue is empty, meaning that no button is checked,
+  // it should only make changes to checked (list) if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
-  // Does not currently work. Maybe we can get e.target from onChange and do something.
   useEffect(() => {
     if (
       radioValue !== '' &&
@@ -43,6 +41,7 @@ const RadiobuttonItem = (props: IItemProps) => {
       optionarray?.map((text: string, index: number) => {
         if (text === temp) {
           checked[index] = true;
+          setRadioValue(text);
         } else {
           checked[index] = false;
         }
