@@ -18,9 +18,9 @@ interface IProps {
 
 /**
  * Renders an input field and handles changes in the field.
- * @param question: string, renders the question text
- * @param linkId: string, the linkId to the question
- * @param answers: a map containing the current answers in the input fields
+ * @param entity: of type itemType that includes all attributes of the question
+ * @param entityItems: an array of itemType, used for items of helptext and subquestions
+ * @param optionItems: array of answerOptionType, used for "answerOption" on questions of type Choice
  * @param setAnswers: the function to update answers
  * @returns an input field
  */
