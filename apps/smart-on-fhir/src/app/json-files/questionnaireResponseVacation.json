@@ -1,0 +1,31 @@
+{
+  "resourceType": "QuestionnaireResponse",
+  "id": "",
+  "identifier": {
+    "use": "official",
+    "value": ""
+  },
+  "status": "in-progress",
+  "questionnaire": "Questionnaire/1340031",
+  "authored": "2021-07-19",
+  "item": [
+    {
+      "linkId": "1",
+      "text": "Beskriv din drømmeferie:",
+      "answer": [
+        {
+          "valueString": ""
+        }
+      ]
+    },
+    {
+      "linkId": "2",
+      "text": "Hva er den beste reisemåten:",
+      "answer": [
+        {
+          "valueDate": ""
+        }
+      ]
+    }
+  ]
+}

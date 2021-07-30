@@ -1,11 +1,14 @@
 import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
-import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-import { IPatient, IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
+import {
+  IPatient,
+  IQuestionnaire,
+  IQuestionnaireResponse,
+} from '@ahryman40k/ts-fhir-types/lib/R4';
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
@@ -20,11 +23,11 @@ type callFromApp = {
  */
 export const Questionnaire: FC<callFromApp> = (props) => {
   const [questions, setQuestions] = useState<any[]>([]);
-  const { patient, user, client, questionnaire } = useFhirContext();
+  const { patient, user, client, questionnaire, questionnaireResponse } =
+    useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
-  const response = questionnaireResponse;
   const [saved, setSaved] = useState(false);
 
   // This will be called when the questionnaire is opened, and sets
@@ -63,7 +66,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   // Function to make sure all values sent to saveAnswers are defined.
   const clickSave = (
     answers: Map<string, string | boolean>,
-    response: any,
+    response: IQuestionnaireResponse,
     patient: IPatient | undefined,
     user:
       | fhirclient.FHIR.Patient
@@ -131,7 +134,14 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       })}
       <Hovedknapp
         onClick={() => {
-          clickSave(answers, response, patient, user, client, questionnaire);
+          clickSave(
+            answers,
+            questionnaireResponse as IQuestionnaireResponse,
+            patient,
+            user,
+            client,
+            questionnaire
+          );
           setSaved(true);
         }}
       >
