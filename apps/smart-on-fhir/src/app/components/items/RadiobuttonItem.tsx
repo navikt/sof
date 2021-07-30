@@ -27,12 +27,12 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
     setChecked(copyList);
   };
 
-  // When rendering for the first time: set the radiobuttons to the correct answer.
+  // When input is saved: set the radiobuttons to the correct answer.
   // It is only done if radioValue is empty, meaning that no button is checked,
   // it should only make changes to checked (list) if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
-    console.log('radio');
+    //console.log('radio');
     if (
       radioValue === '' &&
       props.answers.get(props.entity.linkId) &&

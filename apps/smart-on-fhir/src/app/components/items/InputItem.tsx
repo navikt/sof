@@ -74,12 +74,12 @@ const InputItem = (props: IItemProps & savedType) => {
     return <></>;
   };
 
-  // When rendering for the first time,
+  // When input is saved,
   // if tempValueList is empty (secures that no new answers can be overwritten)
   // and there is an answer saved on the server,
   // the tempValueList sets to the saved answers.
   useEffect(() => {
-    console.log('input');
+    //console.log('input');
     if (
       tempValueList.length === 0 &&
       props.answers.get(props.entity.linkId) &&

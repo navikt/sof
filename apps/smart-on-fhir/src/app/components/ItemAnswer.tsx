@@ -19,9 +19,9 @@ interface IProps {
 
 /**
  * Renders an input field and handles changes in the field.
- * @param question: string, renders the question text
- * @param linkId: string, the linkId to the question
- * @param answers: a map containing the current answers in the input fields
+ * @param entity: of type itemType that includes all attributes of the question
+ * @param entityItems: an array of itemType, used for items of helptext and subquestions
+ * @param optionItems: array of answerOptionType, used for "answerOption" on questions of type Choice
  * @param setAnswers: the function to update answers
  * @returns an input field
  */
@@ -66,6 +66,8 @@ export const ItemAnswer: FC<IProps> = ({
         return 'text';
       case 'string':
         return 'string';
+      case 'date':
+        return 'date';
       case 'group':
         if (entityItems[1].type === 'boolean') {
           return 'boolean';
@@ -102,7 +104,13 @@ export const ItemAnswer: FC<IProps> = ({
         {
           text: <TextareaItem {...itemProps} saved={saved} />,
           string: <InputItem {...itemProps} saved={saved} />,
-          boolean: <CheckboxItem {...itemProps} answeroptions={arrayOfItems} />,
+          boolean: (
+            <CheckboxItem
+              {...itemProps}
+              answeroptions={arrayOfItems}
+              saved={saved}
+            />
+          ),
           date: (
             <DateItem
               {...itemProps}

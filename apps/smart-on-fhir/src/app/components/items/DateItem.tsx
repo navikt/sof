@@ -19,20 +19,37 @@ const DateItem: FC<IItemProps & savedType> = ({
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
 
+  /*
+  const checkDate = (param: string) => {
+    console.log(
+      'LinkID:',
+      entity.linkId,
+      'Lengden til dateList:',
+      dateList.length
+    );
+    if (dateList.length === 1) {
+      console.log(entity.linkId, 'Det er EN ting i dateList');
+      console.log(dateList[0]);
+    } else if (dateList.length === 2) {
+      console.log(entity.linkId, 'Det er TO ting i dateList');
+      let firstDate = new Date('2021-07-01');
+      let secondDate = new Date(dateList[1]);
+      console.log(firstDate);
+      console.log(dateList[0]);
+      console.log(secondDate);
+      console.log(dateList[1]);
+    }
+  };
+*/
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
-    /*let i: number = 1;
-    dateList.map((value: string) => {
-      copiedAnswers.set(entity.linkId + '.' + i, JSON.stringify(value));
-      i++;
-    });
-    */
     copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
     setAnswers(copiedAnswers);
+    //checkDate('nå må det faen meg gå');
   }, [dateList]);
 
-  // When rendering for the first time:
+  // When input is saved:
   // set the date to the correct answer.
   // It is only done if the date is empty, meaning that it should only
   // make changes to date if there is an answer saved on the server

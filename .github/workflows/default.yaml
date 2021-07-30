@@ -1,9 +1,6 @@
 name: default
 
-on:
-  push:
-    branches:
-      - '*'
+on: push
 
 env:
   APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
@@ -80,6 +77,6 @@ jobs:
         uses: nais/deploy/actions/deploy@v1
         env:
           IMAGE: ${{ steps.tag.outputs.base }}:${{ steps.tag.outputs.sha }}
-          CLUSTER: dev-gcp
+          CLUSTER: labs-gcp
           DRY_RUN: ${{ github.ref != 'refs/heads/main' }}
           RESOURCE: apps/smart-on-fhir/naiserator.yaml
