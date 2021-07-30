@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { BannerHeader } from './components/BannerHeader';
 import { Sidetittel } from 'nav-frontend-typografi';
 import '@navikt/ds-css';
 import './landingpageStylesheet.css';

@@ -28,3 +28,7 @@ interface IItemProps {
     React.SetStateAction<Map<string, string | boolean>>
   >;
 }
+
+type savedType = {
+  saved: boolean;
+};

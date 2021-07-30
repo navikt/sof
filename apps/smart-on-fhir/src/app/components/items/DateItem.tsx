@@ -1,22 +1,25 @@
 import React, { FC, useState, useEffect } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { DatepickerItem } from './DatepickerItem';
+import { string } from 'prop-types';
 
 /**
  * Renders a question with type Date
  * @returns a calendar (DatepickerItem) for user input
  */
 
-const DateItem: FC<IItemProps> = ({
+const DateItem: FC<IItemProps & savedType> = ({
   entity,
   helptext,
   answeroptions,
   answers,
   setAnswers,
+  saved,
 }) => {
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
 
+  /*
   const checkDate = (param: string) => {
     console.log(
       'LinkID:',
@@ -37,24 +40,22 @@ const DateItem: FC<IItemProps> = ({
       console.log(dateList[1]);
     }
   };
-
+*/
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
-    // console.log('Skriver ut noe fra datoklassen', answers);
     copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
     setAnswers(copiedAnswers);
-    // console.log('Skriver ut noe fra datoklassen etter set Answers', answers);
-
-    checkDate('nå må det faen meg gå');
+    //checkDate('nå må det faen meg gå');
   }, [dateList]);
 
-  // When rendering for the first time:
+  // When input is saved:
   // set the date to the correct answer.
   // It is only done if the date is empty, meaning that it should only
   // make changes to date if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
+    //console.log('date');
     if (
       dateList.length === 0 &&
       answers.get(entity.linkId) &&
@@ -63,7 +64,7 @@ const DateItem: FC<IItemProps> = ({
       const temp: string = answers.get(entity.linkId) as string;
       setDateList(JSON.parse(temp));
     }
-  }, []);
+  }, [saved]);
 
   return (
     <div className="componentItems">

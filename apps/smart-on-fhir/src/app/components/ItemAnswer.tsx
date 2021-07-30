@@ -14,6 +14,7 @@ interface IProps {
   setAnswers: React.Dispatch<
     React.SetStateAction<Map<string, string | boolean>>
   >;
+  saved: boolean;
 }
 
 /**
@@ -30,6 +31,7 @@ export const ItemAnswer: FC<IProps> = ({
   optionItems,
   answers,
   setAnswers,
+  saved,
 }) => {
   let itemHelptext = '';
   const arrayOfItems: Array<string> = [];
@@ -100,12 +102,28 @@ export const ItemAnswer: FC<IProps> = ({
       {/* Displays the items in the same order as in Questionnaire.json */}
       {enableWhen ? (
         {
-          text: <TextareaItem {...itemProps} />,
-          string: <InputItem {...itemProps} />,
-          boolean: <CheckboxItem {...itemProps} answeroptions={arrayOfItems} />,
-          date: <DateItem {...itemProps} answeroptions={arrayOfItems} />,
+          text: <TextareaItem {...itemProps} saved={saved} />,
+          string: <InputItem {...itemProps} saved={saved} />,
+          boolean: (
+            <CheckboxItem
+              {...itemProps}
+              answeroptions={arrayOfItems}
+              saved={saved}
+            />
+          ),
+          date: (
+            <DateItem
+              {...itemProps}
+              answeroptions={arrayOfItems}
+              saved={saved}
+            />
+          ),
           radio: (
-            <RadiobuttonItem {...itemProps} answeroptions={arrayOfItems} />
+            <RadiobuttonItem
+              {...itemProps}
+              answeroptions={arrayOfItems}
+              saved={saved}
+            />
           ),
           nothing: <></>,
         }[renderSwitch()]
