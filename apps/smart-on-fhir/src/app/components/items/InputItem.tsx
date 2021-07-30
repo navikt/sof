@@ -10,7 +10,7 @@ import { ListItem } from './ListItem';
  * @returns an input field for multi-selection
  */
 
-const InputItem = (props: IItemProps) => {
+const InputItem = (props: IItemProps & savedType) => {
   const [inputValue, setInputValue] = useState(''); // The written value in the input field
   const [tempValueList, setTempValueList] = useState<string[]>([]); // A (temporarily) list of the values added from the input field
   const [anker, setAnker] = useState(undefined);
@@ -74,11 +74,12 @@ const InputItem = (props: IItemProps) => {
     return <></>;
   };
 
-  // When rendering for the first time,
+  // When input is saved,
   // if tempValueList is empty (secures that no new answers can be overwritten)
   // and there is an answer saved on the server,
   // the tempValueList sets to the saved answers.
   useEffect(() => {
+    //console.log('input');
     if (
       tempValueList.length === 0 &&
       props.answers.get(props.entity.linkId) &&
@@ -87,7 +88,7 @@ const InputItem = (props: IItemProps) => {
       const temp: string = props.answers.get(props.entity.linkId) as string;
       setTempValueList(JSON.parse(temp));
     }
-  }, []);
+  }, [props.saved]);
 
   useEffect(() => {
     // Formaterer listen slik at inputsvarene kan tolkes av answerToJson.ts

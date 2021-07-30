@@ -15,6 +15,7 @@ type questionnaireResponseItemType = {
 };
 
 type setAnswersType = React.Dispatch<React.SetStateAction<any>>;
+type setSavedType = React.Dispatch<React.SetStateAction<boolean>>;
 
 /**
  * Function to set answers based on a response
@@ -22,7 +23,11 @@ type setAnswersType = React.Dispatch<React.SetStateAction<any>>;
  * and questionnaire that is in progress.
  * @param setAnswers Function to set the answers-state
  */
-const setAllAnswers = (response: any, setAnswers: setAnswersType) => {
+const setAllAnswers = (
+  response: any,
+  setAnswers: setAnswersType,
+  setSaved: setSavedType
+) => {
   const fetchedAnswers = new Map<string, string | boolean>();
   response.item.map((question: questionnaireResponseItemType) => {
     if (question.answer) {
@@ -34,6 +39,7 @@ const setAllAnswers = (response: any, setAnswers: setAnswersType) => {
     }
   });
   setAnswers(fetchedAnswers);
+  setSaved(true);
 };
 
 /**
@@ -47,12 +53,13 @@ export const getAnswersFromServer = async (
   client: Client,
   patient: IPatient,
   setAnswers: setAnswersType,
-  questionnaire: IQuestionnaire
+  questionnaire: IQuestionnaire,
+  setSaved: setSavedType
 ) => {
   const response = (await client.request(
     `QuestionnaireResponse?subject=Patient/${patient.id}&questionnaire=Questionnaire/${questionnaire.id}&status=in-progress`
   )) as IBundle;
   if (response.total !== 0 && response.entry && response.entry[0].resource) {
-    setAllAnswers(response.entry[0].resource, setAnswers);
+    setAllAnswers(response.entry[0].resource, setAnswers, setSaved);
   }
 };
