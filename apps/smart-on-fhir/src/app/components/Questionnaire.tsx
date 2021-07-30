@@ -37,9 +37,11 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   // Get the items from the Questionnaire
   const getItemChildren = (q: IQuestionnaire) => {
     q.item?.map((itemChild: any) => {
-      setQuestions((prevState) => [...prevState, itemChild]);
-      if (itemChild && typeof itemChild === 'object') {
-        getItemChildren(itemChild);
+      if (!questions.includes(itemChild)) {
+        setQuestions((prevState) => [...prevState, itemChild]);
+        if (itemChild && typeof itemChild === 'object') {
+          getItemChildren(itemChild);
+        }
       }
     });
   };
