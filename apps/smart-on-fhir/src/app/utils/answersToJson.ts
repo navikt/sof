@@ -97,13 +97,14 @@ export const saveAnswers = async (
   questionnaire: IQuestionnaire
 ) => {
   answers.forEach((value, key) => {
-    //Get the correct object from response.item:
+    console.log('questionnaireResponse: ', questionnaireResponse);
+    //Get the correct object from questionnaireResponse.item:
     const item = questionnaireResponse.item?.find((e: any) => e.linkId === key)
       ? questionnaireResponse.item.find((e: any) => e.linkId === key)
       : null;
-
+    console.log('item: ', item);
     // Set the correct answer in the object
-    if (item && item.answer && typeof value === 'string') {
+    if (item && item.answer && item.answer[0] && typeof value === 'string') {
       'valueString' in item.answer[0]
         ? setValueString(item, value)
         : 'valueDate' in item.answer[0]
