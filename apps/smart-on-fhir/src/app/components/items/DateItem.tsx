@@ -18,23 +18,12 @@ const DateItem: FC<IItemProps> = ({
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
 
   const checkDate = (param: string) => {
-    console.log(
-      'LinkID:',
-      entity.linkId,
-      'Lengden til dateList:',
-      dateList.length
-    );
-    if (dateList.length === 1) {
-      console.log(entity.linkId, 'Det er EN ting i dateList');
-      console.log(dateList[0]);
-    } else if (dateList.length === 2) {
-      console.log(entity.linkId, 'Det er TO ting i dateList');
-      let firstDate = new Date('2021-07-01');
+    if (dateList.length === 2) {
+      let firstDate = new Date(dateList[0]);
       let secondDate = new Date(dateList[1]);
-      console.log(firstDate);
-      console.log(dateList[0]);
-      console.log(secondDate);
-      console.log(dateList[1]);
+      if (secondDate < firstDate) {
+        console.log('Dato-inntasting ugyldig!');
+      }
     }
   };
 

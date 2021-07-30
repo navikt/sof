@@ -25,3 +25,8 @@
 .questionnaireLinkContainer:hover {
   background-color: #f5f5f5;
 }
+
+.wrongDatePicked {
+  border: 2px solid #ba3a26;
+  border-radius: 4px;
+}

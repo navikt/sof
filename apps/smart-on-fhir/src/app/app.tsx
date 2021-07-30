@@ -17,7 +17,6 @@ export const App = () => {
       <div>
         <div className="titleContainer">
           <Veilederpanel
-            fargetema="info"
             type={'plakat'}
             kompakt
             svg={
@@ -90,6 +89,12 @@ export const App = () => {
             }
           >
             <Normaltekst>{questionDescription}</Normaltekst>
+            <Normaltekst>
+              <br />
+              Vi spør stort sett bare om informasjon som er nødvendig for å
+              behandle saken. Det vil si alle felt er i utgangspunktet påkrevde
+              og må fylles ut. Frivillige felt er markert med "frivillig"
+            </Normaltekst>
           </Veilederpanel>
         </div>
         <div className="main-body">
