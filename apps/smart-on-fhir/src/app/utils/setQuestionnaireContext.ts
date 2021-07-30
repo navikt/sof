@@ -1,6 +1,5 @@
 import { IBundle, IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
-import jsonQuestionnaire from '../json-files/questionnairePleiepenger.json';
 import { setUUIDIdentifier } from './setIdentifier';
 
 /**
@@ -16,8 +15,10 @@ export const setQuestionnaireContext = async (
   setQuestionnaire:
     | React.Dispatch<React.SetStateAction<IQuestionnaire | undefined>>
     | undefined,
-  client: Client | undefined
+  client: Client | undefined,
+  jsonQuestionnaire: IQuestionnaire
 ) => {
+  setQuestionnaire ? setQuestionnaire(undefined) : null; // reset questionnaire
   const response = (await client?.request(
     `Questionnaire?name=${name}&version=${version}&status=active`
   )) as IBundle;
