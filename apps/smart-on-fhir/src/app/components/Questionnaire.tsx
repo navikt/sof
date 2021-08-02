@@ -154,7 +154,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       >
         Send skjema
       </Hovedknapp>
-      {console.log(answers)}
+      {console.log('A', answers)}
     </>
   );
 };

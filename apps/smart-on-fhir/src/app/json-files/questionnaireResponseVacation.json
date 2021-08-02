@@ -8,6 +8,12 @@
   "status": "in-progress",
   "questionnaire": "Questionnaire/1340031",
   "authored": "2021-07-19",
+  "subject": {
+    "resourceType": "Reference",
+    "id": "",
+    "reference": "",
+    "type": "Patient"
+  },
   "item": [
     {
       "linkId": "1",

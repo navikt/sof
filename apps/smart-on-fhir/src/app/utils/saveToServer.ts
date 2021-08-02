@@ -41,6 +41,7 @@ export const saveToServer = async (
       body: JSON.stringify(questionnaireResponse),
       headers,
     });
+    console.log('PUT');
   } else {
     // If no QR matching the requirements were found,
     // add identifier, questionnaire and create a new QR
@@ -52,5 +53,6 @@ export const saveToServer = async (
       body: JSON.stringify(questionnaireResponse),
       headers,
     });
+    console.log('POST');
   }
 };
