@@ -37,6 +37,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     questionnaire,
     questionnaireResponse,
     setQuestionnaire,
+    setQuestionnaireResponse,
   } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
@@ -49,6 +50,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
           questionnaireType,
           '1.0.0',
           setQuestionnaire,
+          setQuestionnaireResponse,
           client
         )
       : null;
