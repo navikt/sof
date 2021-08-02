@@ -19,7 +19,8 @@ export const sendToServer = async (
   const response: IBundle = await client.request(
     `QuestionnaireResponse?subject=Patient/${patient.id}&questionnaire=${questionnaireResponse.questionnaire}&status=in-progress`
   );
-
+  // If there already exist a QR saved on the server with status "in-progress",
+  // the current QR's status updated to "completed".
   if (response.total && response.total !== 0 && response.entry) {
     const responseId: string | undefined = response.entry[0].resource?.id;
     questionnaireResponse.id = responseId;

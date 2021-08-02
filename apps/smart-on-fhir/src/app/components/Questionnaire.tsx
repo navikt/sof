@@ -114,14 +114,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     }
   };
 
-  const deleteQuestionnaire = () => {
-    const myList = ['1340859', '1340856', '1340855', '1340476', '1340477'];
-    myList.forEach((element) => {
-      client?.delete('QuestionnaireResponse/' + element);
-    });
-  };
-  deleteQuestionnaire();
-
   // Set header and description
   useEffect(() => {
     if (questionnaire && questionnaire.description && questionnaire.title) {
