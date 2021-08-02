@@ -12,9 +12,15 @@ import {
 import { fhirclient } from 'fhirclient/lib/types';
 import Client from 'fhirclient/lib/Client';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
+import { useParams } from 'react-router-dom';
+import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
 
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
+};
+
+type questionnaireTypeParams = {
+  questionnaireType: string;
 };
 
 /**
@@ -22,16 +28,34 @@ type callFromApp = {
  * @returns The questionnaire containing all questions with input fields.
  */
 export const Questionnaire: FC<callFromApp> = (props) => {
+  const { questionnaireType } = useParams<questionnaireTypeParams>();
   const [questions, setQuestions] = useState<any[]>([]);
-  const { patient, user, client, questionnaire, questionnaireResponse } =
-    useFhirContext();
+  const {
+    patient,
+    user,
+    client,
+    questionnaire,
+    questionnaireResponse,
+    setQuestionnaire,
+  } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
   const [saved, setSaved] = useState(false);
 
+  useEffect(() => {
+    client
+      ? chooseQuestionnaire(
+          questionnaireType,
+          '1.0.0',
+          setQuestionnaire,
+          client
+        )
+      : null;
+  }, []);
+
   // This will be called when the questionnaire is opened, and sets
-  // answers to the answers allready saved ont he server (if there are any).
+  // answers to the answers allready saved on the server (if there are any).
   useEffect(() => {
     if (client && patient && questionnaire) {
       getAnswersFromServer(
@@ -60,7 +84,10 @@ export const Questionnaire: FC<callFromApp> = (props) => {
 
   // Saves questions from Questionnaire to the questions list when questionnaire is updated
   useEffect(() => {
-    questionnaire ? getItemChildren(questionnaire) : null;
+    if (questionnaire) {
+      setQuestions([]); // Reset questions so that new ones can be added
+      getItemChildren(questionnaire);
+    }
   }, [questionnaire]);
 
   // Function to make sure all values sent to saveAnswers are defined.
