@@ -16,6 +16,7 @@ export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
   const [tempValue, setTempValue] = useState('');
 
   const handleOnClick = (value: string) => {
+    console.log('click');
     setTempValue(value);
   };
 

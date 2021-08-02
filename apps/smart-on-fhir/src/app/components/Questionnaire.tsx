@@ -42,6 +42,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     new Map()
   );
   const [saved, setSaved] = useState(false);
+  const [inputError, setInputError] = useState(false);
 
   useEffect(() => {
     client
