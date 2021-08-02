@@ -93,22 +93,34 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   }, [questionnaire]);
 
   // Function to make sure all values sent to saveAnswers are defined.
-  const clickSave = (
-    answers: Map<string, string | boolean>,
-    response: IQuestionnaireResponse,
-    patient: IPatient | undefined,
-    user:
-      | fhirclient.FHIR.Patient
-      | fhirclient.FHIR.Practitioner
-      | fhirclient.FHIR.RelatedPerson
-      | undefined,
-    client: Client | undefined,
-    questionnaire: IQuestionnaire | undefined
-  ) => {
-    if (answers && response && patient && user && client && questionnaire) {
-      saveAnswers(answers, response, patient, user, client, questionnaire);
+  const handleOnClick = (e: any) => {
+    if (
+      answers &&
+      questionnaireResponse &&
+      patient &&
+      user &&
+      client &&
+      questionnaire
+    ) {
+      saveAnswers(
+        answers,
+        questionnaireResponse,
+        patient,
+        user,
+        client,
+        questionnaire,
+        e.target.id.toLowerCase() // Information about which button is clicked on
+      );
     }
   };
+
+  const deleteQuestionnaire = () => {
+    const myList = ['1340859', '1340856', '1340855', '1340476', '1340477'];
+    myList.forEach((element) => {
+      client?.delete('QuestionnaireResponse/' + element);
+    });
+  };
+  deleteQuestionnaire();
 
   // Set header and description
   useEffect(() => {
@@ -162,15 +174,10 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         return displayQuestion(item);
       })}
       <Hovedknapp
-        onClick={() => {
-          clickSave(
-            answers,
-            questionnaireResponse as IQuestionnaireResponse,
-            patient,
-            user,
-            client,
-            questionnaire
-          );
+        className="buttons"
+        id="btnSave"
+        onClick={(e: any) => {
+          handleOnClick(e);
           setSaved(true);
         }}
       >
@@ -179,7 +186,10 @@ export const Questionnaire: FC<callFromApp> = (props) => {
 
       <Hovedknapp
         className="buttons"
-        onClick={() => console.log('Trykket på send')}
+        id="btnSend"
+        onClick={(e: any) => {
+          console.log('Trykket på send'), handleOnClick(e);
+        }}
       >
         Send skjema
       </Hovedknapp>
