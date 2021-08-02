@@ -14,7 +14,6 @@ const InputItem = (props: IItemProps & savedType) => {
   const [inputValue, setInputValue] = useState(''); // The written value in the input field
   const [tempValueList, setTempValueList] = useState<string[]>([]); // A (temporarily) list of the values added from the input field
   const [anker, setAnker] = useState(undefined);
-  const [error, setError] = useState(''); // The error message if input field is missing input if required
 
   const [exampleElements] = useState([
     'F41.9: Uspesifisert angstlidelse',
@@ -75,20 +74,6 @@ const InputItem = (props: IItemProps & savedType) => {
     return <></>;
   };
 
-  // Informs that input is missing when no input if required
-  useEffect(() => {
-    props.entity.required = true;
-    if (props.entity.required) {
-      if (tempValueList.length === 0) {
-        setError("Mangler data, husk å trykk på 'Legg til'");
-        console.log('FEIL');
-      } else {
-        setError('');
-        console.log('Ingen problem');
-      }
-    }
-  }, [tempValueList.length === 0]);
-
   // When input is saved,
   // if tempValueList is empty (secures that no new answers can be overwritten)
   // and there is an answer saved on the server,
@@ -134,7 +119,6 @@ const InputItem = (props: IItemProps & savedType) => {
                 props.entity.text
               )
             }
-            feil={error}
           />
           <Popover
             ankerEl={anker}
