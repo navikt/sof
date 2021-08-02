@@ -43,6 +43,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     new Map()
   );
   const [saved, setSaved] = useState(false);
+  const [disableSendBtn, setDisableSendBtn] = useState(true);
 
   useEffect(() => {
     client
@@ -171,6 +172,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         onClick={(e: any) => {
           handleOnClick(e);
           setSaved(true);
+          setDisableSendBtn(false);
         }}
       >
         Lagre
@@ -180,8 +182,10 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         className="buttons"
         id="btnSend"
         onClick={(e: any) => {
-          console.log('Trykket på send'), handleOnClick(e);
+          handleOnClick(e);
+          setDisableSendBtn(true);
         }}
+        disabled={disableSendBtn}
       >
         Send skjema
       </Hovedknapp>
