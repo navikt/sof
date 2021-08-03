@@ -31,7 +31,6 @@ export const App = () => {
                     viewBox="0 0 50 62   "
                     version="1.1"
                     focusable={false}
-
                   >
                     <title>Informasjon</title>
                     <defs>
@@ -89,22 +88,14 @@ export const App = () => {
                         </g>
                       </g>
                     </g>
-
-                  </g>
-                </svg>
-              </div>
-            }
-          >
-            <Normaltekst>{questionDescription}</Normaltekst>
-            <Normaltekst>
-              <br />
-              Vi spør stort sett bare om informasjon som er nødvendig for å
-              behandle saken. Det vil si alle felt er i utgangspunktet påkrevde
-              og må fylles ut. Frivillige felt er markert med "frivillig"
-            </Normaltekst>
-          </Veilederpanel>
-        </div>
-
+                  </svg>
+                </div>
+              }
+            >
+              <Normaltekst>{questionDescription}</Normaltekst>
+            </Veilederpanel>
+          </div>
+        ) : null}
         <div className="main-body">
           <div className="ingress"></div>
           <Questionnaire
