@@ -17,7 +17,7 @@ const DateItem: FC<IItemProps> = ({
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
 
-  const checkDate = (param: string) => {
+  const checkDate = () => {
     if (dateList.length === 2) {
       let firstDate = new Date(dateList[0]);
       let secondDate = new Date(dateList[1]);
@@ -35,7 +35,7 @@ const DateItem: FC<IItemProps> = ({
     setAnswers(copiedAnswers);
     // console.log('Skriver ut noe fra datoklassen etter set Answers', answers);
 
-    checkDate('nå må det faen meg gå');
+    checkDate();
   }, [dateList]);
 
   // When rendering for the first time:
