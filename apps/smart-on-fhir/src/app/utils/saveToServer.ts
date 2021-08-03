@@ -8,7 +8,7 @@ import Client from 'fhirclient/lib/Client';
 import { setUUIDIdentifier } from './setIdentifier';
 
 /**
- * Function to save a questionnaire response to the server.
+ * Function to SAVE a questionnaire response to the server.
  * @param questionnaireResponse is the QR to save to the server
  * @param client is the client from the fhir context
  * @param patient is the patient we are logged in ato in the EHR
