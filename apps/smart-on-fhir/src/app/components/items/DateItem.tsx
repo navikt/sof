@@ -21,7 +21,6 @@ const DateItem: FC<IItemProps & savedType> = ({
   const [wrongDateStatus, setWrongDateStatus] = useState('riktig_dato');
   const [errorMsg, setErrorMsg] = useState('');
 
-
   const checkDate = () => {
     if (dateList.length === 2) {
       let firstDate = new Date(dateList[0]);
@@ -35,8 +34,6 @@ const DateItem: FC<IItemProps & savedType> = ({
       }
     }
   };
-
-
 
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
@@ -82,24 +79,23 @@ const DateItem: FC<IItemProps & savedType> = ({
         }
       </div>
 
-
       <div className="datesBox" style={{ display: 'flex' }}>
-        {optionList?.map((option: string, index: number) => {
-          return (
-            <div
-              key={entity.linkId + index}
-              style={{ display: 'block', margin: '10px' }}
-            >
-              <div className={wrongDateStatus}>
-
-                <DatepickerItem
-                  index={index}
-                  text={option}
-                  dateList={dateList}
-                  setDateList={setDateList}
-                />
+        {optionList?.length !== 0 ? (
+          optionList?.map((option: string, index: number) => {
+            return (
+              <div
+                key={entity.linkId + index}
+                style={{ display: 'block', margin: '10px' }}
+              >
+                <div className={wrongDateStatus}>
+                  <DatepickerItem
+                    index={index}
+                    text={option}
+                    dateList={dateList}
+                    setDateList={setDateList}
+                  />
+                </div>
               </div>
-
             );
           })
         ) : (
