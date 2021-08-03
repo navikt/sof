@@ -24,7 +24,8 @@ const setQuestionnaireContext = async (
     | React.Dispatch<React.SetStateAction<IQuestionnaire | undefined>>
     | undefined,
   client: Client | undefined,
-  jsonQuestionnaire: IQuestionnaire
+  jsonQuestionnaire: IQuestionnaire,
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   setQuestionnaire ? setQuestionnaire(undefined) : null; // reset questionnaire
   const response = (await client?.request(
@@ -35,6 +36,7 @@ const setQuestionnaireContext = async (
     if (response.total !== 0 && response.entry && setQuestionnaire) {
       // If the questionnaire exist, save it in the context
       setQuestionnaire(response.entry[0].resource as IQuestionnaire);
+      setLoadingQuestionnaire(false);
     } else if (jsonQuestionnaire.status === 'active') {
       // If not, save a questionnaire to the server and set this as the questionnaire in the contex
       const headers = {
@@ -51,6 +53,7 @@ const setQuestionnaireContext = async (
         .then((response) => {
           setUUIDIdentifier(response);
           setQuestionnaire ? setQuestionnaire(response) : null;
+          setLoadingQuestionnaire(false);
         });
     }
   } else {
@@ -61,6 +64,7 @@ const setQuestionnaireContext = async (
     setQuestionnaire
       ? setQuestionnaire(jsonQuestionnaire as unknown as IQuestionnaire)
       : null;
+    setLoadingQuestionnaire(false);
     console.log('Fant ikke et skjema');
   }
 };
@@ -76,10 +80,11 @@ export const chooseQuestionnaire = (
   setQuestionnaire:
     | React.Dispatch<React.SetStateAction<IQuestionnaire | undefined>>
     | undefined,
+  client: Client,
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>,
   setQuestionnaireResponse:
     | React.Dispatch<React.SetStateAction<IQuestionnaireResponse | undefined>>
-    | undefined,
-  client: Client
+    | undefined
 ) => {
   questionnaireType === 'pleiepengeskjema'
     ? (setQuestionnaireContext(
@@ -87,7 +92,8 @@ export const chooseQuestionnaire = (
         version,
         setQuestionnaire,
         client,
-        questionnairePleiepenger as unknown as IQuestionnaire
+        questionnairePleiepenger as unknown as IQuestionnaire,
+        setLoadingQuestionnaire
       ),
       setQuestionnaireResponse &&
         setQuestionnaireResponse(
@@ -99,7 +105,8 @@ export const chooseQuestionnaire = (
         version,
         setQuestionnaire,
         client,
-        questionnaireVacation as unknown as IQuestionnaire
+        questionnaireVacation as unknown as IQuestionnaire,
+        setLoadingQuestionnaire
       ),
       setQuestionnaireResponse &&
         setQuestionnaireResponse(

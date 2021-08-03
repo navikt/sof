@@ -4,19 +4,15 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-import {
-  IPatient,
-  IQuestionnaire,
-  IQuestionnaireResponse,
-} from '@ahryman40k/ts-fhir-types/lib/R4';
-import { fhirclient } from 'fhirclient/lib/types';
-import Client from 'fhirclient/lib/Client';
+import { IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
 import { useParams } from 'react-router-dom';
 import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
 
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
+  loadingQuestionnaire: boolean;
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type questionnaireTypeParams = {
@@ -46,15 +42,17 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   const [disableSendBtn, setDisableSendBtn] = useState(true);
 
   useEffect(() => {
-    client
-      ? chooseQuestionnaire(
-          questionnaireType,
-          '1.0.0',
-          setQuestionnaire,
-          setQuestionnaireResponse,
-          client
-        )
-      : null;
+    if (client) {
+      props.setLoadingQuestionnaire(true);
+      chooseQuestionnaire(
+        questionnaireType,
+        '1.0.0',
+        setQuestionnaire,
+        client,
+        props.setLoadingQuestionnaire,
+        setQuestionnaireResponse
+      );
+    }
   }, []);
 
   // This will be called when the questionnaire is opened, and sets
@@ -163,32 +161,38 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
     //pushes inn i subItems.
     <>
-      {questions.map((item: any) => {
-        return displayQuestion(item);
-      })}
-      <Hovedknapp
-        className="buttons"
-        id="btnSave"
-        onClick={(e: any) => {
-          handleOnClick(e);
-          setSaved(true);
-          setDisableSendBtn(false);
-        }}
-      >
-        Lagre
-      </Hovedknapp>
+      {!props.loadingQuestionnaire
+        ? questions.map((item: any) => {
+            return displayQuestion(item);
+          })
+        : null}
+      {!props.loadingQuestionnaire ? (
+        <>
+          <Hovedknapp
+            className="buttons"
+            id="btnSave"
+            onClick={(e: any) => {
+              handleOnClick(e);
+              setSaved(true);
+              setDisableSendBtn(false);
+            }}
+          >
+            Lagre
+          </Hovedknapp>
 
-      <Hovedknapp
-        className="buttons"
-        id="btnSend"
-        onClick={(e: any) => {
-          handleOnClick(e);
-          setDisableSendBtn(true);
-        }}
-        disabled={disableSendBtn}
-      >
-        Send skjema
-      </Hovedknapp>
+          <Hovedknapp
+            className="buttons"
+            id="btnSend"
+            onClick={(e: any) => {
+              handleOnClick(e);
+              setDisableSendBtn(true);
+            }}
+            disabled={disableSendBtn}
+          >
+            Send skjema
+          </Hovedknapp>
+        </>
+      ) : null}
       {console.log('A', answers)}
     </>
   );
