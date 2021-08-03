@@ -2,22 +2,22 @@ import { Questionnaire } from './components/Questionnaire';
 import { Ingress, Normaltekst, Sidetittel } from 'nav-frontend-typografi';
 import { useState } from 'react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import { useFhirContext } from './context/fhirContext';
 
 export const App = () => {
   const [questionnareTitle, setTitle] = useState('');
   const [questionDescription, setDesc] = useState('');
-  const { questionnaire } = useFhirContext();
+  const [loadingQuestionnaire, setLoadingQuestionnaire] =
+    useState<boolean>(true);
 
   const createHeader = (title: string, description: string) => {
     setTitle(title);
     setDesc(description);
   };
 
-  if (questionnaire) {
-    return (
-      <div className="app-container">
-        <div>
+  return (
+    <div className="app-container">
+      <div>
+        {!loadingQuestionnaire ? (
           <div className="titleContainer">
             <Veilederpanel
               fargetema="info"
@@ -95,16 +95,18 @@ export const App = () => {
               <Normaltekst>{questionDescription}</Normaltekst>
             </Veilederpanel>
           </div>
-          <div className="main-body">
-            <div className="ingress"></div>
-            <Questionnaire createHeader={createHeader} />
-          </div>
+        ) : null}
+        <div className="main-body">
+          <div className="ingress"></div>
+          <Questionnaire
+            createHeader={createHeader}
+            loadingQuestionnaire={loadingQuestionnaire}
+            setLoadingQuestionnaire={setLoadingQuestionnaire}
+          />
         </div>
       </div>
-    );
-  } else {
-    return <></>;
-  }
+    </div>
+  );
 };
 
 export default App;

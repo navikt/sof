@@ -1,7 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { DatepickerItem } from './DatepickerItem';
-import { string } from 'prop-types';
 
 /**
  * Renders a question with type Date
@@ -19,28 +18,6 @@ const DateItem: FC<IItemProps & savedType> = ({
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
 
-  /*
-  const checkDate = (param: string) => {
-    console.log(
-      'LinkID:',
-      entity.linkId,
-      'Lengden til dateList:',
-      dateList.length
-    );
-    if (dateList.length === 1) {
-      console.log(entity.linkId, 'Det er EN ting i dateList');
-      console.log(dateList[0]);
-    } else if (dateList.length === 2) {
-      console.log(entity.linkId, 'Det er TO ting i dateList');
-      let firstDate = new Date('2021-07-01');
-      let secondDate = new Date(dateList[1]);
-      console.log(firstDate);
-      console.log(dateList[0]);
-      console.log(secondDate);
-      console.log(dateList[1]);
-    }
-  };
-*/
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
@@ -82,21 +59,31 @@ const DateItem: FC<IItemProps & savedType> = ({
         }
       </div>
       <div style={{ display: 'flex' }}>
-        {optionList?.map((option: string, index: number) => {
-          return (
-            <div
-              key={entity.linkId + index}
-              style={{ display: 'block', margin: '10px' }}
-            >
-              <DatepickerItem
-                index={index}
-                text={option}
-                dateList={dateList}
-                setDateList={setDateList}
-              />
-            </div>
-          );
-        })}
+        {optionList?.length !== 0 ? (
+          optionList?.map((option: string, index: number) => {
+            return (
+              <div
+                key={entity.linkId + index}
+                style={{ display: 'block', margin: '10px' }}
+              >
+                <DatepickerItem
+                  index={index}
+                  text={option}
+                  dateList={dateList}
+                  setDateList={setDateList}
+                />
+              </div>
+            );
+          })
+        ) : (
+          <DatepickerItem
+            // Midltertidig løsning, antar datoene lagres i listeformat
+            index={0}
+            text={''}
+            dateList={dateList}
+            setDateList={setDateList}
+          />
+        )}
       </div>
     </div>
   );
