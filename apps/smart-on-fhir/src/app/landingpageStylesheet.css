@@ -47,3 +47,7 @@
   text-align: end;
   padding: 5px 0;
 }
+
+.questionnaireLinkContainer:hover {
+  background-color: #f5f5f5;
+}

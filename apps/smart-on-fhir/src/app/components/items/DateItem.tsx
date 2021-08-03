@@ -1,6 +1,7 @@
 import React, { FC, useState, useEffect } from 'react';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { DatepickerItem } from './DatepickerItem';
+import { Feilmelding } from 'nav-frontend-typografi';
 
 /**
  * Renders a question with type Date
@@ -16,13 +17,19 @@ const DateItem: FC<IItemProps> = ({
 }) => {
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
+  const [wrongDateStatus, setWrongDateStatus] = useState('riktig_dato');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const checkDate = () => {
     if (dateList.length === 2) {
       let firstDate = new Date(dateList[0]);
       let secondDate = new Date(dateList[1]);
       if (secondDate < firstDate) {
-        console.log('Dato-inntasting ugyldig!');
+        setWrongDateStatus('ugyldigDato');
+        setErrorMsg('Inntastet dato er ugyldig!');
+      } else {
+        setWrongDateStatus('riktig_dato');
+        setErrorMsg('');
       }
     }
   };
@@ -56,7 +63,10 @@ const DateItem: FC<IItemProps> = ({
 
   return (
     <div className="componentItems">
-      <div style={{ display: 'flex', alignItems: 'center' }}>
+      <div
+        className="titleBox"
+        style={{ display: 'flex', alignItems: 'center' }}
+      >
         <p className="typo-element">{entity.text}</p>
         {
           // Checks for helptext, and displays if any
@@ -69,23 +79,27 @@ const DateItem: FC<IItemProps> = ({
           )
         }
       </div>
-      <div style={{ display: 'flex' }}>
+
+      <div className="datesBox" style={{ display: 'flex' }}>
         {optionList?.map((option: string, index: number) => {
           return (
             <div
               key={entity.linkId + index}
               style={{ display: 'block', margin: '10px' }}
             >
-              <DatepickerItem
-                index={index}
-                text={option}
-                dateList={dateList}
-                setDateList={setDateList}
-              />
+              <div className={wrongDateStatus}>
+                <DatepickerItem
+                  index={index}
+                  text={option}
+                  dateList={dateList}
+                  setDateList={setDateList}
+                />
+              </div>
             </div>
           );
         })}
       </div>
+      <Feilmelding>{errorMsg}</Feilmelding>
     </div>
   );
 };
