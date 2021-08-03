@@ -18,7 +18,8 @@ const setQuestionnaireContext = async (
     | React.Dispatch<React.SetStateAction<IQuestionnaire | undefined>>
     | undefined,
   client: Client | undefined,
-  jsonQuestionnaire: IQuestionnaire
+  jsonQuestionnaire: IQuestionnaire,
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   setQuestionnaire ? setQuestionnaire(undefined) : null; // reset questionnaire
   const response = (await client?.request(
@@ -29,6 +30,7 @@ const setQuestionnaireContext = async (
     if (response.total !== 0 && response.entry && setQuestionnaire) {
       // If the questionnaire exist, save it in the context
       setQuestionnaire(response.entry[0].resource as IQuestionnaire);
+      setLoadingQuestionnaire(false);
     } else if (jsonQuestionnaire.status === 'active') {
       // If not, save a questionnaire to the server and set this as the questionnaire in the contex
       const headers = {
@@ -45,6 +47,7 @@ const setQuestionnaireContext = async (
         .then((response) => {
           setUUIDIdentifier(response);
           setQuestionnaire ? setQuestionnaire(response) : null;
+          setLoadingQuestionnaire(false);
         });
     }
   } else {
@@ -55,6 +58,7 @@ const setQuestionnaireContext = async (
     setQuestionnaire
       ? setQuestionnaire(jsonQuestionnaire as unknown as IQuestionnaire)
       : null;
+    setLoadingQuestionnaire(false);
     console.log('Fant ikke et skjema');
   }
 };
@@ -69,7 +73,8 @@ export const chooseQuestionnaire = (
   setQuestionnaire:
     | React.Dispatch<React.SetStateAction<IQuestionnaire | undefined>>
     | undefined,
-  client: Client
+  client: Client,
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>
 ) => {
   questionnaireType === 'pleiepengeskjema'
     ? setQuestionnaireContext(
@@ -77,7 +82,8 @@ export const chooseQuestionnaire = (
         version,
         setQuestionnaire,
         client,
-        questionnaireResponsePleiepenger as unknown as IQuestionnaire
+        questionnaireResponsePleiepenger as unknown as IQuestionnaire,
+        setLoadingQuestionnaire
       )
     : questionnaireType === 'vacation'
     ? setQuestionnaireContext(
@@ -85,7 +91,8 @@ export const chooseQuestionnaire = (
         version,
         setQuestionnaire,
         client,
-        questionnaireResponseVacation as unknown as IQuestionnaire
+        questionnaireResponseVacation as unknown as IQuestionnaire,
+        setLoadingQuestionnaire
       )
     : null;
 };

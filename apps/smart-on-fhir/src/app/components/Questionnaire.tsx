@@ -17,6 +17,8 @@ import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
 
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
+  loadingQuestionnaire: boolean;
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type questionnaireTypeParams = {
@@ -44,14 +46,17 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    client
-      ? chooseQuestionnaire(
-          questionnaireType,
-          '1.0.0',
-          setQuestionnaire,
-          client
-        )
-      : null;
+    if (client) {
+      props.setLoadingQuestionnaire(true);
+      chooseQuestionnaire(
+        questionnaireType,
+        '1.0.0',
+        setQuestionnaire,
+        client,
+        props.setLoadingQuestionnaire
+      );
+      //props.setLoadingQuestionnaire(true); // DENNE FUNKER IKKE, SIKKERT FORDI ^^ ER ASYNKRON, SÅ KOMMER FOR TIDLIG UANSETT
+    }
   }, []);
 
   // This will be called when the questionnaire is opened, and sets
@@ -156,32 +161,38 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
     //pushes inn i subItems.
     <>
-      {questions.map((item: any) => {
-        return displayQuestion(item);
-      })}
-      <Hovedknapp
-        onClick={() => {
-          clickSave(
-            answers,
-            questionnaireResponse as IQuestionnaireResponse,
-            patient,
-            user,
-            client,
-            questionnaire
-          );
-          setSaved(true);
-        }}
-      >
-        Lagre
-      </Hovedknapp>
+      {!props.loadingQuestionnaire
+        ? questions.map((item: any) => {
+            return displayQuestion(item);
+          })
+        : null}
+      {!props.loadingQuestionnaire ? (
+        <>
+          <Hovedknapp
+            onClick={() => {
+              clickSave(
+                answers,
+                questionnaireResponse as IQuestionnaireResponse,
+                patient,
+                user,
+                client,
+                questionnaire
+              );
+              setSaved(true);
+            }}
+          >
+            Lagre
+          </Hovedknapp>
 
-      <Hovedknapp
-        className="buttons"
-        onClick={() => console.log('Trykket på send')}
-      >
-        Send skjema
-      </Hovedknapp>
-      {console.log(answers)}
+          <Hovedknapp
+            className="buttons"
+            onClick={() => console.log('Trykket på send')}
+          >
+            Send skjema
+          </Hovedknapp>
+          {console.log(answers)}
+        </>
+      ) : null}
     </>
   );
 };
