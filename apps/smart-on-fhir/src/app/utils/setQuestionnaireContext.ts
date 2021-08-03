@@ -1,7 +1,13 @@
-import { IBundle, IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
+import {
+  IBundle,
+  IQuestionnaire,
+  IQuestionnaireResponse,
+} from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
 import { setUUIDIdentifier } from './setIdentifier';
+import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import questionnaireResponsePleiepenger from '../json-files/questionnaireResponsePleiepenger.json';
+import questionnaireVacation from '../json-files/questionnaireVacation.json';
 import questionnaireResponseVacation from '../json-files/questionnaireResponseVacation.json';
 
 /**
@@ -62,6 +68,7 @@ const setQuestionnaireContext = async (
 /**
  * Function to choose correct questionnaireContext to use. Currently it is only needed
  * if the questionnaire is not in the server, and a json file must be chosen.
+ * Also, sets the QuestionnaireResponse connected to the Questionnaire
  */
 export const chooseQuestionnaire = (
   questionnaireType: string,
@@ -69,23 +76,34 @@ export const chooseQuestionnaire = (
   setQuestionnaire:
     | React.Dispatch<React.SetStateAction<IQuestionnaire | undefined>>
     | undefined,
+  setQuestionnaireResponse:
+    | React.Dispatch<React.SetStateAction<IQuestionnaireResponse | undefined>>
+    | undefined,
   client: Client
 ) => {
   questionnaireType === 'pleiepengeskjema'
-    ? setQuestionnaireContext(
+    ? (setQuestionnaireContext(
         questionnaireType,
         version,
         setQuestionnaire,
         client,
-        questionnaireResponsePleiepenger as unknown as IQuestionnaire
-      )
+        questionnairePleiepenger as unknown as IQuestionnaire
+      ),
+      setQuestionnaireResponse &&
+        setQuestionnaireResponse(
+          questionnaireResponsePleiepenger as IQuestionnaireResponse
+        ))
     : questionnaireType === 'vacation'
-    ? setQuestionnaireContext(
+    ? (setQuestionnaireContext(
         questionnaireType,
         version,
         setQuestionnaire,
         client,
-        questionnaireResponseVacation as unknown as IQuestionnaire
-      )
+        questionnaireVacation as unknown as IQuestionnaire
+      ),
+      setQuestionnaireResponse &&
+        setQuestionnaireResponse(
+          questionnaireResponseVacation as IQuestionnaireResponse
+        ))
     : null;
 };

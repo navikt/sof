@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { Sidetittel } from 'nav-frontend-typografi';
 import '@navikt/ds-css';
 import './landingpageStylesheet.css';
-import { useFhirContext } from './context/fhirContext';
 import QuestionnaireLinks from './components/QuestionnaireLinks';
 
 export const LandingPage = () => {
