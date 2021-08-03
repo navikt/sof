@@ -14,6 +14,7 @@ import Client from 'fhirclient/lib/Client';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
 import { useParams } from 'react-router-dom';
 import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
+import { useInputErrorContext } from '../context/inputErrorContext';
 
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
@@ -38,6 +39,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     questionnaireResponse,
     setQuestionnaire,
   } = useFhirContext();
+  const { setIsClicked, foundError } = useInputErrorContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -107,7 +109,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       saveAnswers(answers, response, patient, user, client, questionnaire);
     }
   };
-
   // Set header and description
   useEffect(() => {
     if (questionnaire && questionnaire.description && questionnaire.title) {
@@ -170,6 +171,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
             questionnaire
           );
           setSaved(true);
+          setIsClicked && setIsClicked(true);
         }}
       >
         Lagre

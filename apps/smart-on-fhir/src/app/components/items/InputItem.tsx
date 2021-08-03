@@ -4,6 +4,7 @@ import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Input } from 'nav-frontend-skjema';
 import { ListItem } from './ListItem';
+import { useInputErrorContext } from '../../context/inputErrorContext';
 
 /**
  * Renders a question with type String
@@ -14,6 +15,8 @@ const InputItem = (props: IItemProps & savedType) => {
   const [inputValue, setInputValue] = useState(''); // The written value in the input field
   const [tempValueList, setTempValueList] = useState<string[]>([]); // A (temporarily) list of the values added from the input field
   const [anker, setAnker] = useState(undefined);
+  const [inputError, setInputError] = useState('');
+  const { isClicked, setIsClicked, setFoundError } = useInputErrorContext();
 
   const [exampleElements] = useState([
     'F41.9: Uspesifisert angstlidelse',
@@ -34,6 +37,8 @@ const InputItem = (props: IItemProps & savedType) => {
   const handleOnFocus = (e: any) => {
     // Displays the popover-window when the input field is focused
     setAnker(e.currentTarget);
+    setInputError('');
+    setIsClicked && setIsClicked(false);
   };
 
   const handleAddElement = () => {
@@ -79,7 +84,6 @@ const InputItem = (props: IItemProps & savedType) => {
   // and there is an answer saved on the server,
   // the tempValueList sets to the saved answers.
   useEffect(() => {
-    //console.log('input');
     if (
       tempValueList.length === 0 &&
       props.answers.get(props.entity.linkId) &&
@@ -97,6 +101,20 @@ const InputItem = (props: IItemProps & savedType) => {
     props.setAnswers(copiedAnswers);
     setInputValue(''); // Set input field to default value (empty)
   }, [tempValueList]);
+
+  useEffect(() => {
+    props.entity.required = true;
+    if (props.entity.required) {
+      if (tempValueList.length === 0 && isClicked) {
+        console.log('InputItem: Error detected');
+        setFoundError && setFoundError(true);
+        setInputError('Mangler data, husk å trykk på "Legg til"');
+      } else {
+        console.log('InputItem: No error found');
+        setInputError('');
+      }
+    }
+  }, [isClicked]);
 
   return (
     <>
@@ -119,6 +137,7 @@ const InputItem = (props: IItemProps & savedType) => {
                 props.entity.text
               )
             }
+            feil={inputError}
           />
           <Popover
             ankerEl={anker}
