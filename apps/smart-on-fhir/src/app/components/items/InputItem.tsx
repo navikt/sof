@@ -114,7 +114,7 @@ const InputItem = (props: IItemProps & savedType) => {
         setInputError('');
       }
     }
-  }, [isClicked]);
+  }, [isClicked, props.saved]);
 
   return (
     <>

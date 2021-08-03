@@ -4,13 +4,7 @@ import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-import {
-  IPatient,
-  IQuestionnaire,
-  IQuestionnaireResponse,
-} from '@ahryman40k/ts-fhir-types/lib/R4';
-import { fhirclient } from 'fhirclient/lib/types';
-import Client from 'fhirclient/lib/Client';
+import { IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
 import { useParams } from 'react-router-dom';
 import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
@@ -18,6 +12,8 @@ import { useInputErrorContext } from '../context/inputErrorContext';
 
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
+  loadingQuestionnaire: boolean;
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type questionnaireTypeParams = {
@@ -38,22 +34,27 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     questionnaire,
     questionnaireResponse,
     setQuestionnaire,
+    setQuestionnaireResponse,
   } = useFhirContext();
   const { setIsClicked, foundError } = useInputErrorContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
   const [saved, setSaved] = useState(false);
+  const [disableSendBtn, setDisableSendBtn] = useState(true);
 
   useEffect(() => {
-    client
-      ? chooseQuestionnaire(
-          questionnaireType,
-          '1.0.0',
-          setQuestionnaire,
-          client
-        )
-      : null;
+    if (client) {
+      props.setLoadingQuestionnaire(true);
+      chooseQuestionnaire(
+        questionnaireType,
+        '1.0.0',
+        setQuestionnaire,
+        client,
+        props.setLoadingQuestionnaire,
+        setQuestionnaireResponse
+      );
+    }
   }, []);
 
   // This will be called when the questionnaire is opened, and sets
@@ -93,20 +94,26 @@ export const Questionnaire: FC<callFromApp> = (props) => {
   }, [questionnaire]);
 
   // Function to make sure all values sent to saveAnswers are defined.
-  const clickSave = (
-    answers: Map<string, string | boolean>,
-    response: IQuestionnaireResponse,
-    patient: IPatient | undefined,
-    user:
-      | fhirclient.FHIR.Patient
-      | fhirclient.FHIR.Practitioner
-      | fhirclient.FHIR.RelatedPerson
-      | undefined,
-    client: Client | undefined,
-    questionnaire: IQuestionnaire | undefined
-  ) => {
-    if (answers && response && patient && user && client && questionnaire) {
-      saveAnswers(answers, response, patient, user, client, questionnaire);
+  const handleOnClick = (e: any) => {
+    if (
+      answers &&
+      questionnaireResponse &&
+      patient &&
+      user &&
+      client &&
+      questionnaire &&
+      foundError
+    ) {
+      saveAnswers(
+        answers,
+        questionnaireResponse,
+        patient,
+        user,
+        client,
+        questionnaire,
+        e.target.id.toLowerCase(), // Information about which button is clicked on
+        foundError
+      );
     }
   };
   // Set header and description
@@ -157,32 +164,40 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
     //pushes inn i subItems.
     <>
-      {questions.map((item: any) => {
-        return displayQuestion(item);
-      })}
-      <Hovedknapp
-        onClick={() => {
-          clickSave(
-            answers,
-            questionnaireResponse as IQuestionnaireResponse,
-            patient,
-            user,
-            client,
-            questionnaire
-          );
-          setSaved(true);
-          setIsClicked && setIsClicked(true);
-        }}
-      >
-        Lagre
-      </Hovedknapp>
+      {!props.loadingQuestionnaire
+        ? questions.map((item: any) => {
+            return displayQuestion(item);
+          })
+        : null}
+      {!props.loadingQuestionnaire ? (
+        <>
+          <Hovedknapp
+            className="buttons"
+            id="btnSave"
+            onClick={(e: any) => {
+              handleOnClick(e);
+              setSaved(true);
+              setDisableSendBtn(false);
+              setIsClicked && setIsClicked(true);
+            }}
+          >
+            Lagre
+          </Hovedknapp>
 
-      <Hovedknapp
-        className="buttons"
-        onClick={() => console.log('Trykket på send')}
-      >
-        Send skjema
-      </Hovedknapp>
+          <Hovedknapp
+            className="buttons"
+            id="btnSend"
+            onClick={(e: any) => {
+              handleOnClick(e);
+              setDisableSendBtn(true);
+              //setIsClicked && setIsClicked(true);
+            }}
+            disabled={disableSendBtn}
+          >
+            Send skjema
+          </Hovedknapp>
+        </>
+      ) : null}
       {console.log('A', answers)}
     </>
   );

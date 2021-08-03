@@ -7,6 +7,7 @@ import { fhirclient } from 'fhirclient/lib/types';
 import { setAutomaticAnswers } from './setAutomaticAnswers';
 import Client from 'fhirclient/lib/Client';
 import { saveToServer } from './saveToServer';
+import { sendToServer } from './sendToServer';
 
 /**
  * Function to set a an answer in a questionnaire response, if the
@@ -94,7 +95,9 @@ export const saveAnswers = async (
     | fhirclient.FHIR.Practitioner
     | fhirclient.FHIR.RelatedPerson,
   client: Client,
-  questionnaire: IQuestionnaire
+  questionnaire: IQuestionnaire,
+  buttonId: string,
+  foundError: boolean
 ) => {
   answers.forEach((value, key) => {
     //Get the correct object from questionnaireResponse.item:
@@ -117,7 +120,12 @@ export const saveAnswers = async (
   });
   setAutomaticAnswers(questionnaireResponse, patient, user);
 
-  saveToServer(questionnaireResponse, client, patient, questionnaire);
+  // Checks which button is clicked on, and saves or sends based on the information
+  if (buttonId.includes('save') && !foundError) {
+    saveToServer(questionnaireResponse, client, patient, questionnaire);
+  } else if (buttonId.includes('send') && !foundError) {
+    sendToServer(client, patient, questionnaireResponse);
+  } else console.log('Oppgaget feil i skjemaet', foundError);
 
   return questionnaireResponse;
 };
