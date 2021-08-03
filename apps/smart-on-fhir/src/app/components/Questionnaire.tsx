@@ -36,7 +36,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     setQuestionnaire,
     setQuestionnaireResponse,
   } = useFhirContext();
-  const { setIsClicked, foundError } = useInputErrorContext();
+  const { setIsClicked, foundError, setFoundError } = useInputErrorContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -68,6 +68,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         questionnaire,
         setSaved
       );
+      setIsClicked && setIsClicked(false);
     } else {
       null;
     }
@@ -101,8 +102,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       patient &&
       user &&
       client &&
-      questionnaire &&
-      foundError
+      questionnaire
     ) {
       saveAnswers(
         answers,
@@ -111,8 +111,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         user,
         client,
         questionnaire,
-        e.target.id.toLowerCase(), // Information about which button is clicked on
-        foundError
+        e.target.id.toLowerCase() // Information about which button is clicked on
       );
     }
   };
