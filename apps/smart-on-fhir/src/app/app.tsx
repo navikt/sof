@@ -16,13 +16,12 @@ export const App = () => {
 
   return (
     <div className="app-container">
-      <div>
+      <div className="content-container">
         {!loadingQuestionnaire ? (
           <div className="titleContainer">
             <Veilederpanel
               fargetema="info"
               type={'plakat'}
-              kompakt
               svg={
                 <div className="informationIcon">
                   <svg
@@ -93,11 +92,17 @@ export const App = () => {
               }
             >
               <Normaltekst>{questionDescription}</Normaltekst>
+              <Normaltekst>
+                <br />
+                Vi spør stort sett bare om informasjon som er nødvendig for å
+                behandle saken. Det vil si alle felter er i utgangspunkt
+                påkrevde og må fylles ut. Frivillige felt er markert med
+                "frivillig".
+              </Normaltekst>
             </Veilederpanel>
           </div>
         ) : null}
         <div className="main-body">
-          <div className="ingress"></div>
           <Questionnaire
             createHeader={createHeader}
             loadingQuestionnaire={loadingQuestionnaire}
