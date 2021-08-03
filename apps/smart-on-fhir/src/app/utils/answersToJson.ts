@@ -7,6 +7,7 @@ import { fhirclient } from 'fhirclient/lib/types';
 import { setAutomaticAnswers } from './setAutomaticAnswers';
 import Client from 'fhirclient/lib/Client';
 import { saveToServer } from './saveToServer';
+import { sendToServer } from './sendToServer';
 
 /**
  * Function to set a an answer in a questionnaire response, if the
@@ -94,16 +95,17 @@ export const saveAnswers = async (
     | fhirclient.FHIR.Practitioner
     | fhirclient.FHIR.RelatedPerson,
   client: Client,
-  questionnaire: IQuestionnaire
+  questionnaire: IQuestionnaire,
+  buttonId: string
 ) => {
   answers.forEach((value, key) => {
-    //Get the correct object from response.item:
+    //Get the correct object from questionnaireResponse.item:
     const item = questionnaireResponse.item?.find((e: any) => e.linkId === key)
       ? questionnaireResponse.item.find((e: any) => e.linkId === key)
       : null;
 
     // Set the correct answer in the object
-    if (item && item.answer && typeof value === 'string') {
+    if (item && item.answer && item.answer[0] && typeof value === 'string') {
       'valueString' in item.answer[0]
         ? setValueString(item, value)
         : 'valueDate' in item.answer[0]
@@ -117,7 +119,12 @@ export const saveAnswers = async (
   });
   setAutomaticAnswers(questionnaireResponse, patient, user);
 
-  saveToServer(questionnaireResponse, client, patient, questionnaire);
+  // Checks which button is clicked on, and saves or sends based on the information
+  if (buttonId.includes('save')) {
+    saveToServer(questionnaireResponse, client, patient, questionnaire);
+  } else if (buttonId.includes('send')) {
+    sendToServer(client, patient, questionnaireResponse);
+  }
 
   return questionnaireResponse;
 };

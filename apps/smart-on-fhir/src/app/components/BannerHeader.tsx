@@ -1,6 +1,6 @@
 import Hvit from '../logos/Hvit.svg';
 import Person from '../logos/Person.svg';
-import { Element, Ingress } from 'nav-frontend-typografi';
+import { Ingress } from 'nav-frontend-typografi';
 import { useFhirContext } from '../context/fhirContext';
 import { getPatientName } from '../utils/getPatientName';
 

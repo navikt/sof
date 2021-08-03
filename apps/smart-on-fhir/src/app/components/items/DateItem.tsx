@@ -8,17 +8,19 @@ import { Feilmelding } from 'nav-frontend-typografi';
  * @returns a calendar (DatepickerItem) for user input
  */
 
-const DateItem: FC<IItemProps> = ({
+const DateItem: FC<IItemProps & savedType> = ({
   entity,
   helptext,
   answeroptions,
   answers,
   setAnswers,
+  saved,
 }) => {
   const optionList: string[] | undefined = answeroptions;
   const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
   const [wrongDateStatus, setWrongDateStatus] = useState('riktig_dato');
   const [errorMsg, setErrorMsg] = useState('');
+
 
   const checkDate = () => {
     if (dateList.length === 2) {
@@ -34,23 +36,23 @@ const DateItem: FC<IItemProps> = ({
     }
   };
 
+
+
   useEffect(() => {
     // Updates the array of answers, format defined in answerToJson.ts
     const copiedAnswers = new Map(answers);
-    // console.log('Skriver ut noe fra datoklassen', answers);
     copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
     setAnswers(copiedAnswers);
-    // console.log('Skriver ut noe fra datoklassen etter set Answers', answers);
-
     checkDate();
   }, [dateList]);
 
-  // When rendering for the first time:
+  // When input is saved:
   // set the date to the correct answer.
   // It is only done if the date is empty, meaning that it should only
   // make changes to date if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
+    //console.log('date');
     if (
       dateList.length === 0 &&
       answers.get(entity.linkId) &&
@@ -59,7 +61,7 @@ const DateItem: FC<IItemProps> = ({
       const temp: string = answers.get(entity.linkId) as string;
       setDateList(JSON.parse(temp));
     }
-  }, []);
+  }, [saved]);
 
   return (
     <div className="componentItems">
@@ -80,6 +82,7 @@ const DateItem: FC<IItemProps> = ({
         }
       </div>
 
+
       <div className="datesBox" style={{ display: 'flex' }}>
         {optionList?.map((option: string, index: number) => {
           return (
@@ -88,6 +91,7 @@ const DateItem: FC<IItemProps> = ({
               style={{ display: 'block', margin: '10px' }}
             >
               <div className={wrongDateStatus}>
+
                 <DatepickerItem
                   index={index}
                   text={option}
@@ -95,9 +99,18 @@ const DateItem: FC<IItemProps> = ({
                   setDateList={setDateList}
                 />
               </div>
-            </div>
-          );
-        })}
+
+            );
+          })
+        ) : (
+          <DatepickerItem
+            // Midltertidig løsning, antar datoene lagres i listeformat
+            index={0}
+            text={''}
+            dateList={dateList}
+            setDateList={setDateList}
+          />
+        )}
       </div>
       <Feilmelding>{errorMsg}</Feilmelding>
     </div>

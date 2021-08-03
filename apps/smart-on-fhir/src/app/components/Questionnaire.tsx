@@ -1,17 +1,22 @@
 import React, { useState, useEffect, FC } from 'react';
 import { ItemAnswer } from './ItemAnswer';
-import questionnaireResponse from '../json-files/questionnaireResponsePleiepenger.json';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
 import { useFhirContext } from '../context/fhirContext';
 import './questionnaireStylesheet.css';
-import { IPatient, IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
-import { fhirclient } from 'fhirclient/lib/types';
-import Client from 'fhirclient/lib/Client';
+import { IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
+import { useParams } from 'react-router-dom';
+import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
 
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
+  loadingQuestionnaire: boolean;
+  setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+type questionnaireTypeParams = {
+  questionnaireType: string;
 };
 
 /**
@@ -19,51 +24,92 @@ type callFromApp = {
  * @returns The questionnaire containing all questions with input fields.
  */
 export const Questionnaire: FC<callFromApp> = (props) => {
+  const { questionnaireType } = useParams<questionnaireTypeParams>();
   const [questions, setQuestions] = useState<any[]>([]);
-  const { patient, user, client, questionnaire } = useFhirContext();
+  const {
+    patient,
+    user,
+    client,
+    questionnaire,
+    questionnaireResponse,
+    setQuestionnaire,
+    setQuestionnaireResponse,
+  } = useFhirContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
-  const response = questionnaireResponse;
+  const [saved, setSaved] = useState(false);
+  const [disableSendBtn, setDisableSendBtn] = useState(true);
+
+  useEffect(() => {
+    if (client) {
+      props.setLoadingQuestionnaire(true);
+      chooseQuestionnaire(
+        questionnaireType,
+        '1.0.0',
+        setQuestionnaire,
+        client,
+        props.setLoadingQuestionnaire,
+        setQuestionnaireResponse
+      );
+    }
+  }, []);
 
   // This will be called when the questionnaire is opened, and sets
-  // answers to the answers allready saved ont he server (if there are any).
+  // answers to the answers allready saved on the server (if there are any).
   useEffect(() => {
-    client && patient && questionnaire
-      ? getAnswersFromServer(client, patient, setAnswers, questionnaire)
-      : null;
+    if (client && patient && questionnaire) {
+      getAnswersFromServer(
+        client,
+        patient,
+        setAnswers,
+        questionnaire,
+        setSaved
+      );
+    } else {
+      null;
+    }
   }, []);
 
   // Get the items from the Questionnaire
   const getItemChildren = (q: IQuestionnaire) => {
     q.item?.map((itemChild: any) => {
-      setQuestions((prevState) => [...prevState, itemChild]);
-      if (itemChild && typeof itemChild === 'object') {
-        getItemChildren(itemChild);
+      if (!questions.includes(itemChild)) {
+        setQuestions((prevState) => [...prevState, itemChild]);
+        if (itemChild && typeof itemChild === 'object') {
+          getItemChildren(itemChild);
+        }
       }
     });
   };
 
   // Saves questions from Questionnaire to the questions list when questionnaire is updated
   useEffect(() => {
-    questionnaire ? getItemChildren(questionnaire) : null;
+    if (questionnaire) {
+      setQuestions([]); // Reset questions so that new ones can be added
+      getItemChildren(questionnaire);
+    }
   }, [questionnaire]);
 
   // Function to make sure all values sent to saveAnswers are defined.
-  const clickSave = (
-    answers: Map<string, string | boolean>,
-    response: any,
-    patient: IPatient | undefined,
-    user:
-      | fhirclient.FHIR.Patient
-      | fhirclient.FHIR.Practitioner
-      | fhirclient.FHIR.RelatedPerson
-      | undefined,
-    client: Client | undefined,
-    questionnaire: IQuestionnaire | undefined
-  ) => {
-    if (answers && response && patient && user && client && questionnaire) {
-      saveAnswers(answers, response, patient, user, client, questionnaire);
+  const handleOnClick = (e: any) => {
+    if (
+      answers &&
+      questionnaireResponse &&
+      patient &&
+      user &&
+      client &&
+      questionnaire
+    ) {
+      saveAnswers(
+        answers,
+        questionnaireResponse,
+        patient,
+        user,
+        client,
+        questionnaire,
+        e.target.id.toLowerCase() // Information about which button is clicked on
+      );
     }
   };
 
@@ -102,6 +148,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
           optionItems={options}
           answers={answers}
           setAnswers={setAnswers}
+          saved={saved}
         />
       );
     } else {
@@ -114,23 +161,39 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
     //pushes inn i subItems.
     <>
-      {questions.map((item: any) => {
-        return displayQuestion(item);
-      })}
-      <Hovedknapp
-        onClick={() =>
-          clickSave(answers, response, patient, user, client, questionnaire)
-        }
-      >
-        Lagre
-      </Hovedknapp>
+      {!props.loadingQuestionnaire
+        ? questions.map((item: any) => {
+            return displayQuestion(item);
+          })
+        : null}
+      {!props.loadingQuestionnaire ? (
+        <>
+          <Hovedknapp
+            className="buttons"
+            id="btnSave"
+            onClick={(e: any) => {
+              handleOnClick(e);
+              setSaved(true);
+              setDisableSendBtn(false);
+            }}
+          >
+            Lagre
+          </Hovedknapp>
 
-      <Hovedknapp
-        className="buttons"
-        onClick={() => console.log('Trykket på send')}
-      >
-        Send skjema
-      </Hovedknapp>
+          <Hovedknapp
+            className="buttons"
+            id="btnSend"
+            onClick={(e: any) => {
+              handleOnClick(e);
+              setDisableSendBtn(true);
+            }}
+            disabled={disableSendBtn}
+          >
+            Send skjema
+          </Hovedknapp>
+        </>
+      ) : null}
+      {console.log('A', answers)}
     </>
   );
 };

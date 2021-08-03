@@ -5,7 +5,6 @@ import { EtikettFokus, EtikettInfo } from 'nav-frontend-etiketter';
 interface IQuestionnaireLinksProps {
   title: string;
   status: boolean;
-  handleClick: any;
 }
 
 const QuestionnaireLinks = (props: IQuestionnaireLinksProps) => {
@@ -18,7 +17,7 @@ const QuestionnaireLinks = (props: IQuestionnaireLinksProps) => {
   }
 
   return (
-    <div className="questionnaireLinkContainer" onClick={props.handleClick}>
+    <div className="questionnaireLinkContainer">
       <ContentContainer className="ContentContainer">
         <Grid>
           <Cell className={'navds-story-cell tittelcelle'} xs={7}>

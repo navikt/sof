@@ -9,7 +9,7 @@ import '../questionnaireStylesheet.css';
  * @returns One checkbox
  */
 //Expects to receive an array and a text
-const CheckboxItem = (props: IItemProps) => {
+const CheckboxItem = (props: IItemProps & savedType) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
   const [textValue, setTextValue] = useState(false);
 
@@ -19,7 +19,7 @@ const CheckboxItem = (props: IItemProps) => {
     props.setAnswers(copiedAnswers);
   }, [textValue]);
 
-  // When answers is updated: set the checkbox to the correct answer.
+  // When input is saved: set the checkbox to the correct answer.
   // Make changes to textValue if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   // (this might not work properly, maybe a value can be overwritten by the
@@ -28,7 +28,7 @@ const CheckboxItem = (props: IItemProps) => {
     if (typeof props.answers.get(props.entity.linkId) === 'boolean') {
       setTextValue(props.answers.get(props.entity.linkId) as boolean);
     }
-  }, [props.answers]);
+  }, [props.saved]);
 
   return (
     <>

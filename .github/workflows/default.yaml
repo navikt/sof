@@ -71,12 +71,11 @@ jobs:
             --tag ${{ steps.tag.outputs.base }}:latest --build-arg APPNAME=smart-on-fhir .
       - name: Push docker image
         if: ${{ github.ref == 'refs/heads/main' }}
-        run: |
-          docker push --all-tags ${{ steps.tag.outputs.base }}
+        run: docker push --all-tags ${{ steps.tag.outputs.base }}
       - name: Deploy to Dev
         uses: nais/deploy/actions/deploy@v1
         env:
           IMAGE: ${{ steps.tag.outputs.base }}:${{ steps.tag.outputs.sha }}
-          CLUSTER: labs-gcp
+          CLUSTER: dev-gcp
           DRY_RUN: ${{ github.ref != 'refs/heads/main' }}
           RESOURCE: apps/smart-on-fhir/naiserator.yaml

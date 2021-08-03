@@ -8,7 +8,7 @@ import Client from 'fhirclient/lib/Client';
 import { setUUIDIdentifier } from './setIdentifier';
 
 /**
- * Function to save a questionnaire response to the server.
+ * Function to SAVE a questionnaire response to the server.
  * @param questionnaireResponse is the QR to save to the server
  * @param client is the client from the fhir context
  * @param patient is the patient we are logged in ato in the EHR
@@ -41,6 +41,7 @@ export const saveToServer = async (
       body: JSON.stringify(questionnaireResponse),
       headers,
     });
+    console.log('PUT');
   } else {
     // If no QR matching the requirements were found,
     // add identifier, questionnaire and create a new QR
@@ -52,5 +53,6 @@ export const saveToServer = async (
       body: JSON.stringify(questionnaireResponse),
       headers,
     });
+    console.log('POST');
   }
 };
