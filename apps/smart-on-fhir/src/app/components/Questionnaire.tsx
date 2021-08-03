@@ -25,6 +25,10 @@ type questionnaireTypeParams = {
   questionnaireType: string;
 };
 
+type questionnaireTypeParams = {
+  questionnaireType: string;
+};
+
 /**
  * Questionnaire is a component that renders a querstionnaire.
  * @returns The questionnaire containing all questions with input fields.
@@ -55,7 +59,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         client,
         props.setLoadingQuestionnaire
       );
-      //props.setLoadingQuestionnaire(true); // DENNE FUNKER IKKE, SIKKERT FORDI ^^ ER ASYNKRON, SÅ KOMMER FOR TIDLIG UANSETT
     }
   }, []);
 
@@ -193,6 +196,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
           {console.log(answers)}
         </>
       ) : null}
+      {console.log('A', answers)}
     </>
   );
 };

@@ -75,6 +75,7 @@ export const chooseQuestionnaire = (
     | undefined,
   client: Client,
   setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>
+  client: Client
 ) => {
   questionnaireType === 'pleiepengeskjema'
     ? setQuestionnaireContext(
