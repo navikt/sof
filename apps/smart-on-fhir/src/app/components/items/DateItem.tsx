@@ -17,28 +17,51 @@ const DateItem: FC<IItemProps & savedType> = ({
   saved,
 }) => {
   const optionList: string[] | undefined = answeroptions;
-  const [dateList, setDateList] = useState<string[]>([]); // A (temporarily) list of the dates from the calendar input
+  const [dateList, setDateList] = useState<string[][]>([]);
+  // ^^ A list containing the dates inputed. Is on the format
+  // [[yyyy-mm-dd, yyyy-mm-dd], [...], ...] where the first element
+  // in an inner list is typically a start date, and the last is an end date,
+  // but there can be more elements as well. The end date is often optional.
   const [wrongDateStatus, setWrongDateStatus] = useState('riktig_dato');
   const [errorMsg, setErrorMsg] = useState('');
 
   const checkDate = () => {
-    if (dateList.length === 2) {
-      let firstDate = new Date(dateList[0]);
-      let secondDate = new Date(dateList[1]);
-      if (secondDate < firstDate) {
-        setWrongDateStatus('ugyldigDato');
-        setErrorMsg('Inntastet dato er ugyldig!');
-      } else {
-        setWrongDateStatus('riktig_dato');
-        setErrorMsg('');
+    dateList.forEach((innerList) => {
+      if (innerList.length === 2) {
+        let firstDate = new Date(innerList[0]);
+        let secondDate = new Date(innerList[1]);
+        if (secondDate < firstDate) {
+          setWrongDateStatus('ugyldigDato');
+          setErrorMsg('Inntastet dato er ugyldig!');
+        } else {
+          setWrongDateStatus('riktig_dato');
+          setErrorMsg('');
+        }
       }
-    }
+    });
   };
 
   useEffect(() => {
-    // Updates the array of answers, format defined in answerToJson.ts
+    // Update answers with new date
     const copiedAnswers = new Map(answers);
-    copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
+
+    if (answeroptions && answeroptions.length > 0) {
+      // if there are several date inputs (e.g. start, end etc in a group),
+      // make one list for each input (because it should, for example, be possible
+      // to add several start dates), and save it separatley in answers.
+      for (let i = 0; i < answeroptions.length; i++) {
+        let tempList: string[] = [];
+        dateList.forEach((innerList) => {
+          tempList.push(innerList[i]);
+        });
+        copiedAnswers.set(
+          entity.linkId + '.' + (i + 1),
+          JSON.stringify(tempList)
+        );
+      }
+    } else {
+      copiedAnswers.set(entity.linkId, JSON.stringify(dateList));
+    }
     setAnswers(copiedAnswers);
     checkDate();
   }, [dateList]);
@@ -49,7 +72,6 @@ const DateItem: FC<IItemProps & savedType> = ({
   // make changes to date if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
-    //console.log('date');
     if (
       dateList.length === 0 &&
       answers.get(entity.linkId) &&
