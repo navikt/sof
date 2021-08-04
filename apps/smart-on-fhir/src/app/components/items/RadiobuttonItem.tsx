@@ -15,8 +15,7 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
     new Array(optionarray?.length).fill(false)
   ); // A list of the options with true or false, depending on if checked
   const [inputError, setInputError] = useState('');
-  const { isClicked, setIsClicked, foundError, setFoundError } =
-    useInputErrorContext();
+  const { isClicked, setIsClicked, setFoundError } = useInputErrorContext();
 
   const handleOnChange = (value: string, index: number) => {
     setRadioValue(value);

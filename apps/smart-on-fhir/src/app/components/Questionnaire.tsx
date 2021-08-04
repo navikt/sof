@@ -36,7 +36,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     setQuestionnaire,
     setQuestionnaireResponse,
   } = useFhirContext();
-  const { setIsClicked, foundError, setFoundError } = useInputErrorContext();
+  const { isClicked, setIsClicked, foundError, setFoundError } =
+    useInputErrorContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -178,6 +179,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
               setSaved(true);
               setDisableSendBtn(false);
               setIsClicked && setIsClicked(true);
+              setFoundError && setFoundError(false);
             }}
           >
             Lagre
@@ -198,6 +200,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         </>
       ) : null}
       {console.log('A', answers)}
+      {console.log('Error?', foundError)}
+      {console.log('Clicked?', isClicked)}
     </>
   );
 };

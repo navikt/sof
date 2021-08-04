@@ -16,8 +16,7 @@ const InputItem = (props: IItemProps & savedType) => {
   const [tempValueList, setTempValueList] = useState<string[]>([]); // A (temporarily) list of the values added from the input field
   const [anker, setAnker] = useState(undefined);
   const [inputError, setInputError] = useState('');
-  const { isClicked, setIsClicked, foundError, setFoundError } =
-    useInputErrorContext();
+  const { isClicked, setIsClicked, setFoundError } = useInputErrorContext();
 
   const [exampleElements] = useState([
     'F41.9: Uspesifisert angstlidelse',
@@ -106,13 +105,14 @@ const InputItem = (props: IItemProps & savedType) => {
   useEffect(() => {
     props.entity.required = true;
     if (props.entity.required) {
-      if (tempValueList.length === 0 /*&& isClicked*/) {
+      if (tempValueList.length === 0 && isClicked) {
         setFoundError && setFoundError(true);
         setInputError('Mangler data, husk å trykk på "Legg til"');
       } else {
         setInputError('');
       }
     }
+    console.log('input, check error');
   }, [isClicked]);
 
   return (
