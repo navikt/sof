@@ -8,6 +8,7 @@ import { IQuestionnaire } from '@ahryman40k/ts-fhir-types/lib/R4';
 import { getAnswersFromServer } from '../utils/setAnswersFromServer';
 import { useParams } from 'react-router-dom';
 import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
+import { useInputErrorContext } from '../context/inputErrorContext';
 
 type callFromApp = {
   createHeader: (title: string, description: string) => void;
@@ -35,6 +36,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     setQuestionnaire,
     setQuestionnaireResponse,
   } = useFhirContext();
+  const { isClicked, setIsClicked, foundError, setFoundError } =
+    useInputErrorContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -66,6 +69,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         questionnaire,
         setSaved
       );
+      setIsClicked && setIsClicked(false);
     } else {
       null;
     }
@@ -99,7 +103,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       patient &&
       user &&
       client &&
-      questionnaire
+      questionnaire &&
+      foundError !== undefined
     ) {
       saveAnswers(
         answers,
@@ -112,7 +117,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       );
     }
   };
-
   // Set header and description
   useEffect(() => {
     if (questionnaire && questionnaire.description && questionnaire.title) {
@@ -175,6 +179,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
               handleOnClick(e);
               setSaved(true);
               setDisableSendBtn(false);
+              setIsClicked && setIsClicked(true);
             }}
           >
             Lagre
@@ -186,6 +191,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
             onClick={(e: any) => {
               handleOnClick(e);
               setDisableSendBtn(true);
+              //setIsClicked && setIsClicked(true);
             }}
             disabled={disableSendBtn}
           >
@@ -194,6 +200,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         </>
       ) : null}
       {console.log('A', answers)}
+      {console.log('Error?', foundError)}
+      {console.log('Clicked?', isClicked)}
     </>
   );
 };

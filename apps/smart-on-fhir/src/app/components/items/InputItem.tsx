@@ -4,6 +4,7 @@ import { Flatknapp, Knapp } from 'nav-frontend-knapper';
 import Popover, { PopoverOrientering } from 'nav-frontend-popover';
 import { Input } from 'nav-frontend-skjema';
 import { ListItem } from './ListItem';
+import { useInputErrorContext } from '../../context/inputErrorContext';
 
 /**
  * Renders a question with type String
@@ -14,6 +15,8 @@ const InputItem = (props: IItemProps & savedType) => {
   const [inputValue, setInputValue] = useState(''); // The written value in the input field
   const [tempValueList, setTempValueList] = useState<string[]>([]); // A (temporarily) list of the values added from the input field
   const [anker, setAnker] = useState(undefined);
+  const [inputError, setInputError] = useState('');
+  const { isClicked, setIsClicked } = useInputErrorContext();
 
   const [exampleElements] = useState([
     'F41.9: Uspesifisert angstlidelse',
@@ -29,11 +32,14 @@ const InputItem = (props: IItemProps & savedType) => {
 
   const handleOnChange = (e: any) => {
     setInputValue(e.target.value);
+    setIsClicked && setIsClicked(false);
   };
 
   const handleOnFocus = (e: any) => {
     // Displays the popover-window when the input field is focused
     setAnker(e.currentTarget);
+    setInputError('');
+    setIsClicked && setIsClicked(false);
   };
 
   const handleAddElement = () => {
@@ -41,6 +47,7 @@ const InputItem = (props: IItemProps & savedType) => {
     if (!tempValueList.includes(inputValue) && inputValue !== '') {
       setTempValueList((prevState) => [...prevState, inputValue]);
     }
+    setIsClicked && setIsClicked(false);
   };
 
   const handleChooseElement = (e: any) => {
@@ -79,7 +86,6 @@ const InputItem = (props: IItemProps & savedType) => {
   // and there is an answer saved on the server,
   // the tempValueList sets to the saved answers.
   useEffect(() => {
-    //console.log('input');
     if (
       tempValueList.length === 0 &&
       props.answers.get(props.entity.linkId) &&
@@ -100,6 +106,17 @@ const InputItem = (props: IItemProps & savedType) => {
     props.setAnswers(copiedAnswers);
     setInputValue(''); // Set input field to default value (empty)
   }, [tempValueList]);
+
+  // Checks for missing input if required
+  useEffect(() => {
+    if (props.entity.required) {
+      if (tempValueList.length === 0 && isClicked) {
+        setInputError('Mangler data, husk å trykk på "Legg til"');
+      } else {
+        setInputError('');
+      }
+    }
+  }, [isClicked]);
 
   return (
     <>
@@ -126,6 +143,7 @@ const InputItem = (props: IItemProps & savedType) => {
                 props.entity.text + ' (frivillig)'
               )
             }
+            feil={inputError}
           />
           <Popover
             ankerEl={anker}

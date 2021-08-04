@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react';
 import { Xknapp } from 'nav-frontend-ikonknapper';
+import { useInputErrorContext } from '../../context/inputErrorContext';
 
 interface IProps {
   valueList: string[];
@@ -13,10 +14,14 @@ interface IProps {
  */
 
 export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
-  const [tempValue, setTempValue] = useState('');
+  const [tempValue, setTempValue] = useState(''); // The current text value of the clicked element
+  const [isValueChanged, setIsValueChanged] = useState(false); // Updates if the tempValue is changed
+  const { setIsClicked } = useInputErrorContext();
 
   const handleOnClick = (value: string) => {
     setTempValue(value);
+    setIsValueChanged(true);
+    setIsClicked && setIsClicked(false);
   };
 
   useEffect(() => {
@@ -26,7 +31,8 @@ export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
       copiedList.splice(copiedList.indexOf(tempValue), 1);
     }
     setValueList(copiedList);
-  }, [tempValue]);
+    setIsValueChanged(false);
+  }, [isValueChanged]);
 
   return (
     <>

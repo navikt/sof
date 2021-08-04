@@ -1,6 +1,7 @@
 import { Textarea } from 'nav-frontend-skjema';
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { useEffect, useState } from 'react';
+import { useInputErrorContext } from '../../context/inputErrorContext';
 
 /**
  * Renders a question with type Text
@@ -9,6 +10,8 @@ import { useEffect, useState } from 'react';
 
 const TextareaItem = (props: IItemProps & savedType) => {
   const [textValue, setTextValue] = useState('');
+  const [inputError, setInputError] = useState('');
+  const { isClicked, setIsClicked } = useInputErrorContext();
 
   const handleOnChange = (e: any) => {
     setTextValue(e.target.value);
@@ -34,6 +37,17 @@ const TextareaItem = (props: IItemProps & savedType) => {
     props.setAnswers(copiedAnswers);
   }, [textValue]);
 
+  // Checks for missing input if required
+  useEffect(() => {
+    if (props.entity.required) {
+      if (textValue.length === 0 && isClicked) {
+        setInputError('Det er obligatorisk å fylle inn');
+      } else {
+        setInputError('');
+      }
+    }
+  }, [isClicked]);
+
   return (
     <>
       {
@@ -58,6 +72,7 @@ const TextareaItem = (props: IItemProps & savedType) => {
             value={textValue}
             onChange={handleOnChange}
             maxLength={0}
+            feil={inputError}
           ></Textarea>
         </div>
       }

@@ -1,6 +1,7 @@
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
+import { useInputErrorContext } from '../../context/inputErrorContext';
 
 /**
  * Renders a question with type Choice
@@ -13,6 +14,8 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
   const [checked, setChecked] = useState<boolean[]>(
     new Array(optionarray?.length).fill(false)
   ); // A list of the options with true or false, depending on if checked
+  const [inputError, setInputError] = useState('');
+  const { isClicked, setIsClicked } = useInputErrorContext();
 
   const handleOnChange = (value: string, index: number) => {
     setRadioValue(value);
@@ -25,6 +28,8 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
       }
     });
     setChecked(copyList);
+    setInputError('');
+    setIsClicked && setIsClicked(false);
   };
 
   // When input is saved: set the radiobuttons to the correct answer.
@@ -32,7 +37,6 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
   // it should only make changes to checked (list) if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
-    //console.log('radio');
     if (
       radioValue === '' &&
       props.answers.get(props.entity.linkId) &&
@@ -56,6 +60,17 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
     props.setAnswers(copiedAnswers);
   }, [radioValue]);
 
+  // Checks for missing input if required
+  useEffect(() => {
+    if (props.entity.required) {
+      if (radioValue.length === 0 && isClicked) {
+        //setFoundError && setFoundError(true);
+        setInputError('Det er obligatorisk å velge et alternaiv');
+      } else setInputError('');
+    }
+    console.log('radio, check error');
+  }, [isClicked]);
+
   return (
     <>
       <div className="componentItems">
@@ -76,6 +91,7 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
               props.entity.text + ' (frivillig)'
             )
           }
+          feil={inputError}
         >
           {optionarray?.map((option: string, index: number) => (
             <Radio
