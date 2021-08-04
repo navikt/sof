@@ -26,17 +26,19 @@ const DateItem: FC<IItemProps & savedType> = ({
   const [errorMsg, setErrorMsg] = useState('');
 
   const checkDate = () => {
-    if (dateList.length === 2) {
-      let firstDate = new Date(dateList[0]);
-      let secondDate = new Date(dateList[1]);
-      if (secondDate < firstDate) {
-        setWrongDateStatus('ugyldigDato');
-        setErrorMsg('Inntastet dato er ugyldig!');
-      } else {
-        setWrongDateStatus('riktig_dato');
-        setErrorMsg('');
+    dateList.forEach((innerList) => {
+      if (innerList.length === 2) {
+        let firstDate = new Date(innerList[0]);
+        let secondDate = new Date(innerList[1]);
+        if (secondDate < firstDate) {
+          setWrongDateStatus('ugyldigDato');
+          setErrorMsg('Inntastet dato er ugyldig!');
+        } else {
+          setWrongDateStatus('riktig_dato');
+          setErrorMsg('');
+        }
       }
-    }
+    });
   };
 
   useEffect(() => {
