@@ -15,7 +15,7 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
     new Array(optionarray?.length).fill(false)
   ); // A list of the options with true or false, depending on if checked
   const [inputError, setInputError] = useState('');
-  const { isClicked, setIsClicked, setFoundError } = useInputErrorContext();
+  const { isClicked, setIsClicked } = useInputErrorContext();
 
   const handleOnChange = (value: string, index: number) => {
     setRadioValue(value);
@@ -62,7 +62,6 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
 
   // Checks for missing input if required
   useEffect(() => {
-    props.entity.required = false;
     if (props.entity.required) {
       if (radioValue.length === 0 && isClicked) {
         //setFoundError && setFoundError(true);

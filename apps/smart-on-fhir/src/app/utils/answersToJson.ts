@@ -98,7 +98,6 @@ export const saveAnswers = async (
   client: Client,
   questionnaire: IQuestionnaire,
   buttonId: string
-  //foundError: boolean
 ) => {
   answers.forEach((value, key) => {
     //Get the correct object from questionnaireResponse.item:
@@ -122,10 +121,10 @@ export const saveAnswers = async (
   setAutomaticAnswers(questionnaireResponse, patient, user);
 
   // Checks which button is clicked on, and saves or sends based on the information
-  if (buttonId.includes('save') /*&& foundError === false*/) {
+  if (buttonId.includes('save')) {
     saveToServer(questionnaireResponse, client, patient, questionnaire);
     console.log('saving');
-  } else if (buttonId.includes('send') /*&& foundError === false*/) {
+  } else if (buttonId.includes('send')) {
     console.log('sending');
     sendToServer(client, patient, questionnaireResponse);
   } else console.log('Detected an error');
