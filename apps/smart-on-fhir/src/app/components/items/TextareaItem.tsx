@@ -56,13 +56,17 @@ const TextareaItem = (props: IItemProps & savedType) => {
             label={
               props.helptext !== '' ? (
                 <div style={{ display: 'flex' }}>
-                  {props.entity.text}
+                  {props.entity.required
+                    ? props.entity.text
+                    : props.entity.text + ' (frivillig)'}
                   <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                     {props.helptext}
                   </Hjelpetekst>
                 </div>
-              ) : (
+              ) : props.entity.required ? (
                 props.entity.text
+              ) : (
+                props.entity.text + ' (frivillig)'
               )
             }
             value={textValue}

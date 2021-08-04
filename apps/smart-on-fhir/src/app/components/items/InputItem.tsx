@@ -91,7 +91,10 @@ const InputItem = (props: IItemProps & savedType) => {
       props.answers.get(props.entity.linkId) &&
       typeof props.answers.get(props.entity.linkId) === 'string'
     ) {
-      const temp: string = props.answers.get(props.entity.linkId) as string;
+      let temp: string = props.answers.get(props.entity.linkId) as string;
+      if (temp[0] !== '[') {
+        temp = '[' + temp + ']';
+      }
       setTempValueList(JSON.parse(temp));
     }
   }, [props.saved]);
@@ -127,13 +130,17 @@ const InputItem = (props: IItemProps & savedType) => {
             label={
               props.helptext !== '' ? (
                 <div style={{ display: 'flex' }}>
-                  {props.entity.text}
+                  {props.entity.required
+                    ? props.entity.text
+                    : props.entity.text + ' (frivillig)'}
                   <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
                     {props.helptext}
                   </Hjelpetekst>
                 </div>
-              ) : (
+              ) : props.entity.required ? (
                 props.entity.text
+              ) : (
+                props.entity.text + ' (frivillig)'
               )
             }
             feil={inputError}

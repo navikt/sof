@@ -16,22 +16,41 @@ export const App = () => {
   };
 
   return (
-    <InputErrorContextProvider>
-      <div className="app-container">
-        <div className="content-container">
-          {!loadingQuestionnaire ? (
-            <div className="titleContainer">
-              <Veilederpanel
-                fargetema="info"
-                type={'plakat'}
-                svg={
-                  <div className="informationIcon">
-                    <svg
-                      width="50px"
-                      height="62px"
-                      viewBox="0 0 50 62   "
-                      version="1.1"
-                      focusable={false}
+
+    
+
+
+                      <InputErrorContextProvider>
+    <div className="app-container">
+      <div className="content-container">
+        {!loadingQuestionnaire ? (
+          <div className="titleContainer">
+            <Veilederpanel
+              fargetema="info"
+              type={'plakat'}
+              kompakt
+              svg={
+                <div className="informationIcon">
+                  <svg
+                    width="50px"
+                    height="62px"
+                    viewBox="0 0 50 62   "
+                    version="1.1"
+                    focusable={false}
+                  >
+                    <title>Informasjon</title>
+                    <defs>
+                      <path
+                        d="M-1.13686838e-13,8.16516634 L-1.13686838e-13,45.2231666 C-1.13686838e-13,46.5524398 1.06545967,47.630137 2.38031085,47.630137 L34.2506632,47.630137 C35.56417,47.630137 36.6296296,46.5524398 36.6296296,45.2231666 L36.6296296,2.40697042 C36.6296296,1.07769721 35.56417,0 34.2506632,0 L8.81824417,0 L-1.13686838e-13,8.16516634 Z"
+                        id="infoIcon-path-1"
+                      />
+                    </defs>
+                    <g
+                      stroke="none"
+                      strokeWidth="1"
+                      fill="none"
+                      fillRule="evenodd"
+
                     >
                       <title>Informasjon</title>
                       <defs>
