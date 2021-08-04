@@ -22,6 +22,35 @@
   margin: 10px;
 }
 
-.questionnaireLinkContainer:hover {
-  background-color: #f5f5f5;
+.ugyldigDato > div > .nav-datovelger > .nav-datovelger__inputContainer {
+  border: 2px solid #ba3a26;
+  border-radius: 6.5px;
+}
+
+.ugyldigDato > div > .nav-datovelger > .nav-datovelger__inputContainer:focus {
+  border: 2px solid #ba3a26;
+  border-radius: 6.5px;
+}
+
+.ugyldigDato
+  > div
+  > .nav-datovelger
+  > .nav-datovelger__inputContainer
+  > .nav-datovelger__input:focus {
+  box-shadow: 0 0 0 3px #a32a17;
+}
+.ugyldigDato
+  > div
+  > .nav-datovelger
+  > .nav-datovelger__inputContainer
+  > .nav-datovelger__input:focus {
+  box-shadow: 0 0 0 3px #a32a17;
+}
+
+.ugyldigDato
+  > div
+  > .nav-datovelger
+  > .nav-datovelger__inputContainer
+  > .nav-datovelger__kalenderknapp:focus {
+  box-shadow: 0 0 0 3px #a32a17;
 }

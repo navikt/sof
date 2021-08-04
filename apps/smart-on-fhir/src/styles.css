@@ -10,6 +10,8 @@
   padding: 0 50px;
 }
 
+/*STYLES FOR THE BANNERHEADER*/
+
 .nav-header-container {
   display: flex;
   align-items: center;
@@ -64,29 +66,27 @@
   margin: 15px 20px;
 }
 
+/*TITLE AREA, UNDER THE DARK BAND HEADER*/
+
 .informationIcon {
   height: 75px;
   margin-bottom: 10px;
 }
 
-/*TITLE AREA, UNDER THE DARK BAND HEADER*/
+.content-container {
+  width: 100%;
+}
 
 .titleContainer {
   display: flex;
 }
 
-.tittel {
-  flex: 1;
+.titleContainer > .nav-veilederpanel {
+  width: 100%;
 }
 
 /*MAIN BODY WITH THE QUESTIONAORES*/
 
 .ingress {
   margin: 25px 0 40px;
-}
-
-/*FOOTER SECTION WITH BUTTONS*/
-
-.button-general {
-  margin: 10px;
 }
