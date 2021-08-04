@@ -103,7 +103,8 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       patient &&
       user &&
       client &&
-      questionnaire
+      questionnaire &&
+      foundError !== undefined
     ) {
       saveAnswers(
         answers,
@@ -113,6 +114,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         client,
         questionnaire,
         e.target.id.toLowerCase() // Information about which button is clicked on
+        //foundError
       );
     }
   };
@@ -179,7 +181,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
               setSaved(true);
               setDisableSendBtn(false);
               setIsClicked && setIsClicked(true);
-              setFoundError && setFoundError(false);
+              //setFoundError && setFoundError(false);
             }}
           >
             Lagre

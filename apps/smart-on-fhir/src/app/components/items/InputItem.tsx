@@ -32,6 +32,7 @@ const InputItem = (props: IItemProps & savedType) => {
 
   const handleOnChange = (e: any) => {
     setInputValue(e.target.value);
+    setIsClicked && setIsClicked(false);
   };
 
   const handleOnFocus = (e: any) => {
@@ -46,6 +47,7 @@ const InputItem = (props: IItemProps & savedType) => {
     if (!tempValueList.includes(inputValue) && inputValue !== '') {
       setTempValueList((prevState) => [...prevState, inputValue]);
     }
+    setIsClicked && setIsClicked(false);
   };
 
   const handleChooseElement = (e: any) => {
@@ -102,11 +104,12 @@ const InputItem = (props: IItemProps & savedType) => {
     setInputValue(''); // Set input field to default value (empty)
   }, [tempValueList]);
 
+  // Checks for missing input if required
   useEffect(() => {
     props.entity.required = true;
     if (props.entity.required) {
       if (tempValueList.length === 0 && isClicked) {
-        setFoundError && setFoundError(true);
+        //setFoundError && setFoundError(true);
         setInputError('Mangler data, husk å trykk på "Legg til"');
       } else {
         setInputError('');

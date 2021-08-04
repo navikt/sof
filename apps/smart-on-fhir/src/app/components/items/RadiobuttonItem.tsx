@@ -60,11 +60,12 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
     props.setAnswers(copiedAnswers);
   }, [radioValue]);
 
+  // Checks for missing input if required
   useEffect(() => {
     props.entity.required = false;
     if (props.entity.required) {
       if (radioValue.length === 0 && isClicked) {
-        setFoundError && setFoundError(true);
+        //setFoundError && setFoundError(true);
         setInputError('Det er obligatorisk å velge et alternaiv');
       } else setInputError('');
     }
