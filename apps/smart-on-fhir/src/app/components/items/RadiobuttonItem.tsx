@@ -68,7 +68,6 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
         setInputError('Det er obligatorisk å velge et alternaiv');
       } else setInputError('');
     }
-    console.log('radio, check error');
   }, [isClicked]);
 
   return (

@@ -5,6 +5,7 @@ import {
   QuestionnaireResponseStatusKind,
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
+import axios from 'axios';
 
 /**
  * Function to SEND a questionnaire response to the server.
@@ -24,7 +25,7 @@ export const sendToServer = async (
   if (response.total && response.total !== 0 && response.entry) {
     const responseId: string | undefined = response.entry[0].resource?.id;
     questionnaireResponse.id = responseId;
-    questionnaireResponse.status = QuestionnaireResponseStatusKind._completed;
+    //questionnaireResponse.status = QuestionnaireResponseStatusKind._completed;
 
     await client.request({
       url: `QuestionnaireResponse/${responseId}`,
@@ -32,5 +33,18 @@ export const sendToServer = async (
       body: JSON.stringify(questionnaireResponse),
       headers,
     });
+
+    await axios
+      .post('/resource-puller/pull-resource', {
+        serverUrl: client.state.serverUrl,
+        reference: `QuestionnaireResponse/${responseId}`,
+        authHeader: client.getAuthorizationHeader(),
+      })
+      .then((res) => {
+        console.log('Response', res.data);
+      })
+      .catch((error) => {
+        console.log('Res', error);
+      });
   }
 };
