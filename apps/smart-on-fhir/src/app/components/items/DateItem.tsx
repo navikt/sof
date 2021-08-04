@@ -88,7 +88,9 @@ const DateItem: FC<IItemProps & savedType> = ({
         className="titleBox"
         style={{ display: 'flex', alignItems: 'center' }}
       >
-        <p className="typo-element">{entity.text}</p>
+        <p className="typo-element">
+          {entity.required ? entity.text : entity.text + ' (frivillig)'}
+        </p>
         {
           // Checks for helptext, and displays if any
           helptext !== '' ? (

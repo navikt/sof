@@ -33,7 +33,13 @@ const CheckboxItem = (props: IItemProps & savedType) => {
   return (
     <>
       <div className="componentItems">
-        <CheckboxGruppe legend={props.entity.text}>
+        <CheckboxGruppe
+          legend={
+            props.entity.required === 'true'
+              ? props.entity.text
+              : props.entity.text + ' (frivillig)'
+          }
+        >
           {optionarray?.map((option: string) => (
             <Checkbox
               key={option}

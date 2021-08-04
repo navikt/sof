@@ -22,6 +22,7 @@ export const App = () => {
             <Veilederpanel
               fargetema="info"
               type={'plakat'}
+              kompakt
               svg={
                 <div className="informationIcon">
                   <svg
