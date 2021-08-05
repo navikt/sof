@@ -36,8 +36,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     setQuestionnaire,
     setQuestionnaireResponse,
   } = useFhirContext();
-  const { isClicked, setIsClicked, foundError, setFoundError } =
-    useInputErrorContext();
+  const { isClicked, setIsClicked } = useInputErrorContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
@@ -103,8 +102,7 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       patient &&
       user &&
       client &&
-      questionnaire &&
-      foundError !== undefined
+      questionnaire
     ) {
       saveAnswers(
         answers,
@@ -191,17 +189,14 @@ export const Questionnaire: FC<callFromApp> = (props) => {
             onClick={(e: any) => {
               handleOnClick(e);
               setDisableSendBtn(true);
-              //setIsClicked && setIsClicked(true);
             }}
             disabled={disableSendBtn}
           >
-            Send skjema
+            Send til NAV
           </Hovedknapp>
         </>
       ) : null}
       {console.log('A', answers)}
-      {console.log('Error?', foundError)}
-      {console.log('Clicked?', isClicked)}
     </>
   );
 };

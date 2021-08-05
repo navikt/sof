@@ -13,12 +13,12 @@ export const getPatientId = (typeOfId: string, patient?: IPatient) => {
     const id = patient.identifier.find(
       (identifier) => identifier.type?.text === typeOfId
     )?.value;
-    const intId =
+    const intId: number =
       typeof id === 'string'
         ? parseInt(id.split('-').join(''))
         : typeof id === 'number'
         ? id
-        : null;
+        : NaN;
     return intId;
   }
   return 0;

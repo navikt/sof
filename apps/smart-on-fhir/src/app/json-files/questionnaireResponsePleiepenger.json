@@ -14,7 +14,7 @@
     "type": "Patient"
   },
   "authored": "2021-07-19",
-  "author": {
+  "source": {
     "resourceType": "Reference",
     "id": "",
     "reference": "",

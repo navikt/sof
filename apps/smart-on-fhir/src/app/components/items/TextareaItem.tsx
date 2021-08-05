@@ -15,6 +15,7 @@ const TextareaItem = (props: IItemProps & savedType) => {
 
   const handleOnChange = (e: any) => {
     setTextValue(e.target.value);
+    setIsClicked && setIsClicked(false);
   };
 
   // When input is saved: set the fields text to the correct answer.
