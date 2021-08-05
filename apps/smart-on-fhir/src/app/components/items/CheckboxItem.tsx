@@ -11,13 +11,15 @@ import '../questionnaireStylesheet.css';
 //Expects to receive an array and a text
 const CheckboxItem = (props: IItemProps & savedType) => {
   const optionarray: Array<string> | undefined = props.answeroptions;
-  const [textValue, setTextValue] = useState(false);
+  const [checkboxValues, setCheckboxValues] = useState<boolean[]>();
+  //^^A list for saving the checkbox values. Each element in the
+  // list belongs to the corresponding checbox. The first element
+  // belongs to the first checbox, etc.
 
+  // Start with a list with all false values
   useEffect(() => {
-    const copiedAnswers = new Map(props.answers);
-    copiedAnswers.set(props.entity.linkId, textValue);
-    props.setAnswers(copiedAnswers);
-  }, [textValue]);
+    setCheckboxValues(Array(optionarray?.length).fill(false));
+  }, []);
 
   // When input is saved: set the checkbox to the correct answer.
   // Make changes to textValue if there is an answer saved on the server
@@ -26,9 +28,33 @@ const CheckboxItem = (props: IItemProps & savedType) => {
   // answer in the server).
   useEffect(() => {
     if (typeof props.answers.get(props.entity.linkId) === 'boolean') {
-      setTextValue(props.answers.get(props.entity.linkId) as boolean);
+      //setCheckboxValues(props.answers.get(props.entity.linkId) as boolean);
     }
   }, [props.saved]);
+
+  // When checkboxValues are updated, set answers as well
+  useEffect(() => {
+    if (checkboxValues && checkboxValues.length > 0) {
+      const copiedAnswers = new Map(props.answers);
+      for (let i = 0; i < checkboxValues.length; i++) {
+        copiedAnswers.set(
+          props.entity.linkId + '.' + (i + 1),
+          checkboxValues[i]
+        );
+      }
+      props.setAnswers(copiedAnswers);
+    }
+  }, [checkboxValues]);
+
+  // Function to update checkboxValues when a checbox is clicked
+  const onClickCheckbox = (index: number) => {
+    if (checkboxValues) {
+      const tempList = [...checkboxValues];
+      tempList[index] = !checkboxValues[index];
+      setCheckboxValues(tempList);
+    }
+    console.log(checkboxValues);
+  };
 
   return (
     <>
@@ -40,8 +66,9 @@ const CheckboxItem = (props: IItemProps & savedType) => {
               : props.entity.text + ' (frivillig)'
           }
         >
-          {optionarray?.map((option: string) => (
+          {optionarray?.map((option: string, index: number) => (
             <Checkbox
+              onClick={() => onClickCheckbox(index)}
               key={option}
               label={
                 props.helptext !== '' ? (
