@@ -8,7 +8,6 @@ import { setAutomaticAnswers } from './setAutomaticAnswers';
 import Client from 'fhirclient/lib/Client';
 import { saveToServer } from './saveToServer';
 import { sendToServer } from './sendToServer';
-import { useInputErrorContext } from '../context/inputErrorContext';
 
 /**
  * Function to set a an answer in a questionnaire response, if the
@@ -123,10 +122,10 @@ export const saveAnswers = async (
   // Checks which button is clicked on, and saves or sends based on the information
   if (buttonId.includes('save')) {
     saveToServer(questionnaireResponse, client, patient, questionnaire);
-    console.log('saving');
+    console.log('saving...');
   } else if (buttonId.includes('send')) {
-    console.log('sending');
-    sendToServer(client, patient, questionnaireResponse);
-  } else console.log('Detected an error');
+    console.log('sending...');
+    sendToServer(client, patient, user, questionnaireResponse);
+  } else console.log('Something went wrong...');
   return questionnaireResponse;
 };

@@ -189,11 +189,10 @@ export const Questionnaire: FC<callFromApp> = (props) => {
             onClick={(e: any) => {
               handleOnClick(e);
               setDisableSendBtn(true);
-              //setIsClicked && setIsClicked(true);
             }}
             disabled={disableSendBtn}
           >
-            Send skjema
+            Send til NAV
           </Hovedknapp>
         </>
       ) : null}
