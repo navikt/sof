@@ -22,7 +22,6 @@ const TextareaItem = (props: IItemProps & savedType) => {
   // make changes to textValue if there is an answer saved on the server
   // that has been fetched, and there is no new answer that can be overwritten.
   useEffect(() => {
-    //console.log('textarea');
     if (
       textValue === '' &&
       typeof props.answers.get(props.entity.linkId) === 'string'
