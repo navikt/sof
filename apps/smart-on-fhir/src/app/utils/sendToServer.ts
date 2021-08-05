@@ -32,7 +32,7 @@ export const sendToServer = async (
   if (response.total && response.total !== 0 && response.entry) {
     const responseId: string | undefined = response.entry[0].resource?.id;
     questionnaireResponse.id = responseId;
-    questionnaireResponse.status = QuestionnaireResponseStatusKind._completed;
+    //questionnaireResponse.status = QuestionnaireResponseStatusKind._completed;
 
     /*
     // Temporarily handling of setting patient FNR and practitioner (user) HPR
