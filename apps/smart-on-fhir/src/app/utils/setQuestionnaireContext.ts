@@ -136,6 +136,8 @@ export const chooseQuestionnaire = (
       ),
       setQuestionnaireResponse &&
         setQuestionnaireResponse(
+
           questionnaireResponseArbeidsufor as IQuestionnaireResponse
+
         )) : null;
 };
