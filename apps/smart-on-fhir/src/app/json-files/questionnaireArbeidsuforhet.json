@@ -30,7 +30,8 @@
             "code": "AAP",
             "display": "Arbeidsavklaringspenger"
           }
-        },{
+        },
+        {
           "valueCoding": {
             "code": "Uførepensjon",
             "display": "Uførepensjon"
@@ -423,7 +424,7 @@
       "required": "true"
     },
     {
-      "linkId": "21",
+      "linkId": "31",
       "text": "Beskriv hvordan funksjonsevnen generelt er nedsatt på grunn av sykdom",
       "type": "text",
       "required": "true"
@@ -434,25 +435,25 @@
       "type": "group",
       "item": [
         {
-          "linkId": "31.1",
+          "linkId": "32.1",
           "text": "I inntektsgivende arbeid",
           "type": "boolean",
           "required": "true"
         },
         {
-          "linkId": "31.2",
+          "linkId": "32.2",
           "text": "Hjemmearbeidende",
           "type": "boolean",
           "required": "true"
         },
         {
-          "linkId": "31.3",
+          "linkId": "32.3",
           "text": "Student",
           "type": "boolean",
           "required": "true"
         },
         {
-          "linkId": "31.4",
+          "linkId": "32.4",
           "text": "Annet, beskriv",
           "type": "text",
           "required": "true"
