@@ -10,6 +10,7 @@ import questionnaireResponsePleiepenger from '../json-files/questionnaireRespons
 import questionnaireVacation from '../json-files/questionnaireVacation.json';
 import questionnaireArbeidsuforhet from '../json-files/questionnaireArbeidsuforhet.json';
 import questionnaireResponseVacation from '../json-files/questionnaireResponseVacation.json';
+import questionnaireResponseArbeidsufor from '../json-files/questionnaireResponseArbeidsufor.json';
 
 /**
  * Function to set the right questionnaire in the context when a link is clicked.
@@ -135,6 +136,6 @@ export const chooseQuestionnaire = (
       ),
       setQuestionnaireResponse &&
         setQuestionnaireResponse(
-          questionnaireResponseVacation as IQuestionnaireResponse
+          questionnaireResponseArbeidsufor as IQuestionnaireResponse
         )) : null;
 };
