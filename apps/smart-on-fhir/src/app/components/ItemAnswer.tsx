@@ -72,9 +72,9 @@ export const ItemAnswer: FC<IProps> = ({
       case 'date':
         return 'date';
       case 'group':
-        if (entityItems[1].type === 'boolean') {
+        if (entityItems[0].type === 'boolean') {
           return 'boolean';
-        } else if (entityItems[1].type === 'date') {
+        } else if (entityItems[0].type === 'date') {
           return 'date';
         } else {
           return 'nothing';

@@ -8,7 +8,9 @@
   "version": "1.0.0",
   "name": "Arbeidsuførerklæring",
   "title": "Legeerklæring ved arbeidsuførhet",
-  "status": "draft",
+
+  "status": "active",
+
   "date": "2021-08-04",
   "description": "Dette skjemaet benyttes ved arbeidsevnevurdering ved sykefravær etter anmodning fra NAV-kontoret i sykepengeperioden, krav om arbeidsavklaringspenger eller krav om uførepensjon",
   "item": [
@@ -79,22 +81,14 @@
       "required": "true"
     },
     {
-      "linkId": "9",
-      "text": "Status presens",
-      "type": "group",
-      "item": [
-        {
-          "linkId": "9.1",
-          "text": "Dato",
-          "type": "date"
-        },
-        {
-          "linkId": "9.2",
-          "text": "Beskrivelse av status og resultat av relevante undersøkelser",
-          "type": "text"
-        }
-      ]
-    },
+
+    "linkId": "9",
+    "text": "Status presens: beskriv av status og resultat av relevante undersøkelser",
+    "type": "text",
+    "required":"true"
+    }       
+    ,
+
     {
       "linkId": "10",
       "text": "Er dette en yrkessdakde/yrkessykdom?",
