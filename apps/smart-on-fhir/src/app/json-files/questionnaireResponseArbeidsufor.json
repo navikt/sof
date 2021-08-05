@@ -232,16 +232,61 @@
       ]
     },
     {
-      "linkId": "29",
-      "text": "Hvilke?",
+      "linkId": "29.1",
+      "text": "Hvilke? Kjøp av helsetjenester",
       "answer": [
         {
-          "valueString": ""
+          "valuBoolean": false
         }
       ]
     },
     {
-      "linkId": "21",
+      "linkId": "29.2",
+      "text": "Hvilke? Arbeidsavklaringspenger",
+      "answer": [
+        {
+          "valuBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "29.3",
+      "text": "Hvilke? Reisetilskudd",
+      "answer": [
+        {
+          "valuBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "29.4",
+      "text": "Hvilke? friskmelding til arbeidsformidling",
+      "answer": [
+        {
+          "valuBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "29.5",
+      "text": "Hvilke? Aktiv sykemelding",
+      "answer": [
+        {
+          "valuBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "29.6",
+      "text": "Hvilke? Annet, beskriv",
+      "answer": [
+        {
+          "valuBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "31",
       "text": "Beskriv hvordan funksjonsevnen generelt er nedsatt på grunn av sykdom",
       "answer": [
         {
@@ -250,11 +295,38 @@
       ]
     },
     {
-      "linkId": "32",
-      "text": "Pasienten er",
+      "linkId": "32.1",
+      "text": "Pasienten er: I inntektsgivende arbeid",
       "answer": [
         {
-          "valueString": ""
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "32.2",
+      "text": "Pasienten er: Hjemmearbeidende",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "32.3",
+      "text": "Pasienten er: Student",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "32.4",
+      "text": "Pasienten er: Annet, beskriv",
+      "answer": [
+        {
+          "valueBoolean": false
         }
       ]
     },
@@ -313,8 +385,8 @@
       ]
     },
     {
-      "linkId": "40",
-      "text": "Antatt varighet av funksjonsnedsettelsen",
+      "linkId": "40.1",
+      "text": "Antatt varighet av funksjonsnedsettelsen: start",
       "answer": [
         {
           "valueDate": ""
@@ -322,8 +394,26 @@
       ]
     },
     {
-      "linkId": "41",
-      "text": "Antatt varighet av nedsatt arbeidsevne",
+      "linkId": "40.2",
+      "text": "Antatt varighet av funksjonsnedsettelsen: slutt",
+      "answer": [
+        {
+          "valueDate": ""
+        }
+      ]
+    },
+    {
+      "linkId": "41.1",
+      "text": "Antatt varighet av nedsatt arbeidsevne: start",
+      "answer": [
+        {
+          "valueDate": ""
+        }
+      ]
+    },
+    {
+      "linkId": "41.2",
+      "text": "Antatt varighet av nedsatt arbeidsevne: slutt",
       "answer": [
         {
           "valueDate": ""
@@ -340,11 +430,38 @@
       ]
     },
     {
-      "linkId": "43",
-      "text": "Hvem skal nav ta kontakt med?",
+      "linkId": "43.1",
+      "text": "Hvem skal nav ta kontakt med? Behandlende lege",
       "answer": [
         {
-          "valueString": ""
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "43.2",
+      "text": "Hvem skal nav ta kontakt med? Arbeidsgiver",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "43.3",
+      "text": "Hvem skal nav ta kontakt med? Basisgruppe",
+      "answer": [
+        {
+          "valueBoolean": false
+        }
+      ]
+    },
+    {
+      "linkId": "43.4",
+      "text": "Hvem skal nav ta kontakt med? Annet, beskriv",
+      "answer": [
+        {
+          "valueBoolean": false
         }
       ]
     },
@@ -366,6 +483,5 @@
         }
       ]
     }
-
-      ]
+  ]
 }
