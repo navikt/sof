@@ -58,7 +58,6 @@ const CheckboxItem = (props: IItemProps & savedType) => {
             />
           ))}
         </CheckboxGruppe>
-        ;
       </div>
     </>
   );

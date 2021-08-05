@@ -25,9 +25,9 @@ export const LandingPage = () => {
                   status={true}
                 ></QuestionnaireLinks>
               </Link>
-              <Link className="questionLink" to="/skjema/vacation">
+              <Link className="questionLink" to="/skjema/arbeidsuførhet">
                 <QuestionnaireLinks
-                  title={'Søknad om grunnstønad'}
+                  title={'Legeerklæring ved arbeidsuførhet'}
                   status={false}
                 ></QuestionnaireLinks>
               </Link>

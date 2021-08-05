@@ -5,6 +5,7 @@ import CheckboxItem from './items/CheckboxItem';
 import DateItem from './items/DateItem';
 import InputItem from './items/InputItem';
 import RadiobuttonItem from './items/RadiobuttonItem';
+import { Undertittel } from 'nav-frontend-typografi';
 
 interface IProps {
   entity: itemType;
@@ -62,6 +63,8 @@ export const ItemAnswer: FC<IProps> = ({
 
   const renderSwitch = () => {
     switch (entity.type) {
+      case 'display':
+        return 'header';
       case 'text':
         return 'text';
       case 'string':
@@ -125,6 +128,7 @@ export const ItemAnswer: FC<IProps> = ({
               saved={saved}
             />
           ),
+          header: <Undertittel>{entity.text}</Undertittel>,
           nothing: <></>,
         }[renderSwitch()]
       ) : (

@@ -8,6 +8,7 @@ import { setUUIDIdentifier } from './setIdentifier';
 import questionnairePleiepenger from '../json-files/questionnairePleiepenger.json';
 import questionnaireResponsePleiepenger from '../json-files/questionnaireResponsePleiepenger.json';
 import questionnaireVacation from '../json-files/questionnaireVacation.json';
+import questionnaireArbeidsuforhet from '../json-files/questionnaireArbeidsuforhet.json';
 import questionnaireResponseVacation from '../json-files/questionnaireResponseVacation.json';
 
 /**
@@ -32,6 +33,7 @@ const setQuestionnaireContext = async (
     `Questionnaire?name=${name}&version=${version}&status=active`
   )) as IBundle;
 
+
   if (client) {
     if (response.total !== 0 && response.entry && setQuestionnaire) {
       // If the questionnaire exist, save it in the context
@@ -44,18 +46,28 @@ const setQuestionnaireContext = async (
         Accept: '*/*',
       };
       await client
-        ?.request({
-          url: `Questionnaire`,
-          method: 'POST',
-          body: JSON.stringify(jsonQuestionnaire),
-          headers,
-        })
-        .then((response) => {
-          setUUIDIdentifier(response);
-          setQuestionnaire ? setQuestionnaire(response) : null;
-          setLoadingQuestionnaire(false);
-        });
-    }
+      ?.request({
+        url: `Questionnaire`,
+        method: 'POST',
+        body: JSON.stringify(jsonQuestionnaire),
+        headers,
+      })
+      .then((response) => {
+        setUUIDIdentifier(response);
+        setQuestionnaire ? setQuestionnaire(response) : null;
+        setLoadingQuestionnaire(false);
+      });
+    } else {
+    // If the questionnaire json file is not active yet, it should not be used
+    // We will currently set a default questionnaire to be used if we e.g. are
+    // unable to connect to the server. This will allow us to see the questionnaire
+    // in DIPS even though the functionality does not work correctly yet.
+    setQuestionnaire
+      ? setQuestionnaire(jsonQuestionnaire as unknown as IQuestionnaire)
+      : null;
+    setLoadingQuestionnaire(false);
+    console.log('Fant ikke et skjema');
+  }
   } else {
     // If the questionnaire json file is not active yet, it should not be used
     // We will currently set a default questionnaire to be used if we e.g. are
@@ -112,5 +124,17 @@ export const chooseQuestionnaire = (
         setQuestionnaireResponse(
           questionnaireResponseVacation as IQuestionnaireResponse
         ))
-    : null;
+    : questionnaireType === 'arbeidsuførhet'
+    ? (setQuestionnaireContext(
+        questionnaireType,
+        version,
+        setQuestionnaire,
+        client,
+        questionnaireArbeidsuforhet as unknown as IQuestionnaire,
+        setLoadingQuestionnaire
+      ),
+      setQuestionnaireResponse &&
+        setQuestionnaireResponse(
+          questionnaireResponseVacation as IQuestionnaireResponse
+        )) : null;
 };
