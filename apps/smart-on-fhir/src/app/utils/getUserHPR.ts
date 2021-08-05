@@ -8,20 +8,19 @@ import { fhirclient } from 'fhirclient/lib/types';
  * @returns A string containing the users Id or an empty string.
  */
 export const getUserHPR = (
-  user:
+  user?:
     | fhirclient.FHIR.Patient
     | fhirclient.FHIR.Practitioner
     | fhirclient.FHIR.RelatedPerson
-    | undefined
 ) => {
   if (user && user.identifier) {
     const HPR = user.identifier[0].value;
-    const intHPR =
+    const intHPR: number =
       typeof HPR === 'string'
         ? parseInt(HPR)
         : typeof HPR === 'number'
         ? HPR
-        : null;
+        : NaN;
     return intHPR;
   }
   return 0;
