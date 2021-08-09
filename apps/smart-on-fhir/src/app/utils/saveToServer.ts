@@ -6,6 +6,7 @@ import {
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
 import { setUUIDIdentifier } from './setIdentifier';
+import { dipsExtensions } from 'dipssmartonfhirextensions/index.js';
 
 /**
  * Function to SAVE a questionnaire response to the server.
@@ -20,6 +21,7 @@ export const saveToServer = async (
   questionnaire: IQuestionnaire
 ) => {
   // Get questionnaireResponse which is in progress for the right patient and questionnaire
+
   const response = (await client.request(
     `QuestionnaireResponse?subject=Patient/${patient.id}&questionnaire=${questionnaireResponse.questionnaire}&status=in-progress`
   )) as IBundle;

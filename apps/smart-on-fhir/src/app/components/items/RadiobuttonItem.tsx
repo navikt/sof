@@ -1,7 +1,7 @@
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { Radio, RadioGruppe } from 'nav-frontend-skjema';
 import { useEffect, useState } from 'react';
 import { useInputErrorContext } from '../../context/inputErrorContext';
+import { QuestionTextItem } from './QuestionTextItem';
 
 /**
  * Renders a question with type Choice
@@ -15,21 +15,22 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
     new Array(optionarray?.length).fill(false)
   ); // A list of the options with true or false, depending on if checked
   const [inputError, setInputError] = useState('');
-  const { isClicked, setIsClicked } = useInputErrorContext();
+  const { checkedForError, setCheckedForError } = useInputErrorContext();
 
+  // Updates when radiobutton is checked
   const handleOnChange = (value: string, index: number) => {
     setRadioValue(value);
     const copyList: boolean[] = [...checked];
-    copyList.map((bool: boolean, i: number) => {
+    for (let i = 0; i < copyList.length; i++) {
       if (index === i) {
         copyList[i] = true;
       } else {
         copyList[i] = false;
       }
-    });
+    }
     setChecked(copyList);
     setInputError('');
-    setIsClicked && setIsClicked(false);
+    setCheckedForError && setCheckedForError(false);
   };
 
   // When input is saved: set the radiobuttons to the correct answer.
@@ -39,10 +40,12 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
   useEffect(() => {
     if (
       radioValue === '' &&
-      props.answers.get(props.entity.linkId) &&
-      typeof props.answers.get(props.entity.linkId) === 'string'
+      props.answers.get(props.mainQuestion.linkId) &&
+      typeof props.answers.get(props.mainQuestion.linkId) === 'string'
     ) {
-      const temp: string = props.answers.get(props.entity.linkId) as string;
+      const temp: string = props.answers.get(
+        props.mainQuestion.linkId
+      ) as string;
       optionarray?.map((text: string, index: number) => {
         if (text === temp) {
           checked[index] = true;
@@ -54,41 +57,31 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
     }
   }, [props.saved]);
 
+  // Updates answers
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);
-    copiedAnswers.set(props.entity.linkId, radioValue);
+    copiedAnswers.set(props.mainQuestion.linkId, radioValue);
     props.setAnswers(copiedAnswers);
   }, [radioValue]);
 
   // Checks for missing input if required
   useEffect(() => {
-    if (props.entity.required) {
-      if (radioValue.length === 0 && isClicked) {
-        //setFoundError && setFoundError(true);
+    if (props.mainQuestion.required) {
+      if (radioValue.length === 0 && checkedForError) {
         setInputError('Det er obligatorisk å velge et alternaiv');
       } else setInputError('');
     }
-  }, [isClicked]);
+  }, [checkedForError]);
 
   return (
     <>
       <div className="componentItems">
         <RadioGruppe
           legend={
-            props.helptext !== '' ? (
-              <div style={{ display: 'flex' }}>
-                {props.entity.required
-                  ? props.entity.text
-                  : props.entity.text + ' (frivillig)'}
-                <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
-                  {props.helptext}
-                </Hjelpetekst>
-              </div>
-            ) : props.entity.required ? (
-              props.entity.text
-            ) : (
-              props.entity.text + ' (frivillig)'
-            )
+            <QuestionTextItem
+              mainQuestion={props.mainQuestion}
+              helptext={props.helptext}
+            />
           }
           feil={inputError}
         >
@@ -97,7 +90,7 @@ const RadiobuttonItem = (props: IItemProps & savedType) => {
               onChange={() => handleOnChange(option, index)}
               key={option}
               label={option}
-              name={'group' + props.entity.linkId}
+              name={'group' + props.mainQuestion.linkId}
               checked={checked[index]}
             />
           ))}

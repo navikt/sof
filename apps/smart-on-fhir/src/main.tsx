@@ -2,9 +2,9 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 
-import App from './app/app';
+import App from './app/components/app';
 import { FhirContextProvider } from './app/context/fhirContext';
-import { LandingPage } from './app/LandingPage';
+import { LandingPage } from './app/components/LandingPage';
 
 ReactDOM.render(
   <StrictMode>

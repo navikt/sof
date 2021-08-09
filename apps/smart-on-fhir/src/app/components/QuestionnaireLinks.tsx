@@ -7,6 +7,9 @@ interface IQuestionnaireLinksProps {
   status: boolean;
 }
 
+/**
+ * @returns A row to click on that leads to a questionnaire
+ */
 const QuestionnaireLinks = (props: IQuestionnaireLinksProps) => {
   function statusChecker() {
     if (props.status) {

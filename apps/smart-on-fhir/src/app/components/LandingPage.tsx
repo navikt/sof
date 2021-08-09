@@ -2,8 +2,12 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Sidetittel } from 'nav-frontend-typografi';
 import '@navikt/ds-css';
-import './landingpageStylesheet.css';
-import QuestionnaireLinks from './components/QuestionnaireLinks';
+import '../landingpageStylesheet.css';
+import QuestionnaireLinks from './QuestionnaireLinks';
+
+/**
+ * @returns a page with links to all questionnaires to choose from
+ */
 
 export const LandingPage = () => {
   return (

@@ -9,7 +9,7 @@ type itemType = {
   linkId: string;
   text: string;
   type: string;
-  required: string;
+  required?: string;
   answerOption?: answerOptionType[];
   item?: itemType;
   enableWhen?: {
@@ -20,7 +20,7 @@ type itemType = {
 };
 
 interface IItemProps {
-  entity: itemType;
+  mainQuestion: itemType;
   helptext?: string;
   answers: Map<string, string | boolean>;
   answeroptions?: string[]; // OBS! Not the same as answerOptions, but only the label text

@@ -1,7 +1,7 @@
 import { Textarea } from 'nav-frontend-skjema';
-import Hjelpetekst from 'nav-frontend-hjelpetekst';
 import { useEffect, useState } from 'react';
 import { useInputErrorContext } from '../../context/inputErrorContext';
+import { QuestionTextItem } from './QuestionTextItem';
 
 /**
  * Renders a question with type Text
@@ -11,11 +11,12 @@ import { useInputErrorContext } from '../../context/inputErrorContext';
 const TextareaItem = (props: IItemProps & savedType) => {
   const [textValue, setTextValue] = useState('');
   const [inputError, setInputError] = useState('');
-  const { isClicked, setIsClicked } = useInputErrorContext();
+  const { checkedForError, setCheckedForError } = useInputErrorContext();
 
+  // Updates textValue when writing in the text area field
   const handleOnChange = (e: any) => {
     setTextValue(e.target.value);
-    setIsClicked && setIsClicked(false);
+    setCheckedForError && setCheckedForError(false);
   };
 
   // When input is saved: set the fields text to the correct answer.
@@ -25,57 +26,46 @@ const TextareaItem = (props: IItemProps & savedType) => {
   useEffect(() => {
     if (
       textValue === '' &&
-      typeof props.answers.get(props.entity.linkId) === 'string'
+      typeof props.answers.get(props.mainQuestion.linkId) === 'string'
     ) {
-      setTextValue(props.answers.get(props.entity.linkId) as string);
+      setTextValue(props.answers.get(props.mainQuestion.linkId) as string);
     }
   }, [props.saved]);
 
+  // Update answers
   useEffect(() => {
     const copiedAnswers = new Map(props.answers);
-    copiedAnswers.set(props.entity.linkId, textValue);
+    copiedAnswers.set(props.mainQuestion.linkId, textValue);
     props.setAnswers(copiedAnswers);
   }, [textValue]);
 
   // Checks for missing input if required
   useEffect(() => {
-    if (props.entity.required) {
-      if (textValue.length === 0 && isClicked) {
+    if (props.mainQuestion.required) {
+      if (textValue.length === 0 && checkedForError) {
         setInputError('Det er obligatorisk å fylle inn');
       } else {
         setInputError('');
       }
     }
-  }, [isClicked]);
+  }, [checkedForError]);
 
   return (
     <>
-      {
-        <div className="componentItems">
-          <Textarea
-            label={
-              props.helptext !== '' ? (
-                <div style={{ display: 'flex' }}>
-                  {props.entity.required
-                    ? props.entity.text
-                    : props.entity.text + ' (frivillig)'}
-                  <Hjelpetekst style={{ marginLeft: '0.5rem' }}>
-                    {props.helptext}
-                  </Hjelpetekst>
-                </div>
-              ) : props.entity.required ? (
-                props.entity.text
-              ) : (
-                props.entity.text + ' (frivillig)'
-              )
-            }
-            value={textValue}
-            onChange={handleOnChange}
-            maxLength={0}
-            feil={inputError}
-          ></Textarea>
-        </div>
-      }
+      <div className="componentItems">
+        <Textarea
+          label={
+            <QuestionTextItem
+              mainQuestion={props.mainQuestion}
+              helptext={props.helptext}
+            />
+          }
+          value={textValue}
+          onChange={handleOnChange}
+          maxLength={0}
+          feil={inputError}
+        ></Textarea>
+      </div>
     </>
   );
 };

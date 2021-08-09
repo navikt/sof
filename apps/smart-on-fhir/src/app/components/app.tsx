@@ -1,20 +1,17 @@
-import { Questionnaire } from './components/Questionnaire';
-import { Ingress, Normaltekst, Sidetittel } from 'nav-frontend-typografi';
+import { Questionnaire } from './Questionnaire';
+import { Normaltekst } from 'nav-frontend-typografi';
 import { useState } from 'react';
 import Veilederpanel from 'nav-frontend-veilederpanel';
-import { InputErrorContextProvider } from './context/inputErrorContext';
-import { InfoIcon } from './logos/InfoIcon';
+import { InputErrorContextProvider } from '../context/inputErrorContext';
+import { InfoIcon } from '../logos/InfoIcon';
 
+/**
+ * @returns A page with the questionnaire and description.
+ */
 export const App = () => {
-  const [questionnareTitle, setTitle] = useState('');
-  const [questionDescription, setDesc] = useState('');
+  const [questionDescription, setQuestionnaireDescription] = useState('');
   const [loadingQuestionnaire, setLoadingQuestionnaire] =
     useState<boolean>(true);
-
-  const createHeader = (title: string, description: string) => {
-    setTitle(title);
-    setDesc(description);
-  };
 
   return (
     <InputErrorContextProvider>
@@ -42,10 +39,12 @@ export const App = () => {
                 </Normaltekst>
               </Veilederpanel>
             </div>
-          ) : null}
+          ) : (
+            <></>
+          )}
           <div className="main-body">
             <Questionnaire
-              createHeader={createHeader}
+              setQuestionnaireDescription={setQuestionnaireDescription}
               loadingQuestionnaire={loadingQuestionnaire}
               setLoadingQuestionnaire={setLoadingQuestionnaire}
             />

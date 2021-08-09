@@ -10,13 +10,13 @@ import { useParams } from 'react-router-dom';
 import { chooseQuestionnaire } from '../utils/setQuestionnaireContext';
 import { useInputErrorContext } from '../context/inputErrorContext';
 
-type callFromApp = {
-  createHeader: (title: string, description: string) => void;
+type QuestionnairePropsType = {
+  setQuestionnaireDescription: React.Dispatch<React.SetStateAction<string>>;
   loadingQuestionnaire: boolean;
   setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type questionnaireTypeParams = {
+type questionnaireParamsType = {
   questionnaireType: string;
 };
 
@@ -24,8 +24,8 @@ type questionnaireTypeParams = {
  * Questionnaire is a component that renders a querstionnaire.
  * @returns The questionnaire containing all questions with input fields.
  */
-export const Questionnaire: FC<callFromApp> = (props) => {
-  const { questionnaireType } = useParams<questionnaireTypeParams>();
+export const Questionnaire = (props: QuestionnairePropsType) => {
+  const { questionnaireType } = useParams<questionnaireParamsType>();
   const [questions, setQuestions] = useState<any[]>([]);
   const {
     patient,
@@ -36,13 +36,14 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     setQuestionnaire,
     setQuestionnaireResponse,
   } = useFhirContext();
-  const { isClicked, setIsClicked } = useInputErrorContext();
+  const { setCheckedForError } = useInputErrorContext();
   const [answers, setAnswers] = useState<Map<string, string | boolean>>(
     new Map()
   );
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(false); // False while fetching QR from the server
   const [disableSendBtn, setDisableSendBtn] = useState(true);
 
+  // When entering a questionnaire, set the correct questionnaire in context.
   useEffect(() => {
     if (client) {
       props.setLoadingQuestionnaire(true);
@@ -68,13 +69,28 @@ export const Questionnaire: FC<callFromApp> = (props) => {
         questionnaire,
         setSaved
       );
-      setIsClicked && setIsClicked(false);
+      setCheckedForError && setCheckedForError(false);
     } else {
       null;
     }
   }, []);
 
-  // Get the items from the Questionnaire
+  // Saves questions from Questionnaire to the questions list when questionnaire is updated
+  useEffect(() => {
+    if (questionnaire) {
+      setQuestions([]); // Reset questions so that new ones can be added
+      getItemChildren(questionnaire);
+    }
+  }, [questionnaire]);
+
+  // Set description of the Questionnaire
+  useEffect(() => {
+    if (questionnaire && questionnaire.description) {
+      props.setQuestionnaireDescription(questionnaire.description);
+    }
+  }, [questionnaire]);
+
+  // Get the items (questions) from the Questionnaire
   const getItemChildren = (q: IQuestionnaire) => {
     q.item?.map((itemChild: any) => {
       if (!questions.includes(itemChild)) {
@@ -85,14 +101,6 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       }
     });
   };
-
-  // Saves questions from Questionnaire to the questions list when questionnaire is updated
-  useEffect(() => {
-    if (questionnaire) {
-      setQuestions([]); // Reset questions so that new ones can be added
-      getItemChildren(questionnaire);
-    }
-  }, [questionnaire]);
 
   // Function to make sure all values sent to saveAnswers are defined.
   const handleOnClick = (e: any) => {
@@ -115,16 +123,11 @@ export const Questionnaire: FC<callFromApp> = (props) => {
       );
     }
   };
-  // Set header and description
-  useEffect(() => {
-    if (questionnaire && questionnaire.description && questionnaire.title) {
-      props.createHeader(questionnaire.title, questionnaire.description);
-    }
-  }, [questionnaire]);
 
-  const displayQuestion = (item: any) => {
-    let mainItem: any;
-    let subItems: any[] = [];
+  // Function to render a question with an input field
+  const displayQuestion = (item: itemType) => {
+    let mainItem: itemType;
+    let subItems: itemType[] = [];
     let options: answerOptionType[] = [];
     if (
       !item.linkId.includes('automatic') &&
@@ -133,20 +136,24 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     ) {
       mainItem = item;
       //If question (item) has an item-array
-      if (item.item !== undefined) {
-        item.item.map((entityItem: any) => {
-          subItems.push(entityItem);
+      if (
+        item.item !== undefined &&
+        typeof item.item === 'object' &&
+        Array.isArray(item.item)
+      ) {
+        item.item.map((subItem: itemType) => {
+          subItems.push(subItem);
         });
-      } else if (item.answerOption) {
-        item.answerOption.map((option: any) => {
+      }
+      if (item.answerOption) {
+        item.answerOption.map((option: answerOptionType) => {
           options.push(option);
         });
       }
-
       return (
         <ItemAnswer
-          entity={mainItem}
-          entityItems={subItems}
+          mainItem={mainItem}
+          subItems={subItems}
           optionItems={options}
           answers={answers}
           setAnswers={setAnswers}
@@ -158,26 +165,30 @@ export const Questionnaire: FC<callFromApp> = (props) => {
     }
   };
 
+  const deleteQuestionnaire = () => {
+    const myList = ['1342268'];
+    myList.forEach((element) => {
+      client?.delete('Questionnaire/' + element);
+    });
+  };
+
   return (
-    //Itererer gjennom alle spørsmålene (spørsmål = item) og filtrerer på spørsmålenes linkId.
-    //Hovedspørsmålet legges som mainItem, og det tilhørende item-arrayet, eller answerOption,
-    //pushes inn i subItems.
+    // Iterates trough all questions and filters based on the questions linkId.
+    // Main questions are added as mainItems and the belonging item array (answersOption) is pushed to subItems
     <>
-      {!props.loadingQuestionnaire
-        ? questions.map((item: any) => {
-            return displayQuestion(item);
-          })
-        : null}
       {!props.loadingQuestionnaire ? (
         <>
+          {questions.map((item: any) => {
+            return displayQuestion(item);
+          })}
           <Hovedknapp
             className="buttons"
             id="btnSave"
-            onClick={(e: any) => {
+            onClick={(e: React.MouseEvent<HTMLElement>) => {
               handleOnClick(e);
               setSaved(true);
               setDisableSendBtn(false);
-              setIsClicked && setIsClicked(true);
+              setCheckedForError && setCheckedForError(true);
             }}
           >
             Lagre
@@ -195,8 +206,11 @@ export const Questionnaire: FC<callFromApp> = (props) => {
             Send til NAV
           </Hovedknapp>
         </>
-      ) : null}
-      {console.log('A', answers)}
+      ) : (
+        <></>
+      )}
+      <button onClick={deleteQuestionnaire}>Slett</button>
+      {console.log('Answers', answers)}
     </>
   );
 };

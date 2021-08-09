@@ -8,12 +8,13 @@ interface IProps {
   setDateList: React.Dispatch<React.SetStateAction<string[][]>>;
 }
 
+// TODO: create functionality to add for example several start and end dates
+// (like we do in pleiepengeskjema question 1).
+// Then, a function to correctly update arrayIndex must be made.
+
 /**
  * DatepickerItem displays a calender for input
  * Currently used together with DateItem-component.
- * Functionality to add for example several start and end dates
- * (like we do in pleiepengeskjema question 1), is not currently added
- * for dates. Then, a function to correctly update arrayIndex must be made.
  * @returns a Datepicker for user input
  */
 

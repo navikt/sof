@@ -3,9 +3,9 @@ import { useState } from 'react';
 
 type ContextProps = {
   foundError: boolean;
-  isClicked: boolean;
+  checkedForError: boolean;
   setFoundError: React.Dispatch<React.SetStateAction<boolean>>;
-  setIsClicked: React.Dispatch<React.SetStateAction<boolean>>;
+  setCheckedForError: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const InputErrorContext = React.createContext<Partial<ContextProps>>({});
@@ -22,12 +22,12 @@ export const useInputErrorContext = () => {
 
 export const InputErrorContextProvider = (props: any) => {
   const [foundError, setFoundError] = useState<boolean>(false);
-  const [isClicked, setIsClicked] = useState<boolean>(false);
+  const [checkedForError, setCheckedForError] = useState<boolean>(false);
   const context = {
     foundError,
     setFoundError,
-    isClicked,
-    setIsClicked,
+    checkedForError,
+    setCheckedForError,
   };
   return (
     <InputErrorContext.Provider value={context}>

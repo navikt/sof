@@ -8,8 +8,8 @@ import RadiobuttonItem from './items/RadiobuttonItem';
 import { Undertittel } from 'nav-frontend-typografi';
 
 interface IProps {
-  entity: itemType;
-  entityItems: itemType[];
+  mainItem: itemType;
+  subItems: itemType[];
   optionItems: answerOptionType[];
   answers: Map<string, string | boolean>;
   setAnswers: React.Dispatch<
@@ -20,15 +20,15 @@ interface IProps {
 
 /**
  * Renders an input field and handles changes in the field.
- * @param entity: of type itemType that includes all attributes of the question
- * @param entityItems: an array of itemType, used for items of helptext and subquestions
- * @param optionItems: array of answerOptionType, used for "answerOption" on questions of type Choice
+ * @param mainItem: of type itemType that includes all attributes of the question
+ * @param subItems: an array of itemType, used for items of helptext and subquestions
+ * @param optionItems: array of type answerOptionType, used for "answerOption" on questions of type Choice
  * @param setAnswers: the function to update answers
  * @returns an input field
  */
 export const ItemAnswer: FC<IProps> = ({
-  entity,
-  entityItems,
+  mainItem,
+  subItems,
   optionItems,
   answers,
   setAnswers,
@@ -38,33 +38,36 @@ export const ItemAnswer: FC<IProps> = ({
   const arrayOfItems: Array<string> = [];
   const [enableWhen, setEnableWhen] = useState(true); // True as default, in order to render questions from Questionnaire
 
-  if (entityItems != undefined && entity.answerOption == undefined) {
+  if (subItems !== undefined) {
     // If there is a help text or subquestions, set these
-    entityItems.forEach((element) => {
+    subItems.forEach((element) => {
       if (element.linkId.includes('help')) {
         itemHelptext = element.text;
       } else if (element.linkId.includes('.')) {
         arrayOfItems.push(element.text);
       }
     });
-  } else if (entity.answerOption != undefined) {
-    // Set the values for the radio buttons
+  }
+
+  if (mainItem.answerOption !== undefined) {
+    // Set the values for the radio buttons, checkboxes
+    // and dates (if there are several fields)
     optionItems.forEach((element) => {
       arrayOfItems.push(element.valueCoding.display);
     });
   }
 
   const itemProps = {
-    entity: entity,
+    mainQuestion: mainItem,
     helptext: itemHelptext,
     answers: answers,
     setAnswers: setAnswers,
   };
 
   const renderSwitch = () => {
-    switch (entity.type) {
+    switch (mainItem.type) {
       case 'display':
-        return 'header';
+        return 'display';
       case 'text':
         return 'text';
       case 'string':
@@ -72,9 +75,9 @@ export const ItemAnswer: FC<IProps> = ({
       case 'date':
         return 'date';
       case 'group':
-        if (entityItems[0].type === 'boolean') {
+        if (subItems[0].type === 'boolean') {
           return 'boolean';
-        } else if (entityItems[0].type === 'date') {
+        } else if (subItems[0].type === 'date') {
           return 'date';
         } else {
           return 'nothing';
@@ -86,12 +89,12 @@ export const ItemAnswer: FC<IProps> = ({
     }
   };
 
+  // Check if enableWhen-items from Questionnaire should be showed
   useEffect(() => {
-    // Check if displaying enableWhen-items from Questionnaire
-    if (entity.enableWhen) {
+    if (mainItem.enableWhen) {
       if (
-        answers.get(entity.enableWhen[0].question) ===
-        entity.enableWhen[0].answerCoding.code
+        answers.get(mainItem.enableWhen[0].question) ===
+        mainItem.enableWhen[0].answerCoding.code
       ) {
         setEnableWhen(true);
       } else {
@@ -102,7 +105,6 @@ export const ItemAnswer: FC<IProps> = ({
 
   return (
     <>
-      {/* Displays the items in the same order as in Questionnaire.json */}
       {enableWhen ? (
         {
           text: <TextareaItem {...itemProps} saved={saved} />,
@@ -128,7 +130,7 @@ export const ItemAnswer: FC<IProps> = ({
               saved={saved}
             />
           ),
-          header: <Undertittel>{entity.text}</Undertittel>,
+          display: <Undertittel>{mainItem.text}</Undertittel>,
           nothing: <></>,
         }[renderSwitch()]
       ) : (

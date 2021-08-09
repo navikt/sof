@@ -23,7 +23,7 @@
           "type": "display"
         }
       ],
-      "required": "false"
+      "required": "true"
     },
     {
       "linkId": "2",
@@ -74,6 +74,13 @@
             "code": "Nei",
             "display": "Nei"
           }
+        }
+      ],
+      "item": [
+        {
+          "linkId": "4-help",
+          "text": "Dette kan for eksempel være en beskrivelse av hva barnet trenger hjelp til og omsorgspersonens rolle i pleien.",
+          "type": "display"
         }
       ],
       "required": "true"
