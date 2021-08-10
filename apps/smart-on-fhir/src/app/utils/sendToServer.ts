@@ -14,10 +14,6 @@ import { fhirclient } from 'fhirclient/lib/types';
 export const sendToServer = async (
   client: Client,
   patient: IPatient,
-  user:
-    | fhirclient.FHIR.Patient
-    | fhirclient.FHIR.Practitioner
-    | fhirclient.FHIR.RelatedPerson,
   questionnaireResponse: IQuestionnaireResponse
 ) => {
   const headers = { 'Content-Type': 'application/fhir+json', Accept: '*/*' };

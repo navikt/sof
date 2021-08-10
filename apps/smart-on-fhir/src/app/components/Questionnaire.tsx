@@ -45,17 +45,15 @@ export const Questionnaire = (props: QuestionnairePropsType) => {
 
   // When entering a questionnaire, set the correct questionnaire in context.
   useEffect(() => {
-    if (client) {
-      props.setLoadingQuestionnaire(true);
-      chooseQuestionnaire(
-        questionnaireName,
-        '1.0.0',
-        setQuestionnaire,
-        client,
-        props.setLoadingQuestionnaire,
-        setQuestionnaireResponse
-      );
-    }
+    props.setLoadingQuestionnaire(true);
+    chooseQuestionnaire(
+      questionnaireName,
+      '1.0.0',
+      setQuestionnaire,
+      client,
+      props.setLoadingQuestionnaire,
+      setQuestionnaireResponse
+    );
   }, []);
 
   // This will be called when the questionnaire is opened, and sets
@@ -165,13 +163,6 @@ export const Questionnaire = (props: QuestionnairePropsType) => {
     }
   };
 
-  const deleteQuestionnaire = () => {
-    const myList = ['1342268'];
-    myList.forEach((element) => {
-      client?.delete('Questionnaire/' + element);
-    });
-  };
-
   return (
     // Iterates trough all questions and filters based on the questions linkId.
     // Main questions are added as mainItems and the belonging item array (answersOption) is pushed to subItems
@@ -209,7 +200,6 @@ export const Questionnaire = (props: QuestionnairePropsType) => {
       ) : (
         <></>
       )}
-      <button onClick={deleteQuestionnaire}>Slett</button>
       {console.log('Answers', answers)}
     </>
   );

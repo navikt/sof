@@ -80,7 +80,7 @@ export const chooseQuestionnaire = (
   setQuestionnaire:
     | React.Dispatch<React.SetStateAction<IQuestionnaire | undefined>>
     | undefined,
-  client: Client,
+  client: Client | undefined,
   setLoadingQuestionnaire: React.Dispatch<React.SetStateAction<boolean>>,
   setQuestionnaireResponse:
     | React.Dispatch<React.SetStateAction<IQuestionnaireResponse | undefined>>
