@@ -1,4 +1,4 @@
-import React, { useState, useEffect, FC } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ItemAnswer } from './ItemAnswer';
 import { Hovedknapp } from 'nav-frontend-knapper';
 import { saveAnswers } from '../utils/answersToJson';
@@ -17,7 +17,7 @@ type QuestionnairePropsType = {
 };
 
 type questionnaireParamsType = {
-  questionnaireType: string;
+  questionnaireName: string;
 };
 
 /**
@@ -25,7 +25,7 @@ type questionnaireParamsType = {
  * @returns The questionnaire containing all questions with input fields.
  */
 export const Questionnaire = (props: QuestionnairePropsType) => {
-  const { questionnaireType } = useParams<questionnaireParamsType>();
+  const { questionnaireName } = useParams<questionnaireParamsType>();
   const [questions, setQuestions] = useState<any[]>([]);
   const {
     patient,
@@ -48,7 +48,7 @@ export const Questionnaire = (props: QuestionnairePropsType) => {
     if (client) {
       props.setLoadingQuestionnaire(true);
       chooseQuestionnaire(
-        questionnaireType,
+        questionnaireName,
         '1.0.0',
         setQuestionnaire,
         client,

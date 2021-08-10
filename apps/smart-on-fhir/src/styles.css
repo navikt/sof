@@ -5,7 +5,6 @@
 .app-container {
   max-width: 1050px;
   min-width: 690px;
-  display: flex;
   margin: 30px auto;
   padding: 0 50px;
 }
@@ -17,20 +16,6 @@
   margin-bottom: 10px;
 }
 
-.content-container {
-  width: 100%;
-}
-
-.titleContainer {
-  display: flex;
-}
-
 .titleContainer > .nav-veilederpanel {
   width: 100%;
-}
-
-/*MAIN BODY WITH THE QUESTIONAORES*/
-
-.ingress {
-  margin: 25px 0 40px;
 }

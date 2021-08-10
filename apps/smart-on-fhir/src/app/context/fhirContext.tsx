@@ -31,7 +31,7 @@ export const FhirContext = React.createContext<Partial<ContextProps>>({});
 export const useFhirContext = function (): Partial<ContextProps> {
   const context = React.useContext(FhirContext);
   if (context === undefined) {
-    throw new Error('useCountDispatch must be used within a CountProvider');
+    throw new Error('useFhirDispatch must be used within a FhirProvider');
   }
   return context;
 };

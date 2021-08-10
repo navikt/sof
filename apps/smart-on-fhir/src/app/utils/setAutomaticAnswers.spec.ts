@@ -5,7 +5,7 @@ import {
   PractitionerGenderKind,
   QuestionnaireResponseStatusKind,
 } from '@ahryman40k/ts-fhir-types/lib/R4';
-import { setAuthor, setSubject } from './setAutomaticAnswers';
+import { setSource, setSubject } from './setAutomaticAnswers';
 import { fhirclient } from 'fhirclient/lib/types';
 
 const questionnaireResponse: IQuestionnaireResponse = {
@@ -19,7 +19,7 @@ const questionnaireResponse: IQuestionnaireResponse = {
     type: 'Patient',
   },
   authored: '2021-07-19',
-  author: {
+  source: {
     id: '',
     reference: '',
     type: 'Practitioner',
@@ -72,9 +72,9 @@ test('it should set the subject reference to a patient', () => {
   );
 });
 
-test('it should set the author reference to a practitioner', () => {
-  setAuthor(questionnaireResponse, practitioner);
-  expect(questionnaireResponse.author?.reference).toBe(
+test('it should set the source reference to a practitioner', () => {
+  setSource(questionnaireResponse, practitioner);
+  expect(questionnaireResponse.source?.reference).toBe(
     'Practitioner/be54c000-e7e4-4f1b-9be8-2f5b13d91fb5'
   );
 });

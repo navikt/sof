@@ -2,12 +2,9 @@ import {
   IBundle,
   IPatient,
   IQuestionnaireResponse,
-  QuestionnaireResponseStatusKind,
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
 import axios from 'axios';
-import { getPatientId } from './getPatientId';
-import { getUserHPR } from './getUserHPR';
 import { fhirclient } from 'fhirclient/lib/types';
 
 /**
@@ -32,15 +29,10 @@ export const sendToServer = async (
   if (response.total && response.total !== 0 && response.entry) {
     const responseId: string | undefined = response.entry[0].resource?.id;
     questionnaireResponse.id = responseId;
-    //questionnaireResponse.status = QuestionnaireResponseStatusKind._completed;
 
-    /*
-    // Temporarily handling of setting patient FNR and practitioner (user) HPR
-    if (questionnaireResponse.subject && questionnaireResponse.source) {
-      questionnaireResponse.subject.id = getPatientId('FNR',patient).toString();
-      questionnaireResponse.source.id = getUserHPR(user).toString();
-    }
-    */
+    // TODO:
+    // Get patients fødselsnummer and the doctors HPR number.
+    // Was necessary to send to NAV, but this requirement is temporarily removed.
 
     // Updates the current QR with the information above
     await client.request({
@@ -50,7 +42,7 @@ export const sendToServer = async (
       headers,
     });
 
-    // Sends the updated and final QR to the server
+    // Sends the updated and final QR to NAV
     if (client.state.serverUrl && client.getAuthorizationHeader()) {
       await axios
         .post('/resource-puller/pull-resource', {

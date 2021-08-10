@@ -1,11 +1,6 @@
-import React, { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Xknapp } from 'nav-frontend-ikonknapper';
 import { useInputErrorContext } from '../../context/inputErrorContext';
-
-interface IProps {
-  valueList: string[];
-  setValueList: React.Dispatch<React.SetStateAction<string[]>>;
-}
 
 /**
  * ListItem is a component that renders a list of elements.
@@ -13,7 +8,7 @@ interface IProps {
  * @returns A list of elements, with the possibility to remove elements from the list of elements
  */
 
-export const ListItem: FC<IProps> = ({ valueList, setValueList }) => {
+export const ListItem: FC<IListItemProps> = ({ valueList, setValueList }) => {
   const [tempValue, setTempValue] = useState(''); // The current text value of the clicked element
   const [isValueChanged, setIsValueChanged] = useState(false); // Updates if the tempValue is changed
   const { setCheckedForError } = useInputErrorContext();

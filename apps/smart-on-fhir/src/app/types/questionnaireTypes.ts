@@ -5,6 +5,7 @@ type answerOptionType = {
   };
 };
 
+// Type of one item/question in a questionnaire
 type itemType = {
   linkId: string;
   text: string;
@@ -17,18 +18,4 @@ type itemType = {
     operator: string;
     answerCoding: { code: string };
   }[];
-};
-
-interface IItemProps {
-  mainQuestion: itemType;
-  helptext?: string;
-  answers: Map<string, string | boolean>;
-  answeroptions?: string[]; // OBS! Not the same as answerOptions, but only the label text
-  setAnswers: React.Dispatch<
-    React.SetStateAction<Map<string, string | boolean>>
-  >;
-}
-
-type savedType = {
-  saved: boolean;
 };

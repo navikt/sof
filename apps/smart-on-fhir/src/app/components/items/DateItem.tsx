@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { DatepickerItem } from './DatepickerItem';
 import { Feilmelding } from 'nav-frontend-typografi';
 import { QuestionTextItem } from './QuestionTextItem';

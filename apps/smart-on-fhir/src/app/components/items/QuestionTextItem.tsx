@@ -1,15 +1,10 @@
 import Hjelpetekst from 'nav-frontend-hjelpetekst';
 
-type QuestionTextItemProps = {
-  mainQuestion: itemType;
-  helptext?: string;
-};
-
 /**
  * Component to show the question.
  * @returns The text of the question and possibly a help text.
  */
-export const QuestionTextItem = (props: QuestionTextItemProps) => {
+export const QuestionTextItem = (props: IQuestionTextItemProps) => {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {props.mainQuestion.required

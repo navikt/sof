@@ -1,12 +1,5 @@
-import React, { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect } from 'react';
 import { Datepicker } from 'nav-datovelger';
-
-interface IProps {
-  index: number;
-  text: string;
-  dateList: string[][];
-  setDateList: React.Dispatch<React.SetStateAction<string[][]>>;
-}
 
 // TODO: create functionality to add for example several start and end dates
 // (like we do in pleiepengeskjema question 1).
@@ -18,7 +11,7 @@ interface IProps {
  * @returns a Datepicker for user input
  */
 
-export const DatepickerItem: FC<IProps> = ({
+export const DatepickerItem: FC<IDatepickerItemProps> = ({
   index,
   text,
   dateList,
