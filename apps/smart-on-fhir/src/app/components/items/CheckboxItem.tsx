@@ -53,7 +53,6 @@ const CheckboxItem = (props: IItemProps & savedType) => {
       tempList[index] = !checkboxValues[index];
       setCheckboxValues(tempList);
     }
-    console.log(checkboxValues);
   };
 
   return (
