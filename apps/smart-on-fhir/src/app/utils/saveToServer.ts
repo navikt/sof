@@ -6,7 +6,6 @@ import {
 } from '@ahryman40k/ts-fhir-types/lib/R4';
 import Client from 'fhirclient/lib/Client';
 import { setUUIDIdentifier } from './setIdentifier';
-import { dipsExtensions } from 'dipssmartonfhirextensions/index.js';
 
 /**
  * Function to SAVE a questionnaire response to the server.
