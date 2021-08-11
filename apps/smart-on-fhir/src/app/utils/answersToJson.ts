@@ -125,7 +125,7 @@ export const saveAnswers = async (
     console.log('saving...');
   } else if (buttonId.includes('send')) {
     console.log('sending...');
-    sendToServer(client, patient, user, questionnaireResponse);
+    sendToServer(client, patient, questionnaireResponse);
   } else console.log('Something went wrong...');
   return questionnaireResponse;
 };
