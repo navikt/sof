@@ -32,9 +32,12 @@ export const ListItem: FC<IListItemProps> = ({ valueList, setValueList }) => {
 
   return (
     <>
-      {valueList?.map((value: string) => {
+      {valueList?.map((value: string, index: number) => {
         return (
-          <div style={{ display: 'flex', alignItems: 'center' }}>
+          <div
+            key={value + index}
+            style={{ display: 'flex', alignItems: 'center' }}
+          >
             <Xknapp mini onClick={() => handleOnClick(value)} />
             <p className="typo-normal">{value}</p>
           </div>

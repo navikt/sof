@@ -79,13 +79,11 @@ const DateItem: FC<IItemProps & savedType> = ({
 
   return (
     <div className="componentItems">
-      <div className="titleBox">
-        <p className="typo-element">
-          <QuestionTextItem mainQuestion={mainQuestion} helptext={helptext} />
-        </p>
+      <div className="typo-element">
+        <QuestionTextItem mainQuestion={mainQuestion} helptext={helptext} />
       </div>
 
-      <div className="datesBox" style={{ display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
         {optionList && optionList.length !== 0 ? (
           optionList.map((option: string, index: number) => {
             return (

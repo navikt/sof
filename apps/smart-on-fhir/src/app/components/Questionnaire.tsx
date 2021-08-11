@@ -170,7 +170,7 @@ export const Questionnaire = (props: QuestionnairePropsType) => {
       {!props.loadingQuestionnaire ? (
         <>
           {questions.map((item: any) => {
-            return displayQuestion(item);
+            return <div key={item.linkId}>{displayQuestion(item)}</div>;
           })}
           <Hovedknapp
             className="buttons"
