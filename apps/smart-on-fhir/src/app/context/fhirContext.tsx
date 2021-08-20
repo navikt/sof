@@ -59,6 +59,10 @@ export const FhirContextProvider = (props: any) => {
         redirectUri: location.pathname,
       });
       const oauth2Client = await oauth2.ready();
+
+
+
+
       setClient(oauth2Client);
       if (oauth2Client) {
         const rawPatient = await oauth2Client.patient.read();
